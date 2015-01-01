@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B8A442BB-4E61-4F79-A3D6-0AAC6D247D26}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TroutDash.EntityFramework</RootNamespace>
+    <AssemblyName>TroutDash.EntityFramework</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.3.1\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Extras.FakeItEasy">
+      <HintPath>..\packages\Autofac.Extras.FakeItEasy.3.0.2\lib\net40\Autofac.Extras.FakeItEasy.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\packages\FakeItEasy.1.18.0\lib\net40\FakeItEasy.dll</HintPath>
+    </Reference>
+    <Reference Include="GeoAPI">
+      <HintPath>..\packages\GeoAPI.1.7.3\lib\net45-client\GeoAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite">
+      <HintPath>..\packages\NetTopologySuite.1.13.3.2\lib\net45\NetTopologySuite.dll</HintPath>
+    </Reference>
+    <Reference Include="PowerCollections">
+      <HintPath>..\packages\NetTopologySuite.1.13.3.2\lib\net45\PowerCollections.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\county.cs" />
+    <Compile Include="Models\GeometryBase.cs" />
+    <Compile Include="Models\Mapping\countyMap.cs" />
+    <Compile Include="Models\Mapping\ISection.cs" />
+    <Compile Include="Models\Mapping\publicly_accessible_landMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Mapping\publicly_accessible_land_sectionMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Mapping\publicly_accessible_land_typeMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Mapping\restrictionMap.cs" />
+    <Compile Include="Models\Mapping\restriction_sectionMap.cs" />
+    <Compile Include="Models\Mapping\stateMap.cs" />
+    <Compile Include="Models\Mapping\streamMap.cs" />
+    <Compile Include="Models\Mapping\trout_stream_sectionMap.cs" />
+    <Compile Include="Models\publicly_accessible_land.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\publicly_accessible_land_section.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Pal_type.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\restriction.cs" />
+    <Compile Include="Models\restriction_section.cs" />
+    <Compile Include="Models\spatial_ref_sys.cs" />
+    <Compile Include="Models\state.cs" />
+    <Compile Include="Models\stream.cs" />
+    <Compile Include="Models\TroutDashPrototypeContext.cs" />
+    <Compile Include="Models\trout_stream_section.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="CodeTemplates\ReverseEngineerCodeFirst\Context.tt" />
+    <None Include="CodeTemplates\ReverseEngineerCodeFirst\Entity.tt" />
+    <None Include="CodeTemplates\ReverseEngineerCodeFirst\Mapping.tt" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

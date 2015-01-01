@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroutStreamMangler", "TroutStreamMangler\TroutStreamMangler.csproj", "{0128C895-025A-4CE0-B1E6-E99E67D77910}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroutDash.EntityFramework", "TroutDash.EntityFramework\TroutDash.EntityFramework.csproj", "{B8A442BB-4E61-4F79-A3D6-0AAC6D247D26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroutDash.DatabaseImporter", "TroutDash.DatabaseImporter\TroutDash.DatabaseImporter.csproj", "{8F3259F0-BDF8-48E8-8434-682E537586DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroutDash.DatabaseImporter.Convention", "TroutDash.DatabaseImporter.Convention\TroutDash.DatabaseImporter.Convention.csproj", "{8324BF5C-9F41-4AC6-BF3D-7C365E1FE607}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroutDash.DatabaseImporter.Convention.Test", "TroutDash.DatabaseImporter.Convention.Test\TroutDash.DatabaseImporter.Convention.Test.csproj", "{4240B71C-CBE2-430B-B7E6-1C6EA6F8A0CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0128C895-025A-4CE0-B1E6-E99E67D77910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0128C895-025A-4CE0-B1E6-E99E67D77910}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0128C895-025A-4CE0-B1E6-E99E67D77910}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0128C895-025A-4CE0-B1E6-E99E67D77910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8A442BB-4E61-4F79-A3D6-0AAC6D247D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8A442BB-4E61-4F79-A3D6-0AAC6D247D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8A442BB-4E61-4F79-A3D6-0AAC6D247D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8A442BB-4E61-4F79-A3D6-0AAC6D247D26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F3259F0-BDF8-48E8-8434-682E537586DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F3259F0-BDF8-48E8-8434-682E537586DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F3259F0-BDF8-48E8-8434-682E537586DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F3259F0-BDF8-48E8-8434-682E537586DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8324BF5C-9F41-4AC6-BF3D-7C365E1FE607}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8324BF5C-9F41-4AC6-BF3D-7C365E1FE607}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8324BF5C-9F41-4AC6-BF3D-7C365E1FE607}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8324BF5C-9F41-4AC6-BF3D-7C365E1FE607}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4240B71C-CBE2-430B-B7E6-1C6EA6F8A0CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4240B71C-CBE2-430B-B7E6-1C6EA6F8A0CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4240B71C-CBE2-430B-B7E6-1C6EA6F8A0CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4240B71C-CBE2-430B-B7E6-1C6EA6F8A0CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

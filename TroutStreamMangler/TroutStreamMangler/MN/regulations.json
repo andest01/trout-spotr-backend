@@ -1,0 +1,136 @@
+﻿[
+    {
+        "id": 1,
+        "text": "12 Inch Minimum for Brook Trout, Bag Limit of 1 (Artificial Lures or Flies Only)",
+        "shortText": "Brook Trout 12\" minimum. No bait.",
+        "isHarvestRestriction": true,
+        "isAnglingRestriction": true,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false
+    },
+    {
+        "id": 2,
+        "text": "12 to 16 Inch Protected Slot for All Trout (Artificial Lures or Flies Only)",
+        "shortText": "12\"-16\" only for all trout. No bait.",
+        "isHarvestRestriction": true,
+        "isAnglingRestriction": true,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false
+    },
+    {
+        "id": 3,
+        "text": "12 to 16 Inch Protected Slot for All Trout (Bait Allowed)",
+        "shortText": "12\"-16\" only for all trout.",
+        "isHarvestRestriction": true,
+        "isAnglingRestriction": false,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false
+    },
+    {
+        "id": 4,
+        "text": "Catch & Release for All Trout (Articifial Lures or Flies Only)",
+        "shortText": "No harvest. No bait.",
+        "isHarvestRestriction": true,
+        "isAnglingRestriction": true,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false
+    },
+    {
+        "id": 5,
+        "text": "Catch & Release for All Trout (Bait Allowed)",
+        "shortText": "Release all trout.",
+        "isHarvestRestriction": true,
+        "isAnglingRestriction": false,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false
+    },
+    {
+        "id": 6,
+        "text": "Catch & Release for Brook Trout",
+        "shortText": "Release all Brook Trout.",
+        "isHarvestRestriction": true,
+        "isAnglingRestriction": false,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false
+    },
+    {
+        "id": 7,
+        "text": "Fish Sanctuary, See Regulations for Closures",
+        "shortText": "asdf",
+        "isHarvestRestriction": true,
+        "isAnglingRestriction": true,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false
+    },
+    {
+        "id": 8,
+        "text": "Special Limits Downstream of Posted Boundary",
+        "shortText": "asdf",
+        "isHarvestRestriction": true,
+        "isAnglingRestriction": true,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false
+    },
+    {
+        "id": 9,
+        "text": "Winter Fishing Regulation",
+        "shortText": "asdf",
+        "isHarvestRestriction": true,
+        "isAnglingRestriction": true,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false
+    },
+    {
+        "id": 10,
+        "text": "Default South-east Minnesota regulations. Bag limit of five.",
+        "shortText": "asdf",
+        "isHarvestRestriction": false,
+        "isAnglingRestriction": false,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false
+    },
+    {
+        "id": 17,
+        "text": "Pre-season South-east Minnesota regulations. Catch and release only.",
+        "shortText": "Catch and release only.",
+        "isHarvestRestriction": false,
+        "isAnglingRestriction": false,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false,
+        "startDateEpoch": 1427885640,
+        "endDateEpoch": 1427883900
+    },
+    {
+        "id": 18,
+        "text": "Default. 4 combined (Not more than 1 over 16\")",
+        "shortText": "Default Regulations",
+        "isHarvestRestriction": false,
+        "isAnglingRestriction": false,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false,
+        "startDateEpoch": 1429352640,
+        "endDateEpoch": 1442314320
+    },
+    {
+        "id": 11,
+        "text": "State Park year round amnesty",
+        "shortText": "asdf",
+        "isHarvestRestriction": true,
+        "isAnglingRestriction": false,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false,
+        "startDateEpoch": 1410778440,
+        "endDateEpoch": 1429266300
+    },
+        {
+        "id": 100,
+        "text": "Closed. Do not fish.",
+        "shortText": "Closed.",
+        "isHarvestRestriction": true,
+        "isAnglingRestriction": true,
+        "isTimeRestriction": true,
+        "isSpeciesRestriction": false,
+        "startDateEpoch": 1410778440,
+        "endDateEpoch": 1429266300
+    }
+]
