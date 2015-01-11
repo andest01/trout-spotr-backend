@@ -59,68 +59,68 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ImportTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="test_mn_import\dnr_hydro_features_all.cpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_mn_import\dnr_hydro_features_all.dbf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_mn_import\dnr_hydro_features_all.prj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_mn_import\dnr_hydro_features_all.shp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_mn_import\dnr_hydro_features_all.shx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_us_import\counties.dbf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_us_import\counties.prj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_us_import\counties.qpj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_us_import\counties.shp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_us_import\counties.shx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_us_import\states.dbf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_us_import\states.prj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_us_import\states.qpj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_us_import\states.shp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="test_us_import\states.shx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
+    <None Include="test_mn_import\easements.dbf" />
+    <None Include="test_mn_import\easements.prj" />
+    <None Include="test_mn_import\easements.qpj" />
+    <None Include="test_mn_import\easements.shp" />
+    <None Include="test_mn_import\easements.shx" />
+    <None Include="test_mn_import\lakes.dbf" />
+    <None Include="test_mn_import\lakes.prj" />
+    <None Include="test_mn_import\lakes.qpj" />
+    <None Include="test_mn_import\lakes.shp" />
+    <None Include="test_mn_import\lakes.shx" />
+    <None Include="test_mn_import\state_parks.dbf" />
+    <None Include="test_mn_import\state_parks.prj" />
+    <None Include="test_mn_import\state_parks.qpj" />
+    <None Include="test_mn_import\state_parks.shp" />
+    <None Include="test_mn_import\state_parks.shx" />
+    <None Include="test_mn_import\streams.dbf" />
+    <None Include="test_mn_import\streams.prj" />
+    <None Include="test_mn_import\streams.qpj" />
+    <None Include="test_mn_import\streams.shp" />
+    <None Include="test_mn_import\streams.shx" />
+    <None Include="test_mn_import\stream_regs.dbf" />
+    <None Include="test_mn_import\stream_regs.prj" />
+    <None Include="test_mn_import\stream_regs.qpj" />
+    <None Include="test_mn_import\stream_regs.shp" />
+    <None Include="test_mn_import\stream_regs.shx" />
+    <None Include="test_mn_import\trout_lakes.dbf" />
+    <None Include="test_mn_import\trout_lakes.prj" />
+    <None Include="test_mn_import\trout_lakes.qpj" />
+    <None Include="test_mn_import\trout_lakes.shp" />
+    <None Include="test_mn_import\trout_lakes.shx" />
+    <None Include="test_mn_import\trout_streams.dbf" />
+    <None Include="test_mn_import\trout_streams.prj" />
+    <None Include="test_mn_import\trout_streams.qpj" />
+    <None Include="test_mn_import\trout_streams.shp" />
+    <None Include="test_mn_import\trout_streams.shx" />
+    <None Include="test_mn_import\wma.dbf" />
+    <None Include="test_mn_import\wma.prj" />
+    <None Include="test_mn_import\wma.qpj" />
+    <None Include="test_mn_import\wma.shp" />
+    <None Include="test_mn_import\wma.shx" />
+    <None Include="test_us_import\minnesota.dbf" />
+    <None Include="test_us_import\minnesota.prj" />
+    <None Include="test_us_import\minnesota.qpj" />
+    <None Include="test_us_import\minnesota.shp" />
+    <None Include="test_us_import\minnesota.shx" />
+    <None Include="test_us_import\minnesota_counties.dbf" />
+    <None Include="test_us_import\minnesota_counties.prj" />
+    <None Include="test_us_import\minnesota_counties.qpj" />
+    <None Include="test_us_import\minnesota_counties.shp" />
+    <None Include="test_us_import\minnesota_counties.shx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TroutDash.DatabaseImporter.Convention\TroutDash.DatabaseImporter.Convention.csproj">
       <Project>{8324BF5C-9F41-4AC6-BF3D-7C365E1FE607}</Project>
       <Name>TroutDash.DatabaseImporter.Convention</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="test_mn_import\dnr_hydro_features_all.shp.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="empty\" />

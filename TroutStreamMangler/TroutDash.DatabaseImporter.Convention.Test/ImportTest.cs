@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
+﻿using System.Collections.Generic;
 using System.IO;
 using FakeItEasy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,10 +9,10 @@ using TroutDash.DatabaseImporter.Convention.GeometryImporter;
 namespace TroutDash.DatabaseImporter.Convention.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class ImportTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void Import()
         {
             var packager = A.Fake<IDataPackager>();
             A.CallTo(() => packager.Unpack())
