@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using Autofac;
 using Autofac.Core;
 using Devart.Common;
 using ManyConsole;
 using Npgsql;
 using TroutDash.DatabaseImporter;
+using TroutDash.DatabaseImporter.Convention;
 using TroutDash.DatabaseImporter.Convention.DatabaseImporter;
+using TroutDash.DatabaseImporter.Convention.DataImporter;
+using TroutDash.DatabaseImporter.Convention.GeometryImporter;
 using TroutStreamMangler.MN;
 using TroutStreamMangler.MN.Import;
 using TroutStreamMangler.US;
@@ -26,25 +30,25 @@ namespace TroutStreamMangler
 
     internal class Program
     {
-        private static IDbConnection GetDbConnection(string connection)
+        private static IDatabaseConnection GetDbConnection(string connection)
         {
             using (var c = new NpgsqlConnection(connection))
             {
-                return new DbConnection(c.Database, "postgres", c.Host);
+                return new DatabaseConnection(c.Database, "postgres", c.Host);
             }
         }
 
-        private static IDbConnection GetTroutDashConnection()
+        private static IDatabaseConnection GetTroutDashConnection()
         {
             return GetDbConnection(ConfigurationManager.ConnectionStrings["TroutDash"].ConnectionString);
         }
 
-        private static IDbConnection GetMnConnection()
+        private static IDatabaseConnection GetMnConnection()
         {
             return GetDbConnection(ConfigurationManager.ConnectionStrings["mn_import"].ConnectionString);
         }
 
-        private static IDbConnection GetUsConnection()
+        private static IDatabaseConnection GetUsConnection()
         {
             return GetDbConnection(ConfigurationManager.ConnectionStrings["us_import"].ConnectionString);
         }
@@ -53,97 +57,122 @@ namespace TroutStreamMangler
         {
             var builder = new ContainerBuilder();
 
-            // Minnesota.
-//            ConfigureMinnesota(builder);
-//            ConfigureUs(builder);
             builder.RegisterType<DatabaseConnectionFactory>().As<IDatabaseConnectionFactory>();
             builder.RegisterType<DatabaseImporterFactory>().As<IDatabaseImporterFactory>();
-            var container = builder.Build();
-//            var result = container.Resolve<MinnesotaDatabaseImport>();
-//            var usResult = container.Resolve<UsDatabaseImport>();
+            var shapeImporterFactory = new Dictionary<string, IGeometryImporter>();
 
-//            var mn = new MinnesotaDatabaseImport()
-//            // locate any commands in the assembly (or use an IoC container, or whatever source)
-//            var commands = GetCommands();
-//            ImportUsData(args);
-//            ExportUsData(args);
-//            ImportMinnesotaData(args);
-//            ExportMinnesotaData(args);
+            shapeImporterFactory.Add(".shp", new ShapefileImporter());
+            builder.RegisterType<DatabaseManifest>().As<IDatabaseManifest>();
+
+            var container = builder.Build();
+
+            var manifest = container.Resolve<IDatabaseManifest>();
+            var importers = manifest.GetDatabaseImporters(new DirectoryInfo("."));
+            
+            var usImporter = importers.Single(i => i.DatabaseName == "us_import");
+            usImporter.CreateDatabase();
+            usImporter.Import();
+
+            var states = importers.Where(i => i.DatabaseName != "us_import");
+            foreach (var importer in states)
+                using (importer)
+                {
+//                    importer.CreateDatabase();
+//                    importer.Import();
+//                    importer.ShapeFiles
+                }
+
             return 0;
         }
 
-        private static void ConfigureMinnesota(ContainerBuilder builder)
+        private static void PostImportMinnesota(TroutDash.DatabaseImporter.Convention.DatabaseImporter.IDatabaseImporter importer)
         {
-            var mnDbConnection = GetMnConnection();
-            var mnRootDirectory = new DirectoryInfo(
-                @"C:\Users\FloorMonster\Documents\GitHub\trout-dash\backend\TroutStreamMangler\TroutStreamMangler\MN\Data");
-            ConfigureDatabaseImporter<MinnesotaDatabaseImport>(builder, mnRootDirectory, mnDbConnection);
+//            importer.ShapeFiles.First().
         }
 
-        private static void ConfigureUs(ContainerBuilder builder)
-        {
-            var usDbConnection = GetUsConnection();
-            var usRootDirectory = new DirectoryInfo(
-                @"C:\Users\FloorMonster\Documents\GitHub\trout-dash\backend\TroutStreamMangler\TroutStreamMangler\US\Data");
-            ConfigureDatabaseImporter<UsDatabaseImport>(builder, usRootDirectory, usDbConnection);
-        }
+        protected const string NonUniqueColumnBstarIndex = @"CREATE UNIQUE INDEX ix_{0}_{1} ON public.{0} USING btree (gid ASC NULLS LAST); ALTER TABLE public.{0} CLUSTER ON ix_{0}_{1};";  // table name, column name
 
-        private static void ConfigureDatabaseImporter<T>(ContainerBuilder builder, DirectoryInfo directory, IDbConnection dbConnection)
-        {
-            builder.RegisterType<T>()
-                .AsSelf()
-                .WithParameter(new ResolvedParameter((a, b) => a.ParameterType == typeof(IDbConnection),
-                    (a, b) => dbConnection))
-                .WithParameter(new ResolvedParameter((a, b) => a.ParameterType == typeof(ITableImporterManifest),
-                    (a, b) => new MinnesotaTableManifest(directory, dbConnection)));
-        }
 
-        private static void ExportMinnesotaData(string[] args)
-        {
-            var minnesotaExporter = new ExportMinnesotaData()
-            {
-                FileLocation = @"MN/Data/Restrictions/regulations.json"
-            };
-            minnesotaExporter.Run(args);
-        }
+//        protected void ApplyNonUniqueIndexToColumn(string tableName, string columnName, TroutDash.DatabaseImporter.Convention.DatabaseImporter.IDatabaseImporter importer)
+//        {
+//            var alterTableScript = String.Format(NonUniqueColumnBstarIndex, tableName, columnName);
+//            var alterCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", importer.HostName,
+//                UserName, DatabaseName, alterTableScript);
+//            ExecuteProcess(alterCommand);
+//        }
 
-        private static void ExportUsData(string[] args)
-        {
-            var usExporter = new ExportUsData()
-            {
-            };
-            usExporter.Run(args);
-        }
+//        private static void ConfigureMinnesota(ContainerBuilder builder)
+//        {
+//            var mnDbConnection = GetMnConnection();
+//            var mnRootDirectory = new DirectoryInfo(
+//                @"C:\Users\FloorMonster\Documents\GitHub\trout-dash\backend\TroutStreamMangler\TroutStreamMangler\MN\Data");
+//            ConfigureDatabaseImporter<MinnesotaDatabaseImport>(builder, mnRootDirectory, mnDbConnection);
+//        }
+//
+//        private static void ConfigureUs(ContainerBuilder builder)
+//        {
+//            var usDbConnection = GetUsConnection();
+//            var usRootDirectory = new DirectoryInfo(
+//                @"C:\Users\FloorMonster\Documents\GitHub\trout-dash\backend\TroutStreamMangler\TroutStreamMangler\US\Data");
+//            ConfigureDatabaseImporter<UsDatabaseImport>(builder, usRootDirectory, usDbConnection);
+//        }
 
-        private static void ImportMinnesotaData(string[] args)
-        {
-            var t = new ImportMinnesotaData()
-            {
-                RootDirectory =
-                    new DirectoryInfo(
-                        @"C:\Users\FloorMonster\Documents\GitHub\trout-dash\backend\TroutStreamMangler\TroutStreamMangler\MN\Data"),
-                DatabaseName = "mn_import",
-                HostName = "localhost",
-                UserName = "postgres",
-            };
-
-            t.Run(args);
-        }
-
-        private static void ImportUsData(string[] args)
-        {
-            var us = new ImportUsData()
-            {
-                RootDirectory =
-                    new DirectoryInfo(
-                        @"C:\Users\FloorMonster\Documents\GitHub\trout-dash\backend\TroutStreamMangler\TroutStreamMangler\US\Data"),
-                DatabaseName = "us_import",
-                HostName = "localhost",
-                UserName = "postgres"
-            };
-
-            us.Run(args);
-        }
+//        private static void ConfigureDatabaseImporter<T>(ContainerBuilder builder, DirectoryInfo directory, IDatabaseConnection dbConnection)
+//        {
+//            builder.RegisterType<T>()
+//                .AsSelf()
+//                .WithParameter(new ResolvedParameter((a, b) => a.ParameterType == typeof(IDbConnection),
+//                    (a, b) => dbConnection))
+//                .WithParameter(new ResolvedParameter((a, b) => a.ParameterType == typeof(ITableImporterManifest),
+//                    (a, b) => new MinnesotaTableManifest(directory, dbConnection)));
+//        }
+//
+//        private static void ExportMinnesotaData(string[] args)
+//        {
+//            var minnesotaExporter = new ExportMinnesotaData()
+//            {
+//                FileLocation = @"MN/Data/Restrictions/regulations.json"
+//            };
+//            minnesotaExporter.Run(args);
+//        }
+//
+//        private static void ExportUsData(string[] args)
+//        {
+//            var usExporter = new ExportUsData()
+//            {
+//            };
+//            usExporter.Run(args);
+//        }
+//
+//        private static void ImportMinnesotaData(string[] args)
+//        {
+//            var t = new ImportMinnesotaData()
+//            {
+//                RootDirectory =
+//                    new DirectoryInfo(
+//                        @"C:\Users\FloorMonster\Documents\GitHub\trout-dash\backend\TroutStreamMangler\TroutStreamMangler\MN\Data"),
+//                DatabaseName = "mn_import",
+//                HostName = "localhost",
+//                UserName = "postgres",
+//            };
+//
+//            t.Run(args);
+//        }
+//
+//        private static void ImportUsData(string[] args)
+//        {
+//            var us = new ImportUsData()
+//            {
+//                RootDirectory =
+//                    new DirectoryInfo(
+//                        @"C:\Users\FloorMonster\Documents\GitHub\trout-dash\backend\TroutStreamMangler\TroutStreamMangler\US\Data"),
+//                DatabaseName = "us_import",
+//                HostName = "localhost",
+//                UserName = "postgres"
+//            };
+//
+//            us.Run(args);
+//        }
 
         public static IEnumerable<ConsoleCommand> GetCommands()
         {
