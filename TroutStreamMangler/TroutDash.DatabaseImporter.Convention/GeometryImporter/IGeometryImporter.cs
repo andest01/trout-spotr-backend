@@ -5,7 +5,7 @@ namespace TroutDash.DatabaseImporter.Convention.GeometryImporter
 {
     public interface IGeometryImporter : IDisposable
     {
-        void ImportShape(FileInfo shapefile, IDatabaseConnection connection);
+        void ImportShape(FileInfo shapefile, IDatabaseConnection connection, string srid);
     }
 
     public interface IGeometryFileImporter : IDisposable

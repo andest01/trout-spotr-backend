@@ -22,11 +22,12 @@ namespace TroutStreamMangler.MN.Import
             var updateCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", _hostName,
                 _userName, _databaseName, updateTableScript);
             ExecuteShellCommand.ExecuteProcess(updateCommand);
+            ApplyNonUniqueIndexToColumn("kittle_nbr");
 
             AddSpatialColumn(CleanedSpatialColumn, 4326, MultilineString);
             AddSpatialColumn(CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
 
-            ApplyNonUniqueIndexToColumn("kittle_nbr");
+            
         }
     }
 }

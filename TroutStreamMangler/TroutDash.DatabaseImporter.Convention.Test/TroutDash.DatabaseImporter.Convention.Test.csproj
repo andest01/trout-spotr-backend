@@ -65,56 +65,156 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="test_mn_import\easements.dbf" />
-    <None Include="test_mn_import\easements.prj" />
-    <None Include="test_mn_import\easements.qpj" />
-    <None Include="test_mn_import\easements.shp" />
-    <None Include="test_mn_import\easements.shx" />
-    <None Include="test_mn_import\lakes.dbf" />
-    <None Include="test_mn_import\lakes.prj" />
-    <None Include="test_mn_import\lakes.qpj" />
-    <None Include="test_mn_import\lakes.shp" />
-    <None Include="test_mn_import\lakes.shx" />
-    <None Include="test_mn_import\state_parks.dbf" />
-    <None Include="test_mn_import\state_parks.prj" />
-    <None Include="test_mn_import\state_parks.qpj" />
-    <None Include="test_mn_import\state_parks.shp" />
-    <None Include="test_mn_import\state_parks.shx" />
-    <None Include="test_mn_import\streams.dbf" />
-    <None Include="test_mn_import\streams.prj" />
-    <None Include="test_mn_import\streams.qpj" />
-    <None Include="test_mn_import\streams.shp" />
-    <None Include="test_mn_import\streams.shx" />
-    <None Include="test_mn_import\stream_regs.dbf" />
-    <None Include="test_mn_import\stream_regs.prj" />
-    <None Include="test_mn_import\stream_regs.qpj" />
-    <None Include="test_mn_import\stream_regs.shp" />
-    <None Include="test_mn_import\stream_regs.shx" />
-    <None Include="test_mn_import\trout_lakes.dbf" />
-    <None Include="test_mn_import\trout_lakes.prj" />
-    <None Include="test_mn_import\trout_lakes.qpj" />
-    <None Include="test_mn_import\trout_lakes.shp" />
-    <None Include="test_mn_import\trout_lakes.shx" />
-    <None Include="test_mn_import\trout_streams.dbf" />
-    <None Include="test_mn_import\trout_streams.prj" />
-    <None Include="test_mn_import\trout_streams.qpj" />
-    <None Include="test_mn_import\trout_streams.shp" />
-    <None Include="test_mn_import\trout_streams.shx" />
-    <None Include="test_mn_import\wma.dbf" />
-    <None Include="test_mn_import\wma.prj" />
-    <None Include="test_mn_import\wma.qpj" />
-    <None Include="test_mn_import\wma.shp" />
-    <None Include="test_mn_import\wma.shx" />
-    <None Include="test_us_import\minnesota.dbf" />
-    <None Include="test_us_import\minnesota.prj" />
-    <None Include="test_us_import\minnesota.qpj" />
-    <None Include="test_us_import\minnesota.shp" />
-    <None Include="test_us_import\minnesota.shx" />
-    <None Include="test_us_import\minnesota_counties.dbf" />
-    <None Include="test_us_import\minnesota_counties.prj" />
-    <None Include="test_us_import\minnesota_counties.qpj" />
-    <None Include="test_us_import\minnesota_counties.shp" />
-    <None Include="test_us_import\minnesota_counties.shx" />
+    <None Include="test_mn_import\easements.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\easements.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\easements.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\easements.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\easements.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\lakes.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\lakes.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\lakes.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\lakes.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\lakes.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\state_parks.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\state_parks.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\state_parks.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\state_parks.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\state_parks.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\streams.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\streams.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\streams.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\streams.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\streams.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\stream_regs.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\stream_regs.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\stream_regs.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\stream_regs.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\stream_regs.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\trout_lakes.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\trout_lakes.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\trout_lakes.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\trout_lakes.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\trout_lakes.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\trout_streams.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\trout_streams.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\trout_streams.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\trout_streams.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\trout_streams.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\wma.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\wma.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\wma.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\wma.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_mn_import\wma.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_us_import\minnesota.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_us_import\minnesota.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_us_import\minnesota.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_us_import\minnesota.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_us_import\minnesota.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_us_import\minnesota_counties.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_us_import\minnesota_counties.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_us_import\minnesota_counties.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_us_import\minnesota_counties.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test_us_import\minnesota_counties.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TroutDash.DatabaseImporter.Convention\TroutDash.DatabaseImporter.Convention.csproj">
@@ -124,6 +224,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="empty\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test_mn_import\SridDefinition\926915.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

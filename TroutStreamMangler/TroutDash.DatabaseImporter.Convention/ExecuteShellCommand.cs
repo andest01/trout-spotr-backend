@@ -4,9 +4,9 @@ using System.IO;
 
 namespace TroutDash.DatabaseImporter.Convention
 {
-    internal static class ExecuteShellCommand
+    public static class ExecuteShellCommand
     {
-        internal static void ExecuteProcess(string command)
+        public static void ExecuteProcess(string command)
         {
             var process = new Process();
             var startInfo = new ProcessStartInfo
@@ -24,7 +24,7 @@ namespace TroutDash.DatabaseImporter.Convention
             process.WaitForExit(80000);
         }
 
-        internal static void ExecuteSql(FileInfo sql, string databaseName, string hostName, string userName)
+        public static void ExecuteSql(FileInfo sql, string databaseName, string hostName, string userName)
         {
             Console.WriteLine("Starting to execute sql named " + sql.Name);
             const string commandTemplate = @"psql -q -d {0} -f {1} --host={2} --username={3}";

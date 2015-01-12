@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroutDash.DatabaseImporter.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroutDash.DatabaseImporter.Convention.Test", "TroutDash.DatabaseImporter.Convention.Test\TroutDash.DatabaseImporter.Convention.Test.csproj", "{4240B71C-CBE2-430B-B7E6-1C6EA6F8A0CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroutStreamMangler.Test", "TroutStreamMangler.Test\TroutStreamMangler.Test.csproj", "{A745BFEC-40A2-4124-8A55-7B5FD2902B32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{4240B71C-CBE2-430B-B7E6-1C6EA6F8A0CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4240B71C-CBE2-430B-B7E6-1C6EA6F8A0CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4240B71C-CBE2-430B-B7E6-1C6EA6F8A0CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A745BFEC-40A2-4124-8A55-7B5FD2902B32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A745BFEC-40A2-4124-8A55-7B5FD2902B32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A745BFEC-40A2-4124-8A55-7B5FD2902B32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A745BFEC-40A2-4124-8A55-7B5FD2902B32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

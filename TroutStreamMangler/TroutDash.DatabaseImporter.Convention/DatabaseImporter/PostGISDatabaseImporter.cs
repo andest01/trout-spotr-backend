@@ -12,6 +12,7 @@ namespace TroutDash.DatabaseImporter.Convention.DatabaseImporter
         private readonly IDatabaseConnection _connection;
         private readonly Lazy<IEnumerable<FileInfo>> _files;
         private readonly DirectoryInfo _directory;
+        private readonly DirectoryInfo _sridDirectory;
 
         public PostGisDatabaseImporter(IDatabaseConnectionFactory factory, DirectoryInfo directory, IDictionary<string, IGeometryImporter> shapefileImportStrategies)
         {
@@ -19,10 +20,26 @@ namespace TroutDash.DatabaseImporter.Convention.DatabaseImporter
             _shapefileImportStrategies = shapefileImportStrategies;
             _connection = factory.GetConnection(_directory);
             _files = new Lazy<IEnumerable<FileInfo>>(() => GetShapeFiles(directory));
+            _sridDirectory = _directory.EnumerateDirectories().SingleOrDefault(d => d.Name == "SridDefinition");
         }
 
         private string HostName { get { return _connection.HostName; } }
         private string UserName { get { return _connection.UserName; } }
+
+        private string Srid
+        {
+            get
+            {
+                if (_sridDirectory == null)
+                {
+                    return string.Empty;
+                }
+
+                var file = new FileInfo(_sridDirectory.EnumerateFiles("*.sql").First().FullName);
+                var fileName = Path.GetFileNameWithoutExtension(file.FullName);
+                return fileName;
+            }
+        }
 
         private const string DropDatabaseTemplate = @"DROP DATABASE IF EXISTS ""{0}"";";
 
@@ -41,13 +58,23 @@ namespace TroutDash.DatabaseImporter.Convention.DatabaseImporter
         {
             DropDatabase();
             CreateZeDatabase();
-//            AddSpacialReferenceSystem();
+            AddSpacialReferenceSystem();
         }
 
-//        private void AddSpacialReferenceSystem()
-//        {
-//
-//        }
+        private void AddSpacialReferenceSystem()
+        {
+
+            if (_sridDirectory == null)
+            {
+                return;
+            }
+
+            var sridFiles = _sridDirectory.EnumerateFiles("*.sql");
+            foreach (var file in sridFiles)
+            {
+                ExecuteShellCommand.ExecuteSql(file,_connection.DatabaseName, _connection.HostName, _connection.UserName);
+            }
+        }
 
         private void CreateZeDatabase()
         {
@@ -109,7 +136,7 @@ namespace TroutDash.DatabaseImporter.Convention.DatabaseImporter
                 {
                     processor.PreProcess();
                     var geometryImporter = _shapefileImportStrategies.Single(i => i.Key == shapefile.Extension).Value;
-                    geometryImporter.ImportShape(shapefile, _connection);
+                    geometryImporter.ImportShape(shapefile, _connection, Srid);
                     processor.Process();
                     processor.PostProcess();
                 }
