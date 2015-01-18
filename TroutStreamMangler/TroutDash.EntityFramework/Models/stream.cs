@@ -37,6 +37,7 @@ namespace TroutDash.EntityFramework.Models
         public int state_gid { get; set; }
         public string source_id { get; set; }
         public string slug { get; set; }
+        public virtual ICollection<publicly_accessible_land> publicly_accessible_lands { get; set; } 
         public virtual ICollection<publicly_accessible_land_section> publicly_accessible_land_section2 { get; set; }
         public virtual ICollection<restriction_section> restriction_section { get; set; }
         public virtual state state1 { get; set; }

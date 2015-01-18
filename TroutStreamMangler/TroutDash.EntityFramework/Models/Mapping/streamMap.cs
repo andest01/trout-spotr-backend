@@ -55,6 +55,15 @@ namespace TroutDash.EntityFramework.Models.Mapping
                 .WithMany(t => t.streams)
                 .HasForeignKey(d => d.state_gid);
 
+            this.HasMany(t => t.publicly_accessible_lands)
+                .WithMany(t => t.streams)
+                .Map(m =>
+                {
+                    m.ToTable("stream_publicly_accessible_land", "public");
+                    m.MapLeftKey("trout_stream_gid");
+                    m.MapRightKey("publicly_accessible_land_gid");
+                });
+
         }
 
         

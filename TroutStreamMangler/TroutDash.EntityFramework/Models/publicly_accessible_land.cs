@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using GeoAPI.Geometries;
@@ -17,18 +19,6 @@ namespace TroutDash.EntityFramework.Models
         public Pal_type type { get; set; }
         public state state { get; set; }
         public decimal shape_area { get; set; }
-//        private static readonly WKBReader _reader = new WKBReader();
-//        [Column("geom")]
-//        public string Geom { get; set; }
-//        private Lazy<IGeometry> _geom;
-//        public virtual GeoAPI.Geometries.IGeometry Geometry
-//        {
-//            get
-//            {
-//                var bytes = WKBReader.HexToBytes(Geom);
-//                var geom = _reader.Read(bytes);
-//                return geom;
-//            }
-//        }
+        public ICollection<stream> streams { get; set; }
     }
 }
