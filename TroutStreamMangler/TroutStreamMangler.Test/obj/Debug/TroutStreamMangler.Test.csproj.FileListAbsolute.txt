@@ -24,3 +24,5 @@ C:\_Source\trout-dash_backend\TroutStreamMangler\TroutStreamMangler.Test\bin\Deb
 C:\_Source\trout-dash_backend\TroutStreamMangler\TroutStreamMangler.Test\bin\Debug\ja\Npgsql.resources.dll
 C:\_Source\trout-dash_backend\TroutStreamMangler\TroutStreamMangler.Test\bin\Debug\zh-CN\Npgsql.resources.dll
 C:\_Source\trout-dash_backend\TroutStreamMangler\TroutStreamMangler.Test\obj\Debug\TroutStreamMangler.Test.csprojResolveAssemblyReference.cache
+C:\_Source\trout-dash_backend\TroutStreamMangler\TroutStreamMangler.Test\bin\Debug\TroudDash.GIS.dll
+C:\_Source\trout-dash_backend\TroutStreamMangler\TroutStreamMangler.Test\bin\Debug\TroudDash.GIS.pdb

@@ -88,12 +88,17 @@
     <Compile Include="Models\strm_regsln3.cs" />
     <Compile Include="Models\trout_streams_minnesota.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TroutStreamSectionsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TroudDash.GIS\TroudDash.GIS.csproj">
+      <Project>{BC9C4D96-8950-4232-B005-B17A5D6C8387}</Project>
+      <Name>TroudDash.GIS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TroutDash.EntityFramework\TroutDash.EntityFramework.csproj">
       <Project>{B8A442BB-4E61-4F79-A3D6-0AAC6D247D26}</Project>
       <Name>TroutDash.EntityFramework</Name>

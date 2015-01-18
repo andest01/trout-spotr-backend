@@ -11,6 +11,6 @@ namespace TroutDash.DatabaseImporter
 
     public interface ITableImporter : IDisposable
     {
-        void ImportTable();
+//        void ImportTable();
     }
 }

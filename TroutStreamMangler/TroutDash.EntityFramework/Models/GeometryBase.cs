@@ -15,7 +15,7 @@ namespace TroutDash.EntityFramework.Models
             _geom = new Lazy<IGeometry>(() => GetGeometry(() => Geom));
         }
 
-        protected static IGeometry GetGeometry(Func<String> getColumn)
+        public static IGeometry GetGeometry(Func<String> getColumn)
         {
             var bytes = WKBReader.HexToBytes(getColumn());
             var geom = _reader.Read(bytes);

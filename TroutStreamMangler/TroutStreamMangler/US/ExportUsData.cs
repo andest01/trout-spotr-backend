@@ -57,6 +57,8 @@ namespace TroutStreamMangler.US
             {
                 ImportStatesAndCounties();
             }
+
+            // update or delete on table "county" violates foreign key constraint "FK_Stream_County_County" on table "stream_county"
             catch (Exception)
             {
                 throw;

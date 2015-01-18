@@ -148,7 +148,7 @@ namespace TroutStreamMangler
             try
             {
                 Console.WriteLine("Initializing MN Database...");
-                InitializeDatabase();
+//                InitializeDatabase();
                 Console.WriteLine("Done initializing US Database.");
             }
             catch (Exception)

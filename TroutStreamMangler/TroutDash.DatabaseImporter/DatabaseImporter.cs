@@ -113,7 +113,7 @@ namespace TroutDash.DatabaseImporter
                 try
                 {
                     PreImportTables();
-                    tableImporter.ImportTable();
+//                    tableImporter.ImportTable();
                     PostImportTables();
                 }
                 catch (Exception)

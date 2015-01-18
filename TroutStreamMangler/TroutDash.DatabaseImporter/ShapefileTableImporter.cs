@@ -80,40 +80,8 @@ namespace TroutDash.DatabaseImporter
         public void ImportTable()
         {
             PreImportTable();
-            ImportShapefileToTable();
+//            ImportShapefileToTable();
             PostImportTable();
-        }
-
-        private void ImportShapefileToTable()
-        {
-            if (_rootDirectory.Exists == false)
-            {
-                throw new DirectoryNotFoundException("Directory not found. Cannot import shapefile.");
-            }
-
-            // in theory, I've sanitized my input.
-            var shapes = Directory.EnumerateFiles(_rootDirectory.FullName, "*.shp", SearchOption.AllDirectories)
-                .Select(s => new FileInfo(s));
-            foreach (var shapeFile in shapes)
-            {
-                try
-                {
-                    var sqlFile = DumpSqlFromShapefile(shapeFile);
-                    try
-                    {
-                        ExecuteShellCommand.ExecuteSql(sqlFile, _databaseName, _hostName, _userName);
-                    }
-
-                    finally
-                    {
-                        sqlFile.Delete();
-                    }
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("------------There was an error trying to import " + shapeFile.Name);
-                }
-            }
         }
 
         private FileInfo DumpSqlFromShapefile(FileInfo shapeFile)
