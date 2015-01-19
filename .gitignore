@@ -16,3 +16,7 @@
 /TroutStreamMangler/*.suo
 /TroutStreamMangler/TroutDash.DatabaseImporter/bin
 /TroutStreamMangler/TroutDash.DatabaseImporter.Convention/bin
+/TroutStreamMangler/TroudDash.GIS/obj
+/TroutStreamMangler/TroudDash.GIS/bin
+/TroutStreamMangler/TroutStreamMangler.Test/bin
+/TroutStreamMangler/TroutStreamMangler.Test/obj
