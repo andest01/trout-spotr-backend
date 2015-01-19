@@ -14,3 +14,5 @@
 /TroutStreamMangler/TroutDash.DatabaseImporter.Convention.Test/bin
 /TroutStreamMangler/TroutStreamMangler/US/Data
 /TroutStreamMangler/*.suo
+/TroutStreamMangler/TroutDash.DatabaseImporter/bin
+/TroutStreamMangler/TroutDash.DatabaseImporter.Convention/bin
