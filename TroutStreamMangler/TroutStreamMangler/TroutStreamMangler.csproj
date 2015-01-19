@@ -155,13 +155,13 @@
     <None Include="MN\Data\Restrictions\regulations.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="mn_import\dnr_hydrography_stream_trout_lakes.cpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="mn_import\dnr_hydrography_stream_trout_lakes.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\dnr_hydrography_stream_trout_lakes.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydrography_stream_trout_lakes.qpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\dnr_hydrography_stream_trout_lakes.shp">
@@ -170,13 +170,13 @@
     <None Include="mn_import\dnr_hydrography_stream_trout_lakes.shx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="mn_import\dnr_hydro_features_all.cpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="mn_import\dnr_hydro_features_all.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\dnr_hydro_features_all.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydro_features_all.qpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\dnr_hydro_features_all.shp">
@@ -185,13 +185,13 @@
     <None Include="mn_import\dnr_hydro_features_all.shx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="mn_import\dnr_stat_plan_areas_prk.cpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="mn_import\dnr_stat_plan_areas_prk.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\dnr_stat_plan_areas_prk.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_stat_plan_areas_prk.qpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\dnr_stat_plan_areas_prk.shp">
@@ -200,13 +200,13 @@
     <None Include="mn_import\dnr_stat_plan_areas_prk.shx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="mn_import\dnr_wildlife_management_area_boundaries_publicly_accessible.cpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="mn_import\dnr_wildlife_management_area_boundaries_publicly_accessible.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\dnr_wildlife_management_area_boundaries_publicly_accessible.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_wildlife_management_area_boundaries_publicly_accessible.qpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\dnr_wildlife_management_area_boundaries_publicly_accessible.shp">
@@ -215,13 +215,13 @@
     <None Include="mn_import\dnr_wildlife_management_area_boundaries_publicly_accessible.shx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="mn_import\mndnr_fisheries_acquisition.cpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="mn_import\mndnr_fisheries_acquisition.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\mndnr_fisheries_acquisition.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\mndnr_fisheries_acquisition.qpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\mndnr_fisheries_acquisition.shp">
@@ -230,16 +230,13 @@
     <None Include="mn_import\mndnr_fisheries_acquisition.shx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="mn_import\streams_with_measured_kittle_routes.cpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="mn_import\streams_with_measured_kittle_routes.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\streams_with_measured_kittle_routes.prj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="mn_import\streams_with_measured_kittle_routes.qix">
+    <None Include="mn_import\streams_with_measured_kittle_routes.qpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\streams_with_measured_kittle_routes.shp">
@@ -254,10 +251,7 @@
     <None Include="mn_import\strm_regsln3.prj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="mn_import\strm_regsln3.sbn">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="mn_import\strm_regsln3.sbx">
+    <None Include="mn_import\strm_regsln3.qpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\strm_regsln3.shp">
@@ -266,13 +260,13 @@
     <None Include="mn_import\strm_regsln3.shx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="mn_import\trout_streams_minnesota.cpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="mn_import\trout_streams_minnesota.dbf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\trout_streams_minnesota.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\trout_streams_minnesota.qpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\trout_streams_minnesota.shp">
@@ -321,49 +315,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MN\SridImport.sql" />
-    <Content Include="mn_import\dnr_hydrography_stream_trout_lakes.shp.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\dnr_hydro_features_all.shp.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\dnr_stat_plan_areas_prk.shp.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\dnr_stat_plan_areas_prk.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\dnr_wildlife_management_area_boundaries_publicly_accessible.shp.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\dnr_wildlife_management_area_boundaries_publicly_accessible.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\mndnr_fisheries_acquisition.shp.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\mndnr_fisheries_acquisition.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="mn_import\SridDefinition\926915.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\streams_with_measured_kittle_routes.shp.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\streams_with_measured_kittle_routes.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\strm_regsln3.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\strm_regsln3.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\strm_regsln3.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mn_import\trout_streams_minnesota.shp.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="us_import\SridDefinition\4269.sql">

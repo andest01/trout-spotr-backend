@@ -284,6 +284,7 @@ namespace TroutStreamMangler
 
             AddSpatialColumn(LakeTableName, OriginalSpatialColumn, 4326, "Multipolygon");
             AddSpatialColumn(LakeTableName, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+            TrimGeometry(LakeTableName);
         }
 
         private void ImportRegulationSections()
@@ -311,6 +312,26 @@ namespace TroutStreamMangler
             var s = "dnr_wildlife_management_area_boundaries_publicly_accessible";
             AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
             AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+            TrimGeometry(s);
+        }
+
+        protected virtual void TrimGeometry(string tableName)
+        {
+            const string sql =
+                @"delete from public.{0} 
+where gid not in ( SELECT p.gid
+  FROM public.{0} p,
+  streams_with_measured_kittle_routes sk,
+  trout_streams_minnesota t
+  where t.trout_flag = 1
+  and sk.kittle_nbr = t.kittle_nbr
+  and sk.kittle_nbr is not null
+  and ST_Intersects(ST_Envelope(sk.geom), p.geom))";
+
+            var alterTableScript = String.Format(sql, tableName);
+            var alterCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
+                UserName, DatabaseName, alterTableScript);
+            ExecuteShellCommand.ExecuteProcess(alterCommand);
         }
 
         private void ImportStateParks()

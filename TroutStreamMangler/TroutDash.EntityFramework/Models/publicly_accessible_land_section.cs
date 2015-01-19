@@ -10,6 +10,6 @@ namespace TroutDash.EntityFramework.Models
         public int publicly_accessible_land_type_id { get; set; }
         public int stream_gid { get; set; }
         public virtual stream Stream { get; set; }
-        public virtual Pal_type publicly_accessible_land_type2 { get; set; }
+//        public virtual Pal_type publicly_accessible_land_type { get; set; }
     }
 }

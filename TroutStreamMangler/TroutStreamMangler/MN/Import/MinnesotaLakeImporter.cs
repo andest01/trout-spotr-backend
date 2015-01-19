@@ -13,6 +13,7 @@ namespace TroutStreamMangler.MN.Import
         {
             AddSpatialColumn(OriginalSpatialColumn, 4326, "Multipolygon");
             AddSpatialColumn(OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+            TrimGeometry();
         }
     }
 }

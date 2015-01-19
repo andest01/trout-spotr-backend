@@ -1,27 +1,17 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using Autofac;
-using Autofac.Core;
-using Devart.Common;
-using GeoAPI.Geometries;
 using ManyConsole;
-using NetTopologySuite.Geometries;
 using Npgsql;
-using TroutDash.DatabaseImporter;
 using TroutDash.DatabaseImporter.Convention;
 using TroutDash.DatabaseImporter.Convention.DatabaseImporter;
 using TroutDash.DatabaseImporter.Convention.DataImporter;
 using TroutDash.DatabaseImporter.Convention.GeometryImporter;
 using TroutStreamMangler.MN;
-using TroutStreamMangler.MN.Import;
-using TroutStreamMangler.MN.Models;
 using TroutStreamMangler.US;
-using TroutStreamMangler.US.Import;
 
 namespace TroutStreamMangler
 {
@@ -78,25 +68,25 @@ namespace TroutStreamMangler
             var importers = manifest.GetDatabaseImporters(new DirectoryInfo("."));
             
             var usImporter = importers.Single(i => i.DatabaseName == "us_import");
-//            usImporter.CreateDatabase();
-//            usImporter.Import();
+            usImporter.CreateDatabase();
+            usImporter.Import();
 
 
-//            var states = importers.Where(i => i.DatabaseName != "us_import");
-//            foreach (var importer in states)
-//                using (importer)
-//                {
-//                    importer.CreateDatabase();
-//                    importer.Import();
-////                    importer.ShapeFiles
-//                }
+            var states = importers.Where(i => i.DatabaseName != "us_import");
+            foreach (var importer in states)
+                using (importer)
+                {
+                    importer.CreateDatabase();
+                    importer.Import();
+//                    importer.ShapeFiles
+                }
 
 
-//            PostImportUsData(null);
-//            PostImportMinnesotaData(null);
+            PostImportUsData(null);
+            PostImportMinnesotaData(null);
            
 
-//            ExportUsData(null);
+            ExportUsData(null);
             ExportMinnesotaData(null);
             
 

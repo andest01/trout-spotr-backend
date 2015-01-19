@@ -15,6 +15,7 @@ using NetTopologySuite.IO;
 using NetTopologySuite.LinearReferencing;
 using NetTopologySuite.Operation.Union;
 using Newtonsoft.Json;
+using Npgsql;
 using TroudDash.GIS;
 using TroutDash.EntityFramework.Models;
 using TroutStreamMangler.MN.Models;
@@ -34,13 +35,43 @@ namespace TroutStreamMangler.MN
 
         public override int Run(string[] remainingArguments)
         {
-//            ExportRestrictions();
-//            ExportStreams();
-//            ExportPubliclyAccessibleLand();
-//            ExportCountyToStreamRelations();
+            ExportRestrictions();
+            ExportStreams();
+            ExportPubliclyAccessibleLand();
+            ExportCountyToStreamRelations();
+            ExportStreamToPubliclyAccessibleLandRelations();
             ExportPubliclyAccessibleLandSections();
             
             return 0;
+        }
+
+        private void ExportStreamToPubliclyAccessibleLandRelations()
+        {
+            using (var context = new MinnesotaShapeDataContext())
+            using (var troutDashContext = new TroutDashPrototypeContext())
+            {
+                Console.WriteLine("Caching minnesota counties and streams...");
+                var minnesota = troutDashContext.states.Single(s => s.short_name == "MN");
+                var mnPals = minnesota.publicly_accessible_land.ToList();
+                var mnStreams = minnesota.streams.ToList();
+                Console.WriteLine("Finding all streams in each county");
+                foreach (var mnStream in mnStreams)
+                {
+                    Console.WriteLine(mnStream.name + " stream...");
+                    foreach (var mnPal in mnPals)
+                    {
+                        var isMatch = mnPal.OriginalGeometry.Intersects(mnStream.OriginalGeometry);
+                        if (isMatch)
+                        {
+                            Console.WriteLine("   has " + mnPal.area_name);
+                            mnPal.streams.Add(mnStream);
+                        }
+                    }
+
+                    troutDashContext.SaveChanges();
+                }
+
+            }
         }
 
         public void ExportRestrictions()
@@ -108,7 +139,7 @@ namespace TroutStreamMangler.MN
                         Console.WriteLine("Loading Trout Stream Id: " + id);
                         var route = context.StreamRoute.Single(sr => sr.kittle_nbr == id);
 
-                        stream stream = CreateStream(route, minnesota, section);
+                        stream stream = CreateStream(route, minnesota);
                         Console.WriteLine("Saving trout stream: " + stream.name);
                         troutDashContext.streams.Add(stream);
                         troutDashContext.SaveChanges();
@@ -146,13 +177,12 @@ namespace TroutStreamMangler.MN
             }
         }
 
-        private stream CreateStream(StreamRoute route, state minnesota,
-            IEnumerable<trout_streams_minnesota> trout_stream_sectionIds)
+        private stream CreateStream(StreamRoute route, state minnesota)
         {
             var name = route.kittle_nam ?? "Unnamed Stream";
             Console.WriteLine("Adding stream " + name + " | " + route.kittle_nbr);
             var stream = new stream();
-            var centroid = route.OriginalGeometry.Centroid;
+            var centroid = route.Geometry_4326.Centroid;
             stream.centroid_latitude = Convert.ToDecimal(centroid.X);
             stream.centroid_longitude = Convert.ToDecimal(centroid.Y);
             stream.has_brook_trout = true;
@@ -161,7 +191,7 @@ namespace TroutStreamMangler.MN
             stream.is_brook_trout_stocked = true;
             stream.is_brown_trout_stocked = true;
             stream.is_rainbow_trout_stocked = true;
-            stream.length_mi = Convert.ToDecimal(route.OriginalGeometry.Length); // fix later.
+            stream.length_mi = Convert.ToDecimal(route.OriginalGeometry.Length) / 1609.3440M; // fix later.
             stream.local_name = route.kittle_nam;
             stream.slug = Guid.NewGuid().ToString();
             stream.source_id = route.kittle_nbr;
@@ -282,6 +312,97 @@ namespace TroutStreamMangler.MN
             
         }
 
+        public IEnumerable<Tuple<decimal, decimal>> GetStuff(string streamId, string geometryTable)
+        {
+            const string linearReferenceString =
+                @"SELECT (St_dump(St_intersection(palbuffer, strouter.geom))).geom                                                                 as thegeom,
+       st_linelocatepoint(st_linemerge(strouter.geom), st_startpoint((st_dump(st_intersection(palbuffer, strouter.geom))).geom)) AS start,
+       st_linelocatepoint(st_linemerge(strouter.geom), st_endpoint((st_dump(st_intersection(palbuffer, strouter.geom))).geom))   AS stop
+FROM   streams_with_measured_kittle_routes strouter, 
+       ( 
+              SELECT st_buffer(st_union(dumpgeom), 3, 'endcap=flat join=round') AS palbuffer 
+              FROM   ( 
+                            SELECT pal.geom                        AS dumpgeom 
+                            FROM   {1}        AS pal,
+                            streams_with_measured_kittle_routes routes
+                            WHERE  ST_Intersects(pal.geom, routes.geom) 
+                            and routes.kittle_nbr = '{0}') AS DUMP) AS palbuffer
+WHERE  strouter.kittle_nbr = '{0}'
+";
+
+            NpgsqlConnection conn =
+                new NpgsqlConnection(
+                    "Server=localhost;Port=5432;User Id=postgres;Password=fakepassword;Database=mn_import;");
+            conn.Open();
+
+            var sql = string.Format(linearReferenceString, streamId, geometryTable);
+
+
+            NpgsqlCommand command = new NpgsqlCommand(sql, conn);
+
+
+            try
+            {
+                NpgsqlDataReader dr = command.ExecuteReader();
+                while (dr.Read())
+                {
+                    var start = Convert.ToDecimal(dr[1]);
+                    var stop = Convert.ToDecimal(dr[2]);
+
+                    yield return new Tuple<decimal, decimal>(start, stop);
+
+                }
+
+            }
+
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public void ExportSections()
+        {
+            using (var context = new MinnesotaShapeDataContext())
+            using (var troutDashContext = new TroutDashPrototypeContext())
+            {
+
+                var routesWithTroutStreamSections = GetMinnesotaStreamRoutesThatHaveTroutStreamSections(context);
+
+                
+            }
+        }
+
+        public IQueryable<StreamRoute> GetMinnesotaStreamRoutesThatHaveTroutStreamSections(
+            MinnesotaShapeDataContext context)
+        {
+            var troutStreamSections =
+                context.StreamRoute.Where(
+                    i => context.trout_streams_minnesota.Any(tss => tss.kittle_nbr == i.kittle_nbr));
+
+            return troutStreamSections;
+        }
+
+        public IEnumerable<publicly_accessible_land_section> SaveEasements(TroutDashPrototypeContext troutDashContext, stream route, string palType, string table)
+        {
+            var kittleNumber = route.source_id;
+            Console.WriteLine(palType + "... ");
+            var easement = troutDashContext.publicly_accessible_land_types.First(i => i.type == palType);
+            var offsets = GetStuff(kittleNumber, table).ToArray();
+            foreach (var offset in offsets)
+            {
+                var section = new publicly_accessible_land_section();
+                section.Stream = route;
+                section.publicly_accessible_land_type_id = easement.id;
+                section.start = offset.Item1 * route.length_mi;
+                section.stop = offset.Item2 * route.length_mi;
+                yield return section;
+            }
+
+            
+
+        }
+
         public void ExportPubliclyAccessibleLandSections()
         {
             using (var context = new MinnesotaShapeDataContext())
@@ -290,31 +411,51 @@ namespace TroutStreamMangler.MN
                 var minnesota = troutDashContext.states.Single(s => s.short_name == "MN");
                 var pal = minnesota.publicly_accessible_land.ToList();
                 var streams = minnesota.streams.ToList();
-                var t = new LinearReference();
-                // state parks first
-                foreach (var streamRoute in streams)
+
+                Console.WriteLine("Clearing old entries");
+                troutDashContext.publicly_accessible_land_section.RemoveRange(
+                    troutDashContext.publicly_accessible_land_section);
+                troutDashContext.SaveChanges();
+
+                foreach (var route in streams)
                 {
-                    var streamLine = (streamRoute.OriginalGeometry as IMultiLineString).Geometries[0] as ILineString;
-                    var pals = pal.Where(p => p.OriginalGeometry.Intersects(streamRoute.OriginalGeometry)).ToList();
+                    Console.WriteLine("Getting PAL for " + route.name);
+                    var easements = SaveEasements(troutDashContext, route, "Easement", "mndnr_fisheries_acquisition").ToList();
+                    var stateParks = SaveEasements(troutDashContext, route, "State Park", "dnr_stat_plan_areas_prk").ToList();
+                    var wmas = SaveEasements(troutDashContext, route, "WMA", "dnr_wildlife_management_area_boundaries_publicly_accessible").ToList();
 
-                    var sections = pal.Where(p => p.OriginalGeometry.Intersects(streamRoute.OriginalGeometry)).Select(f => new
-                    {
-                        pal = f,
-                        line = f.OriginalGeometry.Intersection(streamRoute.OriginalGeometry),
-                        offsets = t.GetIntersectionOfLine(streamLine, f.OriginalGeometry.Intersection(streamRoute.OriginalGeometry) as ILineString).ToArray()
-                    }).ToList();
-                    Console.WriteLine(sections);
+                    troutDashContext.publicly_accessible_land_section.AddRange(easements);
+                    troutDashContext.publicly_accessible_land_section.AddRange(stateParks);
+                    troutDashContext.publicly_accessible_land_section.AddRange(wmas);
+                    troutDashContext.SaveChanges();
+                }
 
-                    foreach (var result in sections)
-                    {
-                        var pubSection = new publicly_accessible_land_section();
-                        pubSection.start = (decimal)(result.offsets[0] / (double) 1609.3440M);
-                        pubSection.start = (decimal)(result.offsets[1] / (double)1609.3440M);
-                        pubSection.publicly_accessible_land_type2 = result.pal.type;
-                        pubSection.Stream = streamRoute;
-                        troutDashContext.publicly_accessible_land_section.Add(pubSection);
-                        troutDashContext.SaveChanges();
-                    }
+
+//                var t = new LinearReference();
+//                // state parks first
+//                foreach (var streamRoute in streams)
+//                {
+//                    var streamLine = (streamRoute.OriginalGeometry as IMultiLineString).Geometries[0] as ILineString;
+//                    var pals = pal.Where(p => p.OriginalGeometry.Intersects(streamRoute.OriginalGeometry)).ToList();
+//
+//                    var sections = pal.Where(p => p.OriginalGeometry.Intersects(streamRoute.OriginalGeometry)).Select(f => new
+//                    {
+//                        pal = f,
+//                        line = f.OriginalGeometry.Intersection(streamRoute.OriginalGeometry),
+//                        offsets = t.GetIntersectionOfLine(streamLine, f.OriginalGeometry.Intersection(streamRoute.OriginalGeometry) as ILineString).ToArray()
+//                    }).ToList();
+//                    Console.WriteLine(sections);
+//
+//                    foreach (var result in sections)
+//                    {
+//                        var pubSection = new publicly_accessible_land_section();
+//                        pubSection.start = (decimal)(result.offsets[0] / (double) 1609.3440M);
+//                        pubSection.start = (decimal)(result.offsets[1] / (double)1609.3440M);
+//                        pubSection.publicly_accessible_land_type2 = result.pal.type;
+//                        pubSection.Stream = streamRoute;
+//                        troutDashContext.publicly_accessible_land_section.Add(pubSection);
+//                        troutDashContext.SaveChanges();
+//                    }
                     
                     
 
@@ -334,7 +475,7 @@ namespace TroutStreamMangler.MN
 ////                            var linearIntersections = t.GetIntersections(streamLine, section.OriginalGeometry);
 ////                        }
 //                    }
-                }
+//                }
 
                 
 

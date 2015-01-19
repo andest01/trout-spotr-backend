@@ -11,6 +11,7 @@ namespace TroutStreamMangler.MN.Import
 
         protected override void PostImportTable()
         {
+            TrimGeometry();
             AddSpatialColumn(OriginalSpatialColumn, 4326, "Multipolygon");
             AddSpatialColumn(OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
         }

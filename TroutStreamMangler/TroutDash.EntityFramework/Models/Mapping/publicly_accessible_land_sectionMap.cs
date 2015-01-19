@@ -27,6 +27,8 @@ namespace TroutDash.EntityFramework.Models.Mapping
                 .WithMany(t => t.publicly_accessible_land_section2)
                 .HasForeignKey(d => d.stream_gid);
 
+//            this.HasOptional(t => t.publicly_accessible_land_type);
+
 
         }
     }

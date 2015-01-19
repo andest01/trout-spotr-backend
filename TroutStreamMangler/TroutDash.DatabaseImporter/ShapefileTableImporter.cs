@@ -44,6 +44,25 @@ namespace TroutDash.DatabaseImporter
             
         }
 
+        protected virtual void TrimGeometry()
+        {
+            const string sql =
+                @"delete from public.{0} 
+where gid not in ( SELECT p.gid
+  FROM public.{0} p,
+  streams_with_measured_kittle_routes sk,
+  trout_streams_minnesota t
+  where t.trout_flag = 1
+  and sk.kittle_nbr = t.kittle_nbr
+  and sk.kittle_nbr is not null
+  and ST_Intersects(ST_Envelope(sk.geom), p.geom))";
+
+            var alterTableScript = String.Format(sql, _tableName);
+            var alterCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", _hostName,
+                _userName, _databaseName, alterTableScript);
+            ExecuteShellCommand.ExecuteProcess(alterCommand);
+        }
+
         protected virtual void AddSpatialColumn(string geometryColumnName, int desiredSrid, string geometryType)
         {
             Console.WriteLine("Adding spatial column for " + _tableName + " with SRID " + desiredSrid);
