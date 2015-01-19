@@ -20,3 +20,7 @@
 /TroutStreamMangler/TroudDash.GIS/bin
 /TroutStreamMangler/TroutStreamMangler.Test/bin
 /TroutStreamMangler/TroutStreamMangler.Test/obj
+/TroutStreamMangler/TroutStreamMangler/TroutStreamMangler.csproj.user
+/TroutStreamMangler/TroutDash.EntityFramework/TroutDash.EntityFramework.csproj.user
+/TroutStreamMangler/TroutStreamMangler.sln.DotSettings.user
+/TroutStreamMangler/TroutDash.DatabaseImporter.Convention.Test/TroutDash.DatabaseImporter.Convention.Test.csproj.user
