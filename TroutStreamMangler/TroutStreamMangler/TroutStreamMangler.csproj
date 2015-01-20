@@ -115,6 +115,7 @@
     <Compile Include="IDataProcessor.cs" />
     <Compile Include="MN\ExportMinnesotaData.cs" />
     <Compile Include="IDatabaseExporter.cs" />
+    <Compile Include="MN\ExportRegulationSections.cs" />
     <Compile Include="MN\ImportMinnesotaData.cs" />
     <Compile Include="ImportShapefile.cs" />
     <Compile Include="MN\Import\MinnesotaDatabaseImport.cs" />

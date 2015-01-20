@@ -414,7 +414,7 @@ WHERE  strouter.kittle_nbr = '{0}'
 
                 Console.WriteLine("Clearing old entries");
                 troutDashContext.publicly_accessible_land_section.RemoveRange(
-                    troutDashContext.publicly_accessible_land_section);
+                    troutDashContext.publicly_accessible_land_section.Where(i => i.Stream.state1.short_name == "MN"));
                 troutDashContext.SaveChanges();
 
                 foreach (var route in streams)
