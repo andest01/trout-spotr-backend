@@ -98,41 +98,6 @@ namespace TroutStreamMangler
 
         protected const string NonUniqueColumnBstarIndex = @"CREATE UNIQUE INDEX ix_{0}_{1} ON public.{0} USING btree (gid ASC NULLS LAST); ALTER TABLE public.{0} CLUSTER ON ix_{0}_{1};";  // table name, column name
 
-
-//        protected void ApplyNonUniqueIndexToColumn(string tableName, string columnName, TroutDash.DatabaseImporter.Convention.DatabaseImporter.IDatabaseImporter importer)
-//        {
-//            var alterTableScript = String.Format(NonUniqueColumnBstarIndex, tableName, columnName);
-//            var alterCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", importer.HostName,
-//                UserName, DatabaseName, alterTableScript);
-//            ExecuteProcess(alterCommand);
-//        }
-
-//        private static void ConfigureMinnesota(ContainerBuilder builder)
-//        {
-//            var mnDbConnection = GetMnConnection();
-//            var mnRootDirectory = new DirectoryInfo(
-//                @"C:\Users\FloorMonster\Documents\GitHub\trout-dash\backend\TroutStreamMangler\TroutStreamMangler\MN\Data");
-//            ConfigureDatabaseImporter<MinnesotaDatabaseImport>(builder, mnRootDirectory, mnDbConnection);
-//        }
-//
-//        private static void ConfigureUs(ContainerBuilder builder)
-//        {
-//            var usDbConnection = GetUsConnection();
-//            var usRootDirectory = new DirectoryInfo(
-//                @"C:\Users\FloorMonster\Documents\GitHub\trout-dash\backend\TroutStreamMangler\TroutStreamMangler\US\Data");
-//            ConfigureDatabaseImporter<UsDatabaseImport>(builder, usRootDirectory, usDbConnection);
-//        }
-
-//        private static void ConfigureDatabaseImporter<T>(ContainerBuilder builder, DirectoryInfo directory, IDatabaseConnection dbConnection)
-//        {
-//            builder.RegisterType<T>()
-//                .AsSelf()
-//                .WithParameter(new ResolvedParameter((a, b) => a.ParameterType == typeof(IDbConnection),
-//                    (a, b) => dbConnection))
-//                .WithParameter(new ResolvedParameter((a, b) => a.ParameterType == typeof(ITableImporterManifest),
-//                    (a, b) => new MinnesotaTableManifest(directory, dbConnection)));
-//        }
-//
         private static void ExportMinnesotaData(string[] args)
         {
             var minnesotaExporter = new ExportMinnesotaData()

@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace TroutDash.EntityFramework.Models
 {
-    public partial class Pal_type
+    public partial class publicly_accessible_land_type
     {
-        public Pal_type()
+        public publicly_accessible_land_type()
         {
 //            this.publicly_accessible_land_sections = new List<publicly_accessible_land_section>();
         }

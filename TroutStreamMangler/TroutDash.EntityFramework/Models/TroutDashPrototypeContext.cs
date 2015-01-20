@@ -18,13 +18,15 @@ namespace TroutDash.EntityFramework.Models
 
         public DbSet<county> counties { get; set; }
         public DbSet<publicly_accessible_land_section> publicly_accessible_land_section { get; set; }
-        public DbSet<Pal_type> publicly_accessible_land_types { get; set; }
+        public DbSet<publicly_accessible_land_type> publicly_accessible_land_types { get; set; }
         public DbSet<restriction> restrictions { get; set; }
         public DbSet<restriction_section> restriction_section { get; set; }
         public DbSet<state> states { get; set; }
         public DbSet<stream> streams { get; set; }
         public DbSet<trout_stream_section> trout_stream_sections { get; set; }
         public DbSet<publicly_accessible_land> publicly_accessible_lands { get; set; }
+        public DbSet<lake> lakes { get; set; }
+        public DbSet<lake_section> lake_sections { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -37,6 +39,8 @@ namespace TroutDash.EntityFramework.Models
             modelBuilder.Configurations.Add(new streamMap());
             modelBuilder.Configurations.Add(new trout_stream_sectionMap());
             modelBuilder.Configurations.Add(new publicly_accessible_landMap());
+            modelBuilder.Configurations.Add(new lakeMap());
+            modelBuilder.Configurations.Add(new lake_sectionMap());
         }
     }
 }

@@ -16,7 +16,7 @@ namespace TroutDash.EntityFramework.Models
             this.restrictions = new List<restriction>();
             this.streams = new List<stream>();
             this.publicly_accessible_land = new List<publicly_accessible_land>();
-            this.publicly_accessible_land_types = new List<Pal_type>();
+            this.publicly_accessible_land_types = new List<publicly_accessible_land_type>();
         }
 
         public int gid { get; set; }
@@ -27,7 +27,7 @@ namespace TroutDash.EntityFramework.Models
         public virtual ICollection<restriction> restrictions { get; set; }
         public virtual ICollection<stream> streams { get; set; }
         public virtual ICollection<publicly_accessible_land> publicly_accessible_land { get; set; }
-        public virtual ICollection<Pal_type> publicly_accessible_land_types { get; set; }
+        public virtual ICollection<publicly_accessible_land_type> publicly_accessible_land_types { get; set; }
         
     }
 }

@@ -3,6 +3,32 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace TroutDash.EntityFramework.Models.Mapping
 {
+    public class lakeMap : EntityTypeConfiguration<lake>
+    {
+        public publicly_accessible_landMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.gid);
+
+            // Properties
+            this.Property(t => t.gid)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            // Table & Column Mappings
+            this.ToTable("lake", "public");
+            this.Property(t => t.gid).HasColumnName("gid");
+            this.Property(t => t.source_id).HasColumnName("source_id");
+
+            this.HasRequired(t => t.state)
+                .WithMany(t => t.publicly_accessible_lands)
+                .HasForeignKey(d => d.publicly_accessible_land_type_id);
+
+            this.HasRequired(t => t.state)
+                .WithMany(t => t.publicly_accessible_land)
+                .HasForeignKey(d => d.state_gid);
+        }
+    }
+
     public class publicly_accessible_landMap : EntityTypeConfiguration<publicly_accessible_land>
     {
         public publicly_accessible_landMap()

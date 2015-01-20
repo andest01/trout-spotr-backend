@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace TroutDash.EntityFramework.Models.Mapping
 {
-    public class publicly_accessible_land_typeMap : EntityTypeConfiguration<Pal_type>
+    public class publicly_accessible_land_typeMap : EntityTypeConfiguration<publicly_accessible_land_type>
     {
         public publicly_accessible_land_typeMap()
         {

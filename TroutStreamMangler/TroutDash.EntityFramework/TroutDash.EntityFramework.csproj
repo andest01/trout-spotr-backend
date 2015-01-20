@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Models\county.cs" />
     <Compile Include="Models\GeometryBase.cs" />
+    <Compile Include="Models\lake.cs" />
     <Compile Include="Models\Mapping\countyMap.cs" />
     <Compile Include="Models\Mapping\ISection.cs" />
     <Compile Include="Models\Mapping\publicly_accessible_landMap.cs">
@@ -88,7 +89,7 @@
     <Compile Include="Models\publicly_accessible_land_section.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\Pal_type.cs">
+    <Compile Include="Models\publicly_accessible_land_type.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\restriction.cs" />

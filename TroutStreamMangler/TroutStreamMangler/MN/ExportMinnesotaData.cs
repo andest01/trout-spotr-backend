@@ -222,23 +222,23 @@ namespace TroutStreamMangler.MN
                 troutDashContext.publicly_accessible_land_types.RemoveRange(oldPal);
                 troutDashContext.SaveChanges();
                 Console.WriteLine("Adding all ublicly accessible land in minnesota");
-                minnesota.publicly_accessible_land_types = new List<Pal_type>
+                minnesota.publicly_accessible_land_types = new List<publicly_accessible_land_type>
                 {
-                    new Pal_type
+                    new publicly_accessible_land_type
                     {
                         state = minnesota,
                         description = "Wildlife Management Area",
                         is_federal = false,
                         type = "WMA"
                     },
-                    new Pal_type
+                    new publicly_accessible_land_type
                     {
                         state = minnesota,
                         description = "State Parks",
                         is_federal = false,
                         type = "State Park",
                     },
-                    new Pal_type
+                    new publicly_accessible_land_type
                     {
                         state = minnesota,
                         description = "Land Easement",

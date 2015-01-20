@@ -21,7 +21,7 @@ namespace TroutDash.EntityFramework.Models
         public string area_name { get; set; }
         public int publicly_accessible_land_type_id { get; set; }
         public int state_gid { get; set; }
-        public Pal_type type { get; set; }
+        public publicly_accessible_land_type type { get; set; }
         public state state { get; set; }
         public decimal shape_area { get; set; }
         public ICollection<stream> streams { get; set; }
