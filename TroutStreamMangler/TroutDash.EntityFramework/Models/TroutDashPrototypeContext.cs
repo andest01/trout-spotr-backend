@@ -13,6 +13,7 @@ namespace TroutDash.EntityFramework.Models
         public TroutDashPrototypeContext()
             : base("Name=TroutDash")
         {
+            Database.SetInitializer<TroutDashPrototypeContext>(null);
         }
 
         public DbSet<county> counties { get; set; }

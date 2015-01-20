@@ -124,6 +124,7 @@ namespace TroutStreamMangler
         private const string TroutStreamsTableName = @"trout_streams_minnesota";
         private const string StreamsTableName = @"streams_with_measured_kittle_routes";
         private const string LakeTableName = @"dnr_hydro_features_all";
+        private const string TroutLakeTableName = @"dnr_hydrography_stream_trout_lakes";
         private const string OriginalSpatialColumn = "geom";
         private const string CleanedSpatialColumn = "geom_2d";
 
@@ -226,6 +227,18 @@ namespace TroutStreamMangler
                 Console.WriteLine("An error occured.");
             }
 
+            try
+            {
+                Console.WriteLine("Importing Trout Lakes...");
+                ImportTroutLakes();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("An error occured.");
+            }
+
+            //ImportTroutLakes
+
             return 0;
         }
 
@@ -285,6 +298,13 @@ namespace TroutStreamMangler
             AddSpatialColumn(LakeTableName, OriginalSpatialColumn, 4326, "Multipolygon");
             AddSpatialColumn(LakeTableName, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
             TrimGeometry(LakeTableName);
+        }
+
+        private void ImportTroutLakes()
+        {
+            AddSpatialColumn(TroutLakeTableName, OriginalSpatialColumn, 4326, "Multipolygon");
+            AddSpatialColumn(TroutLakeTableName, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+//            TrimGeometry(LakeTableName);
         }
 
         private void ImportRegulationSections()

@@ -108,9 +108,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="MinnesotaDataProcessor.cs" />
+    <Compile Include="DataProcessor.cs" />
     <Compile Include="IDatabaseImporter.cs" />
     <Compile Include="AdministrativeImporterBase.cs" />
+    <Compile Include="IDataProcessor.cs" />
     <Compile Include="MN\ExportMinnesotaData.cs" />
     <Compile Include="IDatabaseExporter.cs" />
     <Compile Include="MN\ImportMinnesotaData.cs" />
