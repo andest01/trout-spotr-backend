@@ -70,7 +70,7 @@ namespace TroutStreamMangler
             var usImporter = importers.Single(i => i.DatabaseName == "us_import");
             usImporter.CreateDatabase();
             usImporter.Import();
-//
+
 
             var states = importers.Where(i => i.DatabaseName != "us_import");
             foreach (var importer in states)
@@ -78,7 +78,6 @@ namespace TroutStreamMangler
                 {
                     importer.CreateDatabase();
                     importer.Import();
-//                    importer.ShapeFiles
                 }
 
 

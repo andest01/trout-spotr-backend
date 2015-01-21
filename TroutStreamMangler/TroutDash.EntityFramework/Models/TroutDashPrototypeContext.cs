@@ -17,8 +17,8 @@ namespace TroutDash.EntityFramework.Models
         }
 
         public DbSet<county> counties { get; set; }
-        public DbSet<publicly_accessible_land_section> publicly_accessible_land_section { get; set; }
-        public DbSet<publicly_accessible_land_type> publicly_accessible_land_types { get; set; }
+        public DbSet<publicly_accessible_land_section> PalSection { get; set; }
+        public DbSet<publicly_accessible_land_type> PalTypes { get; set; }
         public DbSet<restriction> restrictions { get; set; }
         public DbSet<restriction_section> restriction_section { get; set; }
         public DbSet<state> states { get; set; }

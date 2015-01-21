@@ -60,8 +60,6 @@ namespace TroutStreamMangler.US
 
         private void ImportCounties()
         {
-            var soughtDirectory = MoveTo("Counties");
-            Import(soughtDirectory);
             var s = "counties";
             AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
             AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
@@ -69,8 +67,6 @@ namespace TroutStreamMangler.US
 
         private void ImportStates()
         {
-            var soughtDirectory = MoveTo("States");
-            Import(soughtDirectory);
             var s = "states";
             AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
             AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");

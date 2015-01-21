@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace TroutDash.EntityFramework.Models
 {
@@ -6,6 +7,7 @@ namespace TroutDash.EntityFramework.Models
     {
         public publicly_accessible_land_type()
         {
+            this.publicly_accessible_lands = new Collection<publicly_accessible_land>();
 //            this.publicly_accessible_land_sections = new List<publicly_accessible_land_section>();
         }
 

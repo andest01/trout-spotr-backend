@@ -38,6 +38,8 @@ namespace TroutStreamMangler.MN
             ExportRestrictions();
             ExportStreams();
             ExportPubliclyAccessibleLand();
+            var lakeExporter = new LakeExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
+            lakeExporter.ExportLakes();
             ExportCountyToStreamRelations();
             ExportStreamToPubliclyAccessibleLandRelations();
             ExportPubliclyAccessibleLandSections();
@@ -52,7 +54,7 @@ namespace TroutStreamMangler.MN
             {
                 Console.WriteLine("Caching minnesota counties and streams...");
                 var minnesota = troutDashContext.states.Single(s => s.short_name == "MN");
-                var mnPals = minnesota.publicly_accessible_land.ToList();
+                var mnPals = minnesota.Pal.ToList();
                 var mnStreams = minnesota.streams.ToList();
                 Console.WriteLine("Finding all streams in each county");
                 foreach (var mnStream in mnStreams)
@@ -218,11 +220,11 @@ namespace TroutStreamMangler.MN
             {
                 Console.WriteLine("Removing all publicly accessible land in minnesota");
                 var minnesota = troutDashContext.states.Single(s => s.short_name == "MN");
-                var oldPal = minnesota.publicly_accessible_land_types.ToList();
-                troutDashContext.publicly_accessible_land_types.RemoveRange(oldPal);
+                var oldPal = minnesota.PalTypes.ToList();
+                troutDashContext.PalTypes.RemoveRange(oldPal);
                 troutDashContext.SaveChanges();
                 Console.WriteLine("Adding all ublicly accessible land in minnesota");
-                minnesota.publicly_accessible_land_types = new List<publicly_accessible_land_type>
+                minnesota.PalTypes = new List<publicly_accessible_land_type>
                 {
                     new publicly_accessible_land_type
                     {
@@ -249,7 +251,7 @@ namespace TroutStreamMangler.MN
                 troutDashContext.SaveChanges();
 
                 var easementType =
-                    troutDashContext.publicly_accessible_land_types.Single(
+                    troutDashContext.PalTypes.Single(
                         i => i.state.gid == minnesota.gid && i.type == "Easement");
 
                 var accessableEasements = context.mndnr_fisheries_acquisition
@@ -259,7 +261,7 @@ namespace TroutStreamMangler.MN
                     {
                         state_gid = minnesota.gid,
                         area_name = i.unit_name,
-                        publicly_accessible_land_type_id = easementType.id,
+                        pal_Id = easementType.id,
                         shape_area = Convert.ToDecimal(i.OriginalGeometry.Area),
                         Geom = i.Geom_3857
                     }).ToList();
@@ -267,7 +269,7 @@ namespace TroutStreamMangler.MN
                 troutDashContext.publicly_accessible_lands.AddRange(accessableEasements);
 
                 var stateparkType =
-                    troutDashContext.publicly_accessible_land_types.Single(
+                    troutDashContext.PalTypes.Single(
                         i => i.state.gid == minnesota.gid && i.type == "State Park");
 
                 var parks = context.dnr_stat_plan_areas_prk
@@ -276,7 +278,7 @@ namespace TroutStreamMangler.MN
                     {
                         state_gid = minnesota.gid,
                         area_name = p.area_name,
-                        publicly_accessible_land_type_id = stateparkType.id,
+                        pal_Id = stateparkType.id,
                         shape_area = Convert.ToDecimal(p.OriginalGeometry.Area),
                         Geom = p.Geom_3857
                     });
@@ -284,7 +286,7 @@ namespace TroutStreamMangler.MN
                 Console.WriteLine("Loading state parks");
                 troutDashContext.publicly_accessible_lands.AddRange(parks);
 
-                var wmaType = troutDashContext.publicly_accessible_land_types.Single(
+                var wmaType = troutDashContext.PalTypes.Single(
                     i => i.state.gid == minnesota.gid && i.type == "WMA");
 
                 var wmas = context.dnr_wildlife_management_area_boundaries_publicly_accessible
@@ -293,7 +295,7 @@ namespace TroutStreamMangler.MN
                     {
                         state_gid = minnesota.gid,
                         Geom = i.Geom_3857,
-                        publicly_accessible_land_type_id = wmaType.id,
+                        pal_Id = wmaType.id,
                         area_name = i.unitname,
                         shape_area = Convert.ToDecimal(i.OriginalGeometry.Area)
                     });
@@ -387,13 +389,13 @@ WHERE  strouter.kittle_nbr = '{0}'
         {
             var kittleNumber = route.source_id;
             Console.WriteLine(palType + "... ");
-            var easement = troutDashContext.publicly_accessible_land_types.First(i => i.type == palType);
+            var easement = troutDashContext.PalTypes.First(i => i.type == palType);
             var offsets = GetStuff(kittleNumber, table).ToArray();
             foreach (var offset in offsets)
             {
                 var section = new publicly_accessible_land_section();
                 section.Stream = route;
-                section.publicly_accessible_land_type_id = easement.id;
+                section.PalId = easement.id;
                 section.start = offset.Item1 * route.length_mi;
                 section.stop = offset.Item2 * route.length_mi;
                 yield return section;
@@ -409,12 +411,12 @@ WHERE  strouter.kittle_nbr = '{0}'
             using (var troutDashContext = new TroutDashPrototypeContext())
             {
                 var minnesota = troutDashContext.states.Single(s => s.short_name == "MN");
-                var pal = minnesota.publicly_accessible_land.ToList();
+                var pal = minnesota.Pal.ToList();
                 var streams = minnesota.streams.ToList();
 
                 Console.WriteLine("Clearing old entries");
-                troutDashContext.publicly_accessible_land_section.RemoveRange(
-                    troutDashContext.publicly_accessible_land_section.Where(i => i.Stream.state1.short_name == "MN"));
+                troutDashContext.PalSection.RemoveRange(
+                    troutDashContext.PalSection.Where(i => i.Stream.state1.short_name == "MN"));
                 troutDashContext.SaveChanges();
 
                 foreach (var route in streams)
@@ -424,9 +426,9 @@ WHERE  strouter.kittle_nbr = '{0}'
                     var stateParks = SaveEasements(troutDashContext, route, "State Park", "dnr_stat_plan_areas_prk").ToList();
                     var wmas = SaveEasements(troutDashContext, route, "WMA", "dnr_wildlife_management_area_boundaries_publicly_accessible").ToList();
 
-                    troutDashContext.publicly_accessible_land_section.AddRange(easements);
-                    troutDashContext.publicly_accessible_land_section.AddRange(stateParks);
-                    troutDashContext.publicly_accessible_land_section.AddRange(wmas);
+                    troutDashContext.PalSection.AddRange(easements);
+                    troutDashContext.PalSection.AddRange(stateParks);
+                    troutDashContext.PalSection.AddRange(wmas);
                     troutDashContext.SaveChanges();
                 }
 

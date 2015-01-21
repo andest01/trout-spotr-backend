@@ -12,7 +12,7 @@ namespace TroutStreamMangler.MN.Models
         [Column("dnr_hydro_")]
         public int dnr_hydro_ { get; set; }
 
-        [Column("pw_pasin_n")]
+        [Column("pw_basin_n")]
         public string pw_pasin_n { get; set; }
     }
 }

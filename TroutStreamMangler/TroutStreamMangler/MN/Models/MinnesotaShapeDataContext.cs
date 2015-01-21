@@ -28,6 +28,8 @@ namespace TroutStreamMangler.MN.Models
         // Streams
         public DbSet<StreamRoute> StreamRoute { get; set; }
 
+        public DbSet<dnr_hydro_features_all> Lakes { get; set; }
+
         // Trout Stream Sections
         public DbSet<trout_streams_minnesota> trout_streams_minnesota { get; set; }
     }

@@ -27,7 +27,7 @@ namespace TroutDash.EntityFramework.Models.Mapping
             this.Property(t => t.state_gid).HasColumnName("state_gid");
 
             this.HasRequired(t => t.state)
-                .WithMany(t => t.publicly_accessible_land_types)
+                .WithMany(t => t.PalTypes)
                 .HasForeignKey(t => t.state_gid);
         }
     }

@@ -69,6 +69,8 @@
     <Compile Include="Models\lake.cs" />
     <Compile Include="Models\Mapping\countyMap.cs" />
     <Compile Include="Models\Mapping\ISection.cs" />
+    <Compile Include="Models\Mapping\lakeMap.cs" />
+    <Compile Include="Models\Mapping\lake_sectionMap.cs" />
     <Compile Include="Models\Mapping\publicly_accessible_landMap.cs">
       <SubType>Code</SubType>
     </Compile>

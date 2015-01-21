@@ -309,8 +309,6 @@ namespace TroutStreamMangler
 
         private void ImportRegulationSections()
         {
-            var soughtDirectory = MoveTo("Restrictions");
-            Import(soughtDirectory);
             var s = "strm_regsln3";
             AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
             AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
@@ -318,8 +316,6 @@ namespace TroutStreamMangler
 
         private void ImportEasements()
         {
-            var soughtDirectory = MoveTo(@"PubliclyAccessibleLands\Easements");
-            Import(soughtDirectory);
             var s = "mndnr_fisheries_acquisition";
             AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
             AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
@@ -327,8 +323,6 @@ namespace TroutStreamMangler
 
         private void ImportWildlifeManagementAreas()
         {
-            var soughtDirectory = MoveTo(@"PubliclyAccessibleLands\WildlifeManagementAreas");
-            Import(soughtDirectory);
             var s = "dnr_wildlife_management_area_boundaries_publicly_accessible";
             AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
             AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");

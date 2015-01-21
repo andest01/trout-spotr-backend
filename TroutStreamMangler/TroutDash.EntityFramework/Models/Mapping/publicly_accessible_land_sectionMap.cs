@@ -19,17 +19,13 @@ namespace TroutDash.EntityFramework.Models.Mapping
             this.Property(t => t.id).HasColumnName("id");
             this.Property(t => t.start).HasColumnName("start");
             this.Property(t => t.stop).HasColumnName("stop");
-            this.Property(t => t.publicly_accessible_land_type_id).HasColumnName("publicly_accessible_land_type_id");
+            this.Property(t => t.PalId).HasColumnName("publicly_accessible_land_type_id");
             this.Property(t => t.stream_gid).HasColumnName("stream_gid");
 
             // Relationships
             this.HasRequired(t => t.Stream)
                 .WithMany(t => t.publicly_accessible_land_section2)
                 .HasForeignKey(d => d.stream_gid);
-
-//            this.HasOptional(t => t.publicly_accessible_land_type);
-
-
         }
     }
 }
