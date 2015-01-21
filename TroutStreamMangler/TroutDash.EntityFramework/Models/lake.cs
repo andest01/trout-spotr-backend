@@ -19,6 +19,7 @@ namespace TroutDash.EntityFramework.Models
         public string source_id { get; set; }
         public state state { get; set; }
         public string name { get; set; }
+        public bool is_trout_lake { get; set; }
         public virtual ICollection<lake_section> lake_sections { get; set; }
     }
 

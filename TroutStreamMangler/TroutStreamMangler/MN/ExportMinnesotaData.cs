@@ -24,11 +24,13 @@ namespace TroutStreamMangler.MN
 {
     public class ExportMinnesotaData : ConsoleCommand, IDatabaseExporter
     {
+        private readonly GetLinearOffsets _getLinearOffsets;
         public const decimal METERS_IN_MILE = 1609.34M;
         public ExportMinnesotaData()
         {
             IsCommand("ExportMn", "Exports minnesota data into trout dash. must be run after ImportMn.");
             HasRequiredOption("regulationJson=", "the location of the regulation json", j => FileLocation = j);
+            _getLinearOffsets = new GetLinearOffsets();
         }
 
         public string FileLocation { get; set; }
@@ -314,55 +316,6 @@ namespace TroutStreamMangler.MN
             
         }
 
-        public IEnumerable<Tuple<decimal, decimal>> GetStuff(string streamId, string geometryTable)
-        {
-            const string linearReferenceString =
-                @"SELECT (St_dump(St_intersection(palbuffer, strouter.geom))).geom                                                                 as thegeom,
-       st_linelocatepoint(st_linemerge(strouter.geom), st_startpoint((st_dump(st_intersection(palbuffer, strouter.geom))).geom)) AS start,
-       st_linelocatepoint(st_linemerge(strouter.geom), st_endpoint((st_dump(st_intersection(palbuffer, strouter.geom))).geom))   AS stop
-FROM   streams_with_measured_kittle_routes strouter, 
-       ( 
-              SELECT st_buffer(st_union(dumpgeom), 3, 'endcap=flat join=round') AS palbuffer 
-              FROM   ( 
-                            SELECT pal.geom                        AS dumpgeom 
-                            FROM   {1}        AS pal,
-                            streams_with_measured_kittle_routes routes
-                            WHERE  ST_Intersects(pal.geom, routes.geom) 
-                            and routes.kittle_nbr = '{0}') AS DUMP) AS palbuffer
-WHERE  strouter.kittle_nbr = '{0}'
-";
-
-            NpgsqlConnection conn =
-                new NpgsqlConnection(
-                    "Server=localhost;Port=5432;User Id=postgres;Password=fakepassword;Database=mn_import;");
-            conn.Open();
-
-            var sql = string.Format(linearReferenceString, streamId, geometryTable);
-
-
-            NpgsqlCommand command = new NpgsqlCommand(sql, conn);
-
-
-            try
-            {
-                NpgsqlDataReader dr = command.ExecuteReader();
-                while (dr.Read())
-                {
-                    var start = Convert.ToDecimal(dr[1]);
-                    var stop = Convert.ToDecimal(dr[2]);
-
-                    yield return new Tuple<decimal, decimal>(start, stop);
-
-                }
-
-            }
-
-            finally
-            {
-                conn.Close();
-            }
-        }
-
         public void ExportSections()
         {
             using (var context = new MinnesotaShapeDataContext())
@@ -390,7 +343,7 @@ WHERE  strouter.kittle_nbr = '{0}'
             var kittleNumber = route.source_id;
             Console.WriteLine(palType + "... ");
             var easement = troutDashContext.PalTypes.First(i => i.type == palType);
-            var offsets = GetStuff(kittleNumber, table).ToArray();
+            var offsets = _getLinearOffsets.GetStuff(kittleNumber, table).ToArray();
             foreach (var offset in offsets)
             {
                 var section = new publicly_accessible_land_section();
@@ -431,55 +384,6 @@ WHERE  strouter.kittle_nbr = '{0}'
                     troutDashContext.PalSection.AddRange(wmas);
                     troutDashContext.SaveChanges();
                 }
-
-
-//                var t = new LinearReference();
-//                // state parks first
-//                foreach (var streamRoute in streams)
-//                {
-//                    var streamLine = (streamRoute.OriginalGeometry as IMultiLineString).Geometries[0] as ILineString;
-//                    var pals = pal.Where(p => p.OriginalGeometry.Intersects(streamRoute.OriginalGeometry)).ToList();
-//
-//                    var sections = pal.Where(p => p.OriginalGeometry.Intersects(streamRoute.OriginalGeometry)).Select(f => new
-//                    {
-//                        pal = f,
-//                        line = f.OriginalGeometry.Intersection(streamRoute.OriginalGeometry),
-//                        offsets = t.GetIntersectionOfLine(streamLine, f.OriginalGeometry.Intersection(streamRoute.OriginalGeometry) as ILineString).ToArray()
-//                    }).ToList();
-//                    Console.WriteLine(sections);
-//
-//                    foreach (var result in sections)
-//                    {
-//                        var pubSection = new publicly_accessible_land_section();
-//                        pubSection.start = (decimal)(result.offsets[0] / (double) 1609.3440M);
-//                        pubSection.start = (decimal)(result.offsets[1] / (double)1609.3440M);
-//                        pubSection.publicly_accessible_land_type2 = result.pal.type;
-//                        pubSection.Stream = streamRoute;
-//                        troutDashContext.publicly_accessible_land_section.Add(pubSection);
-//                        troutDashContext.SaveChanges();
-//                    }
-                    
-                    
-
-//                    var intersectingLines = sections.Select(j => j.OriginalGeometry.Intersection(streamRoute.OriginalGeometry)).ToList();
-//                    foreach (publicly_accessible_land section in sections)
-//                    {
-//                        var streamLine = (streamRoute.OriginalGeometry as IMultiLineString);
-//                        var palMultiPolygon = section.OriginalGeometry as IMultiPolygon;
-//                        var linearIntersections = t.GetIntersections(streamLine, palMultiPolygon).ToList();
-//
-////                        var intersectionGeometries =
-////                            sections.Select(s => s.OriginalGeometry.Buffer(5).Intersection(streamRoute.OriginalGeometry))
-////                                .Cast<ILineString>();
-////                        foreach (var part in intersectionGeometries)
-////                        {
-////                            var streamLine = (streamRoute.OriginalGeometry as IMultiLineString).Geometries[0] as ILineString;
-////                            var linearIntersections = t.GetIntersections(streamLine, section.OriginalGeometry);
-////                        }
-//                    }
-//                }
-
-                
 
             }
         }
