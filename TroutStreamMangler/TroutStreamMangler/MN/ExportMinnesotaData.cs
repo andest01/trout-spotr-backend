@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using GeoAPI.Geometries;
-using GeoAPI.IO;
 using ManyConsole;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using NetTopologySuite.LinearReferencing;
-using NetTopologySuite.Operation.Union;
 using Newtonsoft.Json;
-using Npgsql;
 using TroudDash.GIS;
 using TroutDash.EntityFramework.Models;
 using TroutStreamMangler.MN.Models;
@@ -38,10 +29,12 @@ namespace TroutStreamMangler.MN
         public override int Run(string[] remainingArguments)
         {
             ExportRestrictions();
-            ExportStreams();
-            ExportPubliclyAccessibleLand();
             var lakeExporter = new LakeExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
             lakeExporter.ExportLakes();
+            ExportPubliclyAccessibleLand();
+            ExportStreams();
+            
+            
             ExportCountyToStreamRelations();
             ExportStreamToPubliclyAccessibleLandRelations();
             ExportPubliclyAccessibleLandSections();
@@ -163,24 +156,6 @@ namespace TroutStreamMangler.MN
             }
         }
 
-        private static void SaveValue(TroutDashPrototypeContext troutDashContext, stream stream)
-        {
-            troutDashContext.streams.Add(stream);
-            try
-            {
-                troutDashContext.SaveChanges();
-            }
-            catch (DbEntityValidationException e)
-            {
-                var inners = e.EntityValidationErrors.First();
-                Console.WriteLine(inners);
-            }
-
-            catch (DbUpdateException e)
-            {
-            }
-        }
-
         private stream CreateStream(StreamRoute route, state minnesota)
         {
             var name = route.kittle_nam ?? "Unnamed Stream";
@@ -198,7 +173,7 @@ namespace TroutStreamMangler.MN
             stream.length_mi = Convert.ToDecimal(route.OriginalGeometry.Length) / 1609.3440M; // fix later.
             stream.local_name = route.kittle_nam;
             stream.slug = Guid.NewGuid().ToString();
-            stream.source_id = route.kittle_nbr;
+            stream.source_id = route.gid.ToString();
             stream.source = route.kittle_nbr;
             stream.state1 = minnesota;
             stream.state = minnesota.Name;

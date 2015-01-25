@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using TroutDash.EntityFramework.Models;
 using TroutStreamMangler.MN.Models;
 
@@ -51,26 +52,62 @@ namespace TroutStreamMangler.MN
             _getLinearOffsets = new GetLinearOffsets();
         }
 
+        private Lazy<state> _getState;
+
         public void ExportLakeSections()
         {
-            
+            _getState = new Lazy<state>(GetState);
         }
 
-        public IEnumerable<lake_section> SaveEasements(stream route, string table)
+        private state GetState()
         {
-            var kittleNumber = route.source_id;
-            Console.WriteLine("lake offsets... ");
-            var lakes = _troutDashContext.lakes.ToList();
-            var offsets = _getLinearOffsets.GetStuff(kittleNumber, table).ToArray();
-            foreach (var offset in offsets)
+            return this._troutDashContext.states.First(s => s.short_name == "MN");
+        }
+
+        public IEnumerable<lake_section> ExportLakeSections(state currentState, stream route)
+        {
+            var gid = route.source_id;
+            var streamTableName = "asdf";
+            var streamIdColumn = "asdf";
+            var streamNameColumn = "asdf";
+            
+            var geometryNameColumn = "asdf";
+            var geometryIdColumn = "asdf";
+            var geometryTableName = "asdf";
+
+            var results = GetLinearOffsets.ExecuteLinearReference(streamTableName, streamNameColumn, streamIdColumn, gid.ToString(),
+                geometryTableName, geometryIdColumn, geometryNameColumn);
+
+            // get lakes.
+            var lakes = currentState.lakes.Where(i => results.Any(r => r.GeometryId.ToString() == i.source_id)).ToDictionary(i => i.gid);
+
+            foreach (var result in results)
             {
+                var lakeId = result.GeometryId;
+                var start = result.StartPoint;
+                var stop = result.EndPoint;
+                
                 var section = new lake_section();
+                section.lake = lakes[lakeId];
                 section.stream = route;
-                section.lake_gid = lakes;
-                section.start = offset.Item1 * route.length_mi;
-                section.stop = offset.Item2 * route.length_mi;
+                section.start = Convert.ToDecimal(start);
+                section.stop = Convert.ToDecimal(stop);
+
                 yield return section;
             }
+//            var kittleNumber = route.source_id;
+//            Console.WriteLine("lake offsets... ");
+//            var lakes = _troutDashContext.lakes.ToList();
+//            var offsets = _getLinearOffsets.GetStuff(kittleNumber, table).ToArray();
+//            foreach (var offset in offsets)
+//            {
+//                var section = new lake_section();
+//                section.stream = route;
+//                section.lake_gid = lakes;
+//                section.start = offset.Item1 * route.length_mi;
+//                section.stop = offset.Item2 * route.length_mi;
+//                yield return section;
+//            }
         }
 
         public void ExportLakes()
@@ -78,6 +115,8 @@ namespace TroutStreamMangler.MN
             var minnesota = _troutDashContext.states.Single(s => s.short_name == "MN");
             _troutDashContext.lakes.RemoveRange(minnesota.lakes);
             _troutDashContext.SaveChanges();
+
+            
 
             var lakes = _minnesotaContext.Lakes.ToList().Select(i => new lake
             {

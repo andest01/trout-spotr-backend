@@ -1,20 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GeoAPI.Geometries;
 using NetTopologySuite.LinearReferencing;
+using TroutDash.EntityFramework.Models.Mapping;
 
 namespace TroudDash.GIS
 {
-    public interface ILinearReference
-    {
-        IEnumerable<double[]> GetIntersections(IMultiLineString linestring, IGeometry multipolygon);
-        IEnumerable<double[]> GetIntersections(ILineString linestring, IGeometry multipolygon);
-        IEnumerable<double> GetIntersectionOfLine(ILineString primaryLine, ILineString subline);
-    }
-
     public class LinearReference : ILinearReference
     {
         public IEnumerable<double[]> GetIntersections(IMultiLineString multilinestring, IGeometry multipolygon)

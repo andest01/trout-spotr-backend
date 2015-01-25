@@ -48,11 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="LinearReference.cs" />
+    <Compile Include="ILinearReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TroutDash.EntityFramework\TroutDash.EntityFramework.csproj">
+      <Project>{B8A442BB-4E61-4F79-A3D6-0AAC6D247D26}</Project>
+      <Name>TroutDash.EntityFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
