@@ -18,7 +18,7 @@ namespace TroutDash.EntityFramework.Models.Mapping
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             // Table & Column Mappings
-            this.ToTable("lake_section", "public");
+            this.ToTable("lake_secction", "public");
             this.Property(t => t.gid).HasColumnName("gid");
             this.Property(t => t.start).HasColumnName("start");
             this.Property(t => t.stop).HasColumnName("stop");

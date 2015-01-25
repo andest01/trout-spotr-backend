@@ -28,15 +28,14 @@ namespace TroutStreamMangler.MN
 
         public override int Run(string[] remainingArguments)
         {
-            ExportRestrictions();
+//            ExportRestrictions();
             var lakeExporter = new LakeExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
-            lakeExporter.ExportLakes();
-            ExportPubliclyAccessibleLand();
-            ExportStreams();
-            
-            
-            ExportCountyToStreamRelations();
-            ExportStreamToPubliclyAccessibleLandRelations();
+//            lakeExporter.ExportLakes();
+//            ExportPubliclyAccessibleLand();
+//            ExportStreams();
+            lakeExporter.ExportLakeSections();
+//            ExportCountyToStreamRelations();
+//            ExportStreamToPubliclyAccessibleLandRelations();
             ExportPubliclyAccessibleLandSections();
             
             return 0;
@@ -316,6 +315,10 @@ namespace TroutStreamMangler.MN
         public IEnumerable<publicly_accessible_land_section> SaveEasements(TroutDashPrototypeContext troutDashContext, stream route, string palType, string table)
         {
             var kittleNumber = route.source_id;
+            if (kittleNumber == "1857")
+            {
+                
+            }
             Console.WriteLine(palType + "... ");
             var easement = troutDashContext.PalTypes.First(i => i.type == palType);
             var offsets = _getLinearOffsets.GetStuff(kittleNumber, table).ToArray();
@@ -349,6 +352,12 @@ namespace TroutStreamMangler.MN
 
                 foreach (var route in streams)
                 {
+                    var kittleNumber = route.source_id;
+                    if (kittleNumber == "1857")
+                    {
+
+                    }
+
                     Console.WriteLine("Getting PAL for " + route.name);
                     var easements = SaveEasements(troutDashContext, route, "Easement", "mndnr_fisheries_acquisition").ToList();
                     var stateParks = SaveEasements(troutDashContext, route, "State Park", "dnr_stat_plan_areas_prk").ToList();

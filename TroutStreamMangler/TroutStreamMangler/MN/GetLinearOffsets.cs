@@ -94,15 +94,26 @@ WHERE  stream_route.{2} = {4}
                 while (dr.Read())
                 {
                     var l = new LinearReferenceResult();
-                    
+
+                    // sometimes when a line intercepts a polygon you can
+                    // get a point, e.g. the EXACT mouth of a river.
+                    // ignore these non-line geometries.
+                    l.IntersectionGeometryType = dr.GetString(6);
+                    var isLineString = String.Equals("Linestring", l.IntersectionGeometryType,
+                        StringComparison.OrdinalIgnoreCase);
+                    if (isLineString == false)
+                    {
+                        yield break;
+                    }
+
                     l.StreamId = dr.GetInt32(0);
                     l.StreamNumber = dr.GetString(1);
-                    l.StreamName = dr.GetString(2);
-                    l.GeometryName = dr.GetString(3);
+                    l.StreamName = dr.IsDBNull(2) ? "" : dr.GetString(2);
+                    l.GeometryName = dr.IsDBNull(3) ? "" : dr.GetString(3);
                     l.GeometryId = dr.GetInt32(4);
 
                     l.IntersectionGeometry = dr.GetString(5);
-                    l.IntersectionGeometryType = dr.GetString(6);
+                    
 
                     l.StartPoint = dr.GetDouble(7);
                     l.EndPoint = dr.GetDouble(8);
@@ -208,8 +219,8 @@ FROM   streams_with_measured_kittle_routes strouter,
                             FROM   {1}        AS pal,
                             streams_with_measured_kittle_routes routes
                             WHERE  ST_Intersects(pal.geom, routes.geom) 
-                            and routes.kittle_nbr = '{0}') AS DUMP) AS palbuffer
-WHERE  strouter.kittle_nbr = '{0}'
+                            and routes.gid = '{0}') AS DUMP) AS palbuffer
+WHERE  strouter.gid = '{0}'
 ";
 
             NpgsqlConnection conn =
