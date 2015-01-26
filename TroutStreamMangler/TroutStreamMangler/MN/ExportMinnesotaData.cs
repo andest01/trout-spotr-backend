@@ -29,16 +29,48 @@ namespace TroutStreamMangler.MN
         public override int Run(string[] remainingArguments)
         {
 //            ExportRestrictions();
-            var lakeExporter = new LakeExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
+//            ExportRestrictionRoutes();
+//            var lakeExporter = new LakeExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
+            var regulationsExporter = new RegulationsExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
+            regulationsExporter.ExportRestrictionSections();
+            // RegulationsExporter
 //            lakeExporter.ExportLakes();
 //            ExportPubliclyAccessibleLand();
 //            ExportStreams();
-            lakeExporter.ExportLakeSections();
+//            lakeExporter.ExportLakeSections();
 //            ExportCountyToStreamRelations();
 //            ExportStreamToPubliclyAccessibleLandRelations();
-            ExportPubliclyAccessibleLandSections();
+//            ExportPubliclyAccessibleLandSections();
             
             return 0;
+        }
+
+        
+
+        private void ExportRestrictionRoutes()
+        {
+            using (var context = new MinnesotaShapeDataContext())
+            using (var troutDashContext = new TroutDashPrototypeContext())
+            {
+                // clear out the old.
+                Console.WriteLine("Caching minnesota restriction routes...");
+                var minnesota = troutDashContext.states.Single(s => s.short_name == "MN");
+                var routes = minnesota.restrictions.SelectMany(i => i.restrictionRoutes);
+                troutDashContext.restriction_routes.RemoveRange(routes);
+                troutDashContext.SaveChanges();
+
+                var restrictions = troutDashContext.restrictions.ToDictionary(i => i.source_id);
+                var restrictionRoutes = context.strm_regsln3.ToList();
+                foreach (var restrictionRoute in restrictionRoutes)
+                {
+                    var route = new restriction_route();
+                    route.Restriction = restrictions[restrictionRoute.new_reg.ToString()];
+                    route.Geom = restrictionRoute.Geom_3857;
+                    route.source_id = restrictionRoute.gid.ToString();
+                    troutDashContext.restriction_routes.Add(route);
+                }
+                troutDashContext.SaveChanges(); // TODO: MOVE THIS.
+            }
         }
 
         private void ExportStreamToPubliclyAccessibleLandRelations()

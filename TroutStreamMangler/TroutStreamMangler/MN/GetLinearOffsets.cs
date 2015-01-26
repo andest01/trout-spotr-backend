@@ -27,6 +27,131 @@ namespace TroutStreamMangler.MN
         {
         }
 
+
+        /*
+         SELECT intersection_data.stream_id, 
+       intersection_data.stream_number, 
+       intersection_data.stream_name, 
+       intersection_data.body_name, 
+       intersection_data.body_id, 
+       intersection_data.mini_line, 
+       intersection_data.geometry_type, 
+       St_linelocatepoint(St_linemerge(stream_route.geom), St_startpoint(intersection_data.mini_line)) AS start_point ,
+       St_linelocatepoint(St_linemerge(stream_route.geom), St_endpoint(intersection_data.mini_line))   AS end_point,
+       St_length(stream_route.geom)                                                                    AS outer_length
+FROM   ( 
+              SELECT dumped.stream_id, 
+                     dumped.stream_number, 
+                     dumped.stream_name, 
+                     dumped.body_name, 
+                     dumped.body_id, 
+                     st_linemerge((dumped.geom_dump).geom)               AS mini_line, 
+                     geometrytype(st_linemerge((dumped.geom_dump).geom)) AS geometry_type 
+              FROM   ( 
+                            SELECT stream_id, 
+                                   stream_number, 
+                                   stream_name, 
+                                   body_name, 
+                                   body_id, 
+                                   st_dump(intersection_geom) AS geom_dump 
+                            FROM   ( 
+                                          SELECT stream.gid                                            AS stream_id,
+                                                 stream.kittle_nam                                        stream_number,
+                                                 stream.kittle_nam                                        stream_name,
+                                                 lake.pw_basin_n                                       AS body_name,
+                                                 lake.dnr_hydro_                                       AS body_id,
+                                                 st_intersection(stream.geom, lake.geom)               AS intersection_geom,
+                                                 geometrytype(st_intersection(stream.geom, lake.geom)) AS geom_type
+                                          FROM   PUBLIC.streams_with_measured_kittle_routes stream,
+                                                 ( 
+                                                          SELECT   new_reg                                 AS dnr_hydro_,
+                                                                   'Some Regulation'                       AS pw_basin_n,
+                                                                   st_buffer(st_multi(st_union(geom)), 10) AS geom
+                                                          FROM     ( 
+                                                                          SELECT regulation.new_reg,
+                                                                                 'asdf' AS pw_basin_n,
+                                                                                 regulation.geom
+                                                                          FROM   strm_regsln3 regulation,
+                                                                                 streams_with_measured_kittle_routes route
+                                                                          WHERE  st_intersects(st_envelope(route.geom), regulation.geom)
+                                                                          AND    route.gid = 1383) AS subquery
+                                                          GROUP BY new_reg) lake 
+                                          WHERE  stream.gid = 1383 
+                                          AND    st_intersects(lake.geom, stream.geom)) AS complex ) AS dumped ) AS intersection_data,
+       PUBLIC.streams_with_measured_kittle_routes stream_route 
+WHERE  stream_route.gid = 1383
+         */
+        public static IEnumerable<LinearReferenceResult> ExecuteBufferedLinearReferenceResults(string streamTableName,
+            string streamNameColumn,
+            string streamIdColumn,
+            string streamId,
+            string geometryTableName,
+            string geometryIdColumn,
+            string geometryNameColumn)
+        {
+            const string linearReferenceString =
+                @"SELECT intersection_data.stream_id, 
+       intersection_data.stream_number, 
+       intersection_data.stream_name, 
+       intersection_data.body_name, 
+       intersection_data.body_id, 
+       intersection_data.mini_line, 
+       intersection_data.geometry_type, 
+       St_linelocatepoint(St_linemerge(stream_route.geom), St_startpoint(intersection_data.mini_line)) AS start_point ,
+       St_linelocatepoint(St_linemerge(stream_route.geom), St_endpoint(intersection_data.mini_line))   AS end_point,
+       St_length(stream_route.geom)                                                                    AS outer_length
+FROM   ( 
+              SELECT dumped.stream_id, 
+                     dumped.stream_number, 
+                     dumped.stream_name, 
+                     dumped.body_name, 
+                     dumped.body_id, 
+                     st_linemerge((dumped.geom_dump).geom)               AS mini_line, 
+                     geometrytype(st_linemerge((dumped.geom_dump).geom)) AS geometry_type 
+              FROM   ( 
+                            SELECT stream_id, 
+                                   stream_number, 
+                                   stream_name, 
+                                   body_name, 
+                                   body_id, 
+                                   st_dump(intersection_geom) AS geom_dump 
+                            FROM   ( 
+                                          SELECT stream.{2}                                            AS stream_id,
+                                                 stream.{3}                                        stream_number,
+                                                 stream.{3}                                        stream_name,
+                                                 lake.{6}                                       AS body_name,
+                                                 lake.{5}                                       AS body_id,
+                                                 st_intersection(stream.geom, lake.geom)               AS intersection_geom,
+                                                 geometrytype(st_intersection(stream.geom, lake.geom)) AS geom_type
+                                          FROM   PUBLIC.{0} stream,
+                                                 ( 
+                                                          SELECT   new_reg                                 AS {5},
+                                                                   'Some Regulation'                       AS {6},
+                                                                   st_buffer(st_multi(st_union(geom)), 10) AS geom
+                                                          FROM     ( 
+                                                                          SELECT regulation.{5},
+                                                                                 'asdf' AS {6},
+                                                                                 regulation.geom
+                                                                          FROM   public.{1} regulation,
+                                                                                 public.{0} route
+                                                                          WHERE  st_intersects(st_envelope(route.geom), regulation.geom)
+                                                                          AND    route.{2} = {4}) AS subquery
+                                                          GROUP BY new_reg) lake 
+                                          WHERE  stream.{2} = {4} 
+                                          AND    st_intersects(lake.geom, stream.geom)) AS complex ) AS dumped ) AS intersection_data,
+       PUBLIC.{0} stream_route 
+WHERE  stream_route.{2} = {4}";
+
+            var sql = string.Format(linearReferenceString, streamTableName, geometryTableName, streamIdColumn,
+                streamNameColumn, streamId, geometryIdColumn, geometryNameColumn);
+
+            foreach (var linearReferenceResult in ExecuteQuery(sql))
+            {
+                yield return linearReferenceResult;
+            }
+
+        }
+
         public static IEnumerable<LinearReferenceResult> ExecuteLinearReference(string streamTableName,
             string streamNameColumn,
             string streamIdColumn,
@@ -80,6 +205,14 @@ WHERE  stream_route.{2} = {4}
             var sql = string.Format(linearReferenceString, streamTableName, geometryTableName, streamIdColumn,
                 streamNameColumn, streamId, geometryIdColumn, geometryNameColumn);
 
+            foreach (var linearReferenceResult in ExecuteQuery(sql))
+            {
+                yield return linearReferenceResult;
+            }
+        }
+
+        private static IEnumerable<LinearReferenceResult> ExecuteQuery(string sql)
+        {
             NpgsqlConnection conn =
                 new NpgsqlConnection(
                     "Server=localhost;Port=5432;User Id=postgres;Password=fakepassword;Database=mn_import;");
@@ -110,10 +243,11 @@ WHERE  stream_route.{2} = {4}
                     l.StreamNumber = dr.GetString(1);
                     l.StreamName = dr.IsDBNull(2) ? "" : dr.GetString(2);
                     l.GeometryName = dr.IsDBNull(3) ? "" : dr.GetString(3);
-                    l.GeometryId = dr.GetInt32(4);
+                    var asdf = dr[4];
+                    l.GeometryId = Convert.ToInt32(asdf);
 
                     l.IntersectionGeometry = dr.GetString(5);
-                    
+
 
                     l.StartPoint = dr.GetDouble(7);
                     l.EndPoint = dr.GetDouble(8);
@@ -121,7 +255,6 @@ WHERE  stream_route.{2} = {4}
 
                     yield return l;
                 }
-
             }
 
             finally

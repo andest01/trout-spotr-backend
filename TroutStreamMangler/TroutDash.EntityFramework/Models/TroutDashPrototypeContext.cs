@@ -27,6 +27,7 @@ namespace TroutDash.EntityFramework.Models
         public DbSet<publicly_accessible_land> publicly_accessible_lands { get; set; }
         public DbSet<lake> lakes { get; set; }
         public DbSet<lake_section> lake_sections { get; set; }
+        public DbSet<restriction_route> restriction_routes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -41,6 +42,7 @@ namespace TroutDash.EntityFramework.Models
             modelBuilder.Configurations.Add(new publicly_accessible_landMap());
             modelBuilder.Configurations.Add(new lakeMap());
             modelBuilder.Configurations.Add(new lake_sectionMap());
+            modelBuilder.Configurations.Add(new restriction_routeMap());
         }
     }
 }

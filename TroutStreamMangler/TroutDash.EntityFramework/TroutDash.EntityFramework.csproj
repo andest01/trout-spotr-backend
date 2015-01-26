@@ -81,6 +81,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Mapping\restrictionMap.cs" />
+    <Compile Include="Models\Mapping\restriction_routeMap.cs" />
     <Compile Include="Models\Mapping\restriction_sectionMap.cs" />
     <Compile Include="Models\Mapping\stateMap.cs" />
     <Compile Include="Models\Mapping\streamMap.cs" />

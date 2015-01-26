@@ -10,6 +10,7 @@ namespace TroutDash.EntityFramework.Models
         public restriction()
         {
             this.restriction_section = new List<restriction_section>();
+            this.restrictionRoutes = new List<restriction_route>();
         }
 
         [Key]
@@ -24,7 +25,24 @@ namespace TroutDash.EntityFramework.Models
         public bool isHarvestRestriciton { get; set; }
         public int state_gid { get; set; }
         public virtual ICollection<restriction_section> restriction_section { get; set; }
+        public virtual ICollection<restriction_route> restrictionRoutes { get; set; } 
         public virtual state state { get; set; }
-        public string source_id { get; set; }   
+        public string source_id { get; set; }
+    }
+
+    public partial class restriction_route : GeometryBase
+    {
+        public restriction_route()
+        {
+
+        }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int gid { get; set; }
+
+        public restriction Restriction { get; set; }
+        public int restriction_type_id { get; set; }
+        public string source_id { get; set; }
     }
 }

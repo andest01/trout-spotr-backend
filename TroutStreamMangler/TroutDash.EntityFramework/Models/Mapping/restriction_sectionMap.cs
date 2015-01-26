@@ -12,7 +12,7 @@ namespace TroutDash.EntityFramework.Models.Mapping
 
             // Properties
             this.Property(t => t.id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             // Table & Column Mappings
             this.ToTable("restriction_section", "public");
@@ -21,14 +21,15 @@ namespace TroutDash.EntityFramework.Models.Mapping
             this.Property(t => t.stop).HasColumnName("stop");
             this.Property(t => t.restriction_id).HasColumnName("restriction_id");
             this.Property(t => t.stream_gid).HasColumnName("stream_gid");
+            
 
             // Relationships
             this.HasRequired(t => t.restriction)
                 .WithMany(t => t.restriction_section)
                 .HasForeignKey(d => d.restriction_id);
-//            this.HasRequired(t => t.Stream)
-//                .WithMany(t => t.restriction_section)
-//                .HasForeignKey(d => d.stream_gid);
+            this.HasRequired(t => t.Stream)
+                .WithMany(t => t.restriction_section)
+                .HasForeignKey(d => d.stream_gid);
 
         }
     }

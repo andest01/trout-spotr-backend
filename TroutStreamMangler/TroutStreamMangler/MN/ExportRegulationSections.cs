@@ -42,7 +42,7 @@ namespace TroutStreamMangler.MN
         private readonly TroutDashPrototypeContext _troutDashContext;
         private readonly MinnesotaShapeDataContext _minnesotaContext;
         private readonly Lazy<state> _getState;
-        public LakeExporter(TroutDashPrototypeContext troutDashContext,
+        public RegulationsExporter(TroutDashPrototypeContext troutDashContext,
             MinnesotaShapeDataContext minnesotaContext)
         {
             _troutDashContext = troutDashContext;
@@ -53,6 +53,65 @@ namespace TroutStreamMangler.MN
         private state GetState()
         {
             return this._troutDashContext.states.First(s => s.short_name == "MN");
+        }
+
+        public void ExportRestrictionSections()
+        {
+            Console.WriteLine("Exporting Restriction Sections...");
+            var state = _troutDashContext.states.First(s => s.short_name == "MN");
+            var preExistingSections = state.streams.SelectMany(s => s.restriction_section);
+            _troutDashContext.restriction_section.RemoveRange(preExistingSections);
+            _troutDashContext.SaveChanges();
+            var restrictions = state.restrictions.ToDictionary(i => i.source_id);
+            var restrictionRoutes = state.restrictions.SelectMany(r => r.restrictionRoutes).ToDictionary(i => i.source_id);
+
+            var streams = state.streams;
+            foreach (var stream in streams)
+            {
+                if (stream.name == "Little Stewart River")
+                {
+                    
+                }
+                Console.WriteLine(stream.name + "...");
+                var sections = GetSections(state, stream, restrictionRoutes, restrictions).ToList();
+                _troutDashContext.restriction_section.AddRange(sections);
+                _troutDashContext.SaveChanges();
+            }
+        }
+
+        private IEnumerable<restriction_section> GetSections(state currentState, stream route, Dictionary<string, restriction_route> restrictionRoute, Dictionary<string, restriction> restrictions)
+        {
+            var gid = route.source_id;
+            var streamTableName = "streams_with_measured_kittle_routes";
+            var streamIdColumn = "gid";
+            var streamNameColumn = "kittle_nam";
+
+            var geometryNameColumn = "trout_flag";
+            var geometryIdColumn = "new_reg";
+            var geometryTableName = "strm_regsln3";
+
+            var results = GetLinearOffsets.ExecuteBufferedLinearReferenceResults(streamTableName, streamNameColumn, streamIdColumn, gid.ToString(),
+                geometryTableName, geometryIdColumn, geometryNameColumn);
+
+            foreach (var result in results)
+            {
+                var restrictionId = result.GeometryId;
+                var start = result.StartPoint;
+                var stop = result.EndPoint;
+
+                var section = new restriction_section();
+                section.restriction = restrictions[restrictionId.ToString()];
+                section.Stream = route;
+                section.start = Convert.ToDouble(start) * (double)route.length_mi;
+                section.stop = Convert.ToDouble(stop) * (double)route.length_mi;
+                Console.WriteLine("  " + result.GeometryName ?? "unkown name");
+                yield return section;
+            }
+        }
+
+        public void Stuff(state currentState, stream route, Dictionary<string, lake> lakes)
+        {
+            
         }
 
         public void Dispose()
@@ -133,19 +192,6 @@ namespace TroutStreamMangler.MN
                 Console.WriteLine("  " + result.GeometryName ?? "unkown name");
                 yield return section;
             }
-//            var kittleNumber = route.source_id;
-//            Console.WriteLine("lake offsets... ");
-//            var lakes = _troutDashContext.lakes.ToList();
-//            var offsets = _getLinearOffsets.GetStuff(kittleNumber, table).ToArray();
-//            foreach (var offset in offsets)
-//            {
-//                var section = new lake_section();
-//                section.stream = route;
-//                section.lake_gid = lakes;
-//                section.start = offset.Item1 * route.length_mi;
-//                section.stop = offset.Item2 * route.length_mi;
-//                yield return section;
-//            }
         }
 
         public void ExportLakes()
