@@ -30,17 +30,17 @@ namespace TroutStreamMangler.MN
         {
 //            ExportRestrictions();
 //            ExportRestrictionRoutes();
-//            var lakeExporter = new LakeExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
-            var regulationsExporter = new RegulationsExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
-            regulationsExporter.ExportRestrictionSections();
+            var lakeExporter = new LakeExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
+//            var regulationsExporter = new RegulationsExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
+//            regulationsExporter.ExportRestrictionSections();
             // RegulationsExporter
 //            lakeExporter.ExportLakes();
 //            ExportPubliclyAccessibleLand();
 //            ExportStreams();
-//            lakeExporter.ExportLakeSections();
-//            ExportCountyToStreamRelations();
-//            ExportStreamToPubliclyAccessibleLandRelations();
-//            ExportPubliclyAccessibleLandSections();
+            lakeExporter.ExportLakeSections();
+            ExportCountyToStreamRelations();
+            ExportStreamToPubliclyAccessibleLandRelations();
+            ExportPubliclyAccessibleLandSections();
             
             return 0;
         }

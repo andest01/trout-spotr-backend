@@ -239,8 +239,13 @@ WHERE  stream_route.{2} = {4}
                         yield break;
                     }
 
+                    if (dr.IsDBNull(1))
+                    {
+                        yield break;
+                    }
+
                     l.StreamId = dr.GetInt32(0);
-                    l.StreamNumber = dr.GetString(1);
+                    l.StreamNumber = dr.IsDBNull(1) ? "Unnamed" : dr.GetString(1);
                     l.StreamName = dr.IsDBNull(2) ? "" : dr.GetString(2);
                     l.GeometryName = dr.IsDBNull(3) ? "" : dr.GetString(3);
                     var asdf = dr[4];

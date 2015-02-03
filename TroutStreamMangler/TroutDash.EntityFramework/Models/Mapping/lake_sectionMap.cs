@@ -25,7 +25,7 @@ namespace TroutDash.EntityFramework.Models.Mapping
 
             this.HasRequired(t => t.lake)
                 .WithMany(t => t.lake_sections)
-                .HasForeignKey(d => d.lake_gid);
+                .HasForeignKey(d => d.lake_gid);    
 
             this.HasRequired(t => t.stream)
                 .WithMany(t => t.lake_sections)

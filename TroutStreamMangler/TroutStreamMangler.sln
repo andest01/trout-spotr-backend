@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroutStreamMangler.Test", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroudDash.GIS", "TroudDash.GIS\TroudDash.GIS.csproj", "{BC9C4D96-8950-4232-B005-B17A5D6C8387}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroutDash.Export", "TroutDash.Export\TroutDash.Export.csproj", "{18E5AD93-D519-4FE9-B9EF-9A50D32C0A83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TroutDash.Export.Test", "TroutDash.Export.Test\TroutDash.Export.Test.csproj", "{0EDDBC5B-242F-48DE-A438-B802B507E11C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{BC9C4D96-8950-4232-B005-B17A5D6C8387}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC9C4D96-8950-4232-B005-B17A5D6C8387}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC9C4D96-8950-4232-B005-B17A5D6C8387}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18E5AD93-D519-4FE9-B9EF-9A50D32C0A83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18E5AD93-D519-4FE9-B9EF-9A50D32C0A83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18E5AD93-D519-4FE9-B9EF-9A50D32C0A83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18E5AD93-D519-4FE9-B9EF-9A50D32C0A83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EDDBC5B-242F-48DE-A438-B802B507E11C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EDDBC5B-242F-48DE-A438-B802B507E11C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EDDBC5B-242F-48DE-A438-B802B507E11C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EDDBC5B-242F-48DE-A438-B802B507E11C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
