@@ -28,15 +28,17 @@ namespace TroutStreamMangler.MN
 
         public override int Run(string[] remainingArguments)
         {
-//            ExportRestrictions();
-//            ExportRestrictionRoutes();
+            // ORDER MATTERS!
             var lakeExporter = new LakeExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
-//            var regulationsExporter = new RegulationsExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
-//            regulationsExporter.ExportRestrictionSections();
-            // RegulationsExporter
-//            lakeExporter.ExportLakes();
-//            ExportPubliclyAccessibleLand();
-//            ExportStreams();
+            var regulationsExporter = new RegulationsExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext());
+            ExportRestrictions();
+            ExportStreams();
+            lakeExporter.ExportLakes();
+
+            // EXPORT RELATIONSHIPS AFTER ENTITIES HAVE BEEN LOADED.
+            ExportRestrictionRoutes();
+            regulationsExporter.ExportRestrictionSections();
+            ExportPubliclyAccessibleLand();
             lakeExporter.ExportLakeSections();
             ExportCountyToStreamRelations();
             ExportStreamToPubliclyAccessibleLandRelations();
@@ -70,6 +72,13 @@ namespace TroutStreamMangler.MN
                     troutDashContext.restriction_routes.Add(route);
                 }
                 troutDashContext.SaveChanges(); // TODO: MOVE THIS.
+            }
+
+            using (var context = new MinnesotaShapeDataContext())
+            using (var troutDashContext = new TroutDashPrototypeContext())
+            {
+                var stuff =
+                    troutDashContext.restrictions.SelectMany(r => r.restrictionRoutes).Select(i => i.gid).ToList();
             }
         }
 

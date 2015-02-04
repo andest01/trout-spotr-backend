@@ -37,7 +37,7 @@ namespace TroutDash.Export
 
         private static decimal GetLength(IEnumerable<ISection> sections)
         {
-            return sections == null ? 0 : sections.Sum(s => s.Start + s.Stop);
+            return sections == null ? 0 : sections.Sum(s => s.Stop - s.Start);
         }
 
         public decimal LakesLength

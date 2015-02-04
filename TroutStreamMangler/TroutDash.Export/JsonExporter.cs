@@ -61,6 +61,8 @@ namespace TroutDash.Export
                 LakeId = l.lake_gid
             }).ToList();
 
+            d.Lakes = lakeCollection;
+
             var troutStreamSections = s.trout_stream_sections.ToList();
             var troutStream = new TroutStreamCollection();
             troutStream.Name = s.name;

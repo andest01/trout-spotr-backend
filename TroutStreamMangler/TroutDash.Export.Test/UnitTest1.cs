@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using TroutDash.EntityFramework.Models;
 
 namespace TroutDash.Export.Test
@@ -17,6 +18,7 @@ namespace TroutDash.Export.Test
             var publicLand = results.Where(s => s.PalsLength > 0).ToList();
             var restrictions = results.Where(s => s.RestrictionsLength > 0).ToList();
             var lakes = results.Where(s => s.LakesLength > 0).ToList();
+            string output = JsonConvert.SerializeObject(results);
             
         }
     }
