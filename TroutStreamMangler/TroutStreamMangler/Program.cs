@@ -67,24 +67,24 @@ namespace TroutStreamMangler
             var manifest = container.Resolve<IDatabaseManifest>();
             var importers = manifest.GetDatabaseImporters(new DirectoryInfo("."));
             
-//            var usImporter = importers.Single(i => i.DatabaseName == "us_import");
-//            usImporter.CreateDatabase();
-//            usImporter.Import();
+            var usImporter = importers.Single(i => i.DatabaseName == "us_import");
+            usImporter.CreateDatabase();
+            usImporter.Import();
 
 
-//            var states = importers.Where(i => i.DatabaseName != "us_import");
-//            foreach (var importer in states)
-//                using (importer)
-//                {
-//                    importer.CreateDatabase();
-//                    importer.Import();
-//                }
-//
-//
-//            PostImportUsData(null);
-//            PostImportMinnesotaData(null);
+            var states = importers.Where(i => i.DatabaseName != "us_import");
+            foreach (var importer in states)
+                using (importer)
+                {
+                    importer.CreateDatabase();
+                    importer.Import();
+                }
 
-//            ExportUsData(null);
+
+            PostImportUsData(null);
+            PostImportMinnesotaData(null);
+
+            ExportUsData(null);
             ExportMinnesotaData(null);
 
              return 0;
