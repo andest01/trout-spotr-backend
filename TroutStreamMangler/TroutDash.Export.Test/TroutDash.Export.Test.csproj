@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper">
+      <HintPath>..\packages\CsvHelper.2.10.0\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -86,6 +89,10 @@
     <ProjectReference Include="..\TroutDash.Export\TroutDash.Export.csproj">
       <Project>{18E5AD93-D519-4FE9-B9EF-9A50D32C0A83}</Project>
       <Name>TroutDash.Export</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TroutStreamMangler\TroutStreamMangler.csproj">
+      <Project>{0128C895-025A-4CE0-B1E6-E99E67D77910}</Project>
+      <Name>TroutStreamMangler</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
