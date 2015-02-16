@@ -6,6 +6,21 @@ using System.Threading.Tasks;
 
 namespace TroutDash.Export
 {
+    public class StreamSpeciesCsv
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Counties { get; set; }
+        public string AltName { get; set; }
+        public bool? IsBrook { get; set; }
+        public bool? IsBrookStocked { get; set; }
+        public bool? IsBrown { get; set; }
+        public bool? IsBrownStocked { get; set; }
+        public bool? IsRainbow { get; set; }
+        public bool? IsRainbowStocked { get; set; }
+        public string Status { get; set; }
+        public string QaPass { get; set; }
+    }
     public interface IJsonExporter
     {
         IEnumerable<StreamDetails> GetStreamDetails();
@@ -19,21 +34,28 @@ namespace TroutDash.Export
             TroutStreams = new TroutStreamCollection();
             Restrictions = new List<RestrictionCollection>();
             Lakes = new LakeCollection();
+            LocalNames = new string[0];
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
+        public string[] LocalNames { get; set; }
         public decimal LengthMiles { get; set; }
+        public decimal CentroidLatitude { get; set; }
+        public decimal CentroidLongitude { get; set; }
+        
         public bool HasBrookTrout { get; set; }
         public bool HasBrownTrout { get; set; }
         public bool HasRainbowTrout { get; set; }
         public bool HasStockedBrookTrout { get; set; }
         public bool HasStockedBrownTrout { get; set; }
         public bool HasStockedRainbowTrout { get; set; }
+        public string[] Counties { get; set; }
         public PalCollection Pal { get; set; }
         public TroutStreamCollection TroutStreams { get; set; }
         public IEnumerable<RestrictionCollection> Restrictions { get; set; }
         public LakeCollection Lakes { get; set; }
+        public string AlertMessage { get; set; }
 
         private static decimal GetLength(IEnumerable<ISection> sections)
         {
