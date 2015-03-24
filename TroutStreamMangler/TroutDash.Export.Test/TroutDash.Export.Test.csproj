@@ -44,6 +44,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="GeoJSON.Net">
+      <HintPath>..\packages\GeoJSON.Net.0.1.38\lib\GeoJSON.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Npgsql.2.2.1\lib\net45\Mono.Security.dll</HintPath>
@@ -74,14 +77,27 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="RegionToShapefileExporter.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegionShapefileExporter.cs" />
+    <Compile Include="GeoJsonTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="stream.geojson">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="StreamTest.geojson">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TroutDash.DatabaseImporter.Convention\TroutDash.DatabaseImporter.Convention.csproj">
+      <Project>{8324BF5C-9F41-4AC6-BF3D-7C365E1FE607}</Project>
+      <Name>TroutDash.DatabaseImporter.Convention</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TroutDash.EntityFramework\TroutDash.EntityFramework.csproj">
       <Project>{B8A442BB-4E61-4F79-A3D6-0AAC6D247D26}</Project>
       <Name>TroutDash.EntityFramework</Name>

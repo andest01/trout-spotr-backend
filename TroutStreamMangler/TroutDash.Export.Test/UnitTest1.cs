@@ -1,18 +1,47 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using CsvHelper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using TroutDash.EntityFramework.Models;
-using TroutStreamMangler.MN.Models;
 
 namespace TroutDash.Export.Test
 {
     [TestClass]
     public class UnitTest1
     {
+        [TestMethod]
+        public void TestMethod2()
+        {
+            var exporter = new JsonExporter(new TroutDashPrototypeContext());
+            var results = exporter.GetRegionDetails().ToList();
+            var southEast = results.Where(r => r.RegionName.IndexOf("south", StringComparison.OrdinalIgnoreCase) >= 0);
+            string output = JsonConvert.SerializeObject(southEast);
+            
+        }
+
+        [TestMethod]
+        public void TestMapList()
+        {
+            var exporter = new JsonExporter(new TroutDashPrototypeContext());
+            var results = exporter.GetStreamDetails().ToList();
+            string output = JsonConvert.SerializeObject(results);
+            var summary = JsonConvert.DeserializeObject<List<StreamSummary>>(output);
+
+            var things = summary.Where(i => i.TroutStreamsLength > 0).ToList();
+
+            using (var writer = File.CreateText("TestMapList.csv"))
+            {
+                var csv = new CsvWriter(writer);
+                csv.WriteRecords(summary);
+            }
+
+//            string output = JsonConvert.SerializeObject(southEast);
+
+        }
+
         [TestMethod]
         public void TestMethod1()
         {
@@ -23,7 +52,6 @@ namespace TroutDash.Export.Test
             var restrictions = results.Where(s => s.RestrictionsLength > 0).ToList();
             var lakes = results.Where(s => s.LakesLength > 0).ToList();
             string output = JsonConvert.SerializeObject(results);
-            
         }
 
         [TestMethod]
