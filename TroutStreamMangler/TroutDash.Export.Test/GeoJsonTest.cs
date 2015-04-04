@@ -17,7 +17,12 @@ namespace TroutDash.Export.Test
         {
             var context = new TroutDashPrototypeContext();
             var jsonExporter = new JsonExporter(context);
-            var t = jsonExporter.GetStreamDetails().ToDictionary(i => i.Id, i => i);
+            var streamDetails = jsonExporter.GetStreamDetails();
+
+            var detailsJson = JsonConvert.SerializeObject(streamDetails, Formatting.None);
+            File.WriteAllText("streamDetails.json", detailsJson);
+
+            var t = streamDetails.ToDictionary(i => i.Id, i => i);
             var json = File.ReadAllText("stream.geojson");
             var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(json).Features;
             var oldCount = featureCollection.Count;
@@ -31,19 +36,20 @@ namespace TroutDash.Export.Test
                 var gid = f.Properties["gid"];
                 var featureId = Convert.ToInt32(gid);
                 var jsonObject = t[featureId];
+                var obj = JsonConvert.SerializeObject(jsonObject, Formatting.None);
                 Dictionary<string, object> FD =
                     (from x in jsonObject.GetType().GetProperties() select x).ToDictionary(x => x.Name,
                         x =>
                             (x.GetGetMethod().Invoke(jsonObject, null) ?? ""));
-                f.Properties.Clear();
-                foreach (var entry in FD)
-                {
-                    f.Properties.Add(entry.Key, entry.Value);
-                }
+//                f.Properties.Clear();
+//                foreach (var entry in FD)
+//                {
+//                    f.Properties.Add(entry.Key, entry.Value);
+//                }
             }
 
-            var result = JsonConvert.SerializeObject(featureCollection, Formatting.Indented);
-            File.WriteAllText("streamResult.geojson", result);
+            var result = JsonConvert.SerializeObject(featureCollection, Formatting.None);
+            File.WriteAllText("streamResult.json", json);
         }
     }
 }

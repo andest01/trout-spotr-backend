@@ -37,7 +37,6 @@ namespace TroutDash.Export.Test
                 var csv = new CsvWriter(writer);
                 csv.WriteRecords(summary);
             }
-
 //            string output = JsonConvert.SerializeObject(southEast);
 
         }

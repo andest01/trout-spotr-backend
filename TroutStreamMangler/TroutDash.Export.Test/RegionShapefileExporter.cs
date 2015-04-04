@@ -24,7 +24,7 @@ namespace TroutDash.Export.Test
             };
             var targetDirectory = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
             var dbConnection = new DatabaseConnection("TroutDash", "localhost", "postgres");
-            var t = new RegionToShapefileExporter(context, targetDirectory, shapes, dbConnection);
+            var t = new RegionToShapefileExporter(context, targetDirectory, shapes, dbConnection, new JsonExporter(context));
             t.Export();
         }
     }

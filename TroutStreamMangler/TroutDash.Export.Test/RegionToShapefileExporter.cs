@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using TroutDash.DatabaseImporter.Convention;
 using TroutDash.EntityFramework.Models;
 
@@ -13,28 +15,39 @@ namespace TroutDash.Export.Test
         private readonly DirectoryInfo _rootDirectory;
         private readonly IEnumerable<string> _shapes;
         private readonly IDatabaseConnection _dataseConnection;
+        private readonly IJsonExporter _jsonExporter;
 
-        public RegionToShapefileExporter(TroutDashPrototypeContext context, DirectoryInfo rootDirectory, IEnumerable<string> shapes, IDatabaseConnection dataseConnection)
+        public RegionToShapefileExporter(TroutDashPrototypeContext context, DirectoryInfo rootDirectory, IEnumerable<string> shapes, IDatabaseConnection dataseConnection, IJsonExporter jsonExporter)
         {
             _context = context;
             _rootDirectory = rootDirectory;
             _shapes = shapes;
             _dataseConnection = dataseConnection;
+            _jsonExporter = jsonExporter;
+        }
+
+        private DirectoryInfo GetDirectoryInfo(region region)
+        {
+            var folder = _rootDirectory.FullName + "\\" + region.name;
+            var currentDirectory = Directory.Exists(folder) == false
+                ? Directory.CreateDirectory(folder)
+                : new DirectoryInfo(folder);
+
+            return currentDirectory;
         }
 
         public void Export()
         {
             var regions = _context.regions.ToList();
-            CreateRegion();
+            List<RegionDetails> regionalStreamProperties = _jsonExporter.GetRegionDetails().ToList();
+//            CreateRegion();
 
 
             foreach (var region in regions)
             {
                 // create a region directory
-                var folder = _rootDirectory.FullName + "\\" + region.name;
-                var currentDirectory = Directory.Exists(folder) == false 
-                    ? Directory.CreateDirectory(folder) 
-                    : new DirectoryInfo(folder);
+                RegionDetails regionProperties = regionalStreamProperties.Single(r => r.RegionId == region.gid);
+                var currentDirectory = GetDirectoryInfo(region);
 
                 foreach (var shapeName in _shapes)
                 {
@@ -56,12 +69,66 @@ namespace TroutDash.Export.Test
                     var command = CreateCommand(lake, region.name, shapeName);
                     ExecuteShellCommand.ExecuteProcess(command, _rootDirectory);
                     CreateGeoJsonScript(currentDirectory, shapeName, lake);
+                    
                 }
+                var streams =
+                    regionProperties.Counties.SelectMany(i => i.Streams).GroupBy(i => i.Id).Select(g => g.First()).ToArray();
+                CopyGeoJsonProperties(currentDirectory, streams, "stream.geojson");
+                CreateTopoJsonPackage(currentDirectory, regionProperties);
             }
+        }
+
+        private void CreateTopoJsonPackage(DirectoryInfo currentDirectory, RegionDetails regionProperties)
+        {
+            var topoJsonStreamsScript =
+                @"topojson  ./streamProperties.json ./restriction_route.geojson ./trout_stream_section.geojson  -p -o ./streams.topo.json ";
+            ExecuteShellCommand.ExecuteProcess(topoJsonStreamsScript, currentDirectory);
+
+            var regionScript = String.Format(@"topojson ./publicly_accessible_land.geojson ./streams.topo.json -p -o {0}.topo.json", regionProperties.RegionName);
+            ExecuteShellCommand.ExecuteProcess(regionScript, currentDirectory);
+        }
+
+        private void CreateRegionTopoJsonPackage(DirectoryInfo currentDirectory)
+        {
+            // merge our polygons into one.
+            var topoJsonRegionScript =
+                @"topojson  ./region.geojson ./state.geojson ./county.geojson  -p -o ./regions.topo.json ";
+            ExecuteShellCommand.ExecuteProcess(topoJsonRegionScript, currentDirectory);
+
+            // TODO: simplify them
+            var minimizedTopojsonFile = currentDirectory.FullName + "\\" + "regions.min.topo.json";
+            if (File.Exists(minimizedTopojsonFile))
+            {
+                File.Delete(minimizedTopojsonFile);
+            }
+            var simplify = @"mapshaper ./regions.topo.json -simplify visvalingam 5% -o regions.min.topo.json";
+            ExecuteShellCommand.ExecuteProcess(simplify, currentDirectory);
+            // streamData.geo.json
+            // Add our points.
+            var regionScript = String.Format(@"topojson ./streamProperties.json ./regions.min.topo.json -p -o state.topo.json");
+            ExecuteShellCommand.ExecuteProcess(regionScript, currentDirectory);
+        }
+
+
+        private void CopyGeoJsonProperties(DirectoryInfo directory, IEnumerable<StreamDetails> streams, string fileToUpdate)
+        {
+            const string StreamDetailsFile = @"streamDetails.json";
+            var fullFilePath = directory.FullName + "\\" + StreamDetailsFile;
+
+            var detailsJson = JsonConvert.SerializeObject(streams, Formatting.None);
+            if (File.Exists(fullFilePath))
+            {
+                File.Delete(fullFilePath);
+            }
+            File.WriteAllText(fullFilePath, detailsJson);
+            File.Copy("GeoJSONPropertyExporter.js", directory.FullName + "\\" + "GeoJSONPropertyExporter.js", true);
+            var nodeCommand = "node GeoJSONPropertyExporter.js " + fileToUpdate + " " + StreamDetailsFile;
+            ExecuteShellCommand.ExecuteProcess(nodeCommand, directory);
         }
 
         private void CreateRegion()
         {
+            var streamDetails = _jsonExporter.GetStreamDetails().ToList();
             var regionDirectoryName = "Regions";
             var regionFolder = _rootDirectory.FullName + "\\" + regionDirectoryName;
             if (Directory.Exists(regionFolder) == false)
@@ -82,9 +149,20 @@ namespace TroutDash.Export.Test
             ExecuteShellCommand.ExecuteProcess(countyCommand, _rootDirectory);
             var targetDirectory = new DirectoryInfo(regionFolder);
 
+            var pointsScriptPath = "createStreamPoints.sql";
+            var pointsScript = File.ReadAllText(pointsScriptPath).Replace("\n", " ").Replace("\t", " ").Replace("\r", " ");
+            var pointsCommand = CreateCommand(pointsScript, regionDirectoryName, "streamData");
+            ExecuteShellCommand.ExecuteProcess(pointsCommand, _rootDirectory);
+
+            CreateGeoJsonScript(targetDirectory, "streamData.geo.json", pointsScript);
+            CopyGeoJsonProperties(targetDirectory, streamDetails, "streamData.geo.json.geojson");
+
+
             CreateGeoJsonScript(targetDirectory, "region", regionSql);
             CreateGeoJsonScript(targetDirectory, "state", stateSql);
             CreateGeoJsonScript(targetDirectory, "county", countySql);
+
+            CreateRegionTopoJsonPackage(targetDirectory);
         }
 
         private void CreateGeoJsonScript(DirectoryInfo target, string name, string sql)
@@ -98,17 +176,14 @@ namespace TroutDash.Export.Test
             ExecuteShellCommand.ExecuteProcess(completeCommand, target);
         }
 
-        private string CreateCommand(string force, string regionName, string shapeName)
+        private string CreateCommand(string script, string regionName, string shapeName)
         {
             var HostName = _dataseConnection.HostName;
             var UserName = _dataseConnection.UserName;
             var DatabaseName = _dataseConnection.DatabaseName;
-//            var Password = "fakepassword";
             var path = Path(regionName, shapeName);
-//            var forceCommand = String.Format(@"pgsql2shp -f {4} -h {0} -u {1} -P {5} {2} ""{3}""", HostName,
-//                UserName, DatabaseName, force, path, Password);
             var forceCommand = String.Format(@"pgsql2shp -f {4} -h {0} -u {1} {2} ""{3}""", HostName,
-                UserName, DatabaseName, force, path);
+                UserName, DatabaseName, script, path);
             return forceCommand;
         }
 
