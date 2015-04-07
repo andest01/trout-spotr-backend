@@ -8,7 +8,7 @@ using TroutDash.EntityFramework.Models;
 namespace TroutStreamMangler.MN.Models
 {
     //dnr_wildlife_management_area_boundaries_publicly_accessible
-    [Table("wma", Schema = "public")]
+    [Table("dnr_wma_boundaries_pa", Schema = "public")]
     public class dnr_wildlife_management_area_boundaries_publicly_accessible : GeometryExtended
     {
         [Key]

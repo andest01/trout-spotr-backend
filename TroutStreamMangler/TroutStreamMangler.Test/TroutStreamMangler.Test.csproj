@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper">
+      <HintPath>..\packages\CsvHelper.2.11.0\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -88,20 +91,48 @@
     <Compile Include="Models\strm_regsln3.cs" />
     <Compile Include="Models\trout_streams_minnesota.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegionTest.cs" />
     <Compile Include="TroutStreamSectionsTest.cs" />
+    <Compile Include="RegionExportShapefileTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Regions\BWCA.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Regions\Metro.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Regions\NorthShore.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Regions\Northwest.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Regions\SoutheasternDriftless.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Regions\Southwest.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TroudDash.GIS\TroudDash.GIS.csproj">
       <Project>{BC9C4D96-8950-4232-B005-B17A5D6C8387}</Project>
       <Name>TroudDash.GIS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TroutDash.DatabaseImporter.Convention\TroutDash.DatabaseImporter.Convention.csproj">
+      <Project>{8324BF5C-9F41-4AC6-BF3D-7C365E1FE607}</Project>
+      <Name>TroutDash.DatabaseImporter.Convention</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TroutDash.EntityFramework\TroutDash.EntityFramework.csproj">
       <Project>{B8A442BB-4E61-4F79-A3D6-0AAC6D247D26}</Project>
       <Name>TroutDash.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TroutStreamMangler\TroutStreamMangler.csproj">
+      <Project>{0128C895-025A-4CE0-B1E6-E99E67D77910}</Project>
+      <Name>TroutStreamMangler</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

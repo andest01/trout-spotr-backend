@@ -29,7 +29,7 @@ namespace TroutStreamMangler.Test
         {
             var routeMultilineString = route.OriginalGeometry as IMultiLineString;
             var troutStreamSection = (asdf.OriginalGeometry as IMultiLineString);
-            var desiredTroutStreamSection = (asdf.Geometry_3857 as IMultiLineString);
+            var desiredTroutStreamSection = (asdf.Geometry_4326 as IMultiLineString);
             var TroutStreamSection4236 = (asdf.Geometry_4326 as IMultiLineString);
             var numberOfGeometries = troutStreamSection.Geometries.Count();
             for (var i = 0; i < numberOfGeometries; i++)
