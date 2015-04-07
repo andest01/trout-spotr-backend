@@ -24,10 +24,88 @@ namespace TroutDash.Export
     public interface IJsonExporter
     {
         IEnumerable<StreamDetails> GetStreamDetails();
+        IEnumerable<RegionDetails> GetRegionDetails();
     }
 
-    public class StreamDetails
+    public class RegionDetails
     {
+        public RegionDetails()
+        {
+            Counties = new List<CountyDetails>();
+        }
+        public string RegionName { get; set; }
+        public int RegionId { get; set; }
+        public List<CountyDetails> Counties { get; set; } 
+    }
+
+    public class CountyDetails
+    {
+        public CountyDetails()
+        {
+            Streams = new List<StreamDetails>();
+        }
+
+        public string CountyName { get; set; }
+        public int CountyId { get; set; }
+        public string StateName { get; set; }
+        public int StateId { get; set; }
+        public IEnumerable<StreamDetails> Streams { get; set; } 
+    }
+
+
+    public class MapDetails
+    {
+        
+    }
+
+    public interface IStreamSummary
+    {
+        int Id { get; set; }
+        string Name { get; set; }
+        decimal LengthMiles { get; set; }
+        decimal CentroidLatitude { get; set; }
+        decimal CentroidLongitude { get; set; }
+        bool HasBrookTrout { get; set; }
+        bool HasBrownTrout { get; set; }
+        bool HasRainbowTrout { get; set; }
+        bool HasStockedBrookTrout { get; set; }
+        bool HasStockedBrownTrout { get; set; }
+        bool HasStockedRainbowTrout { get; set; }
+        string AlertMessage { get; set; }
+        decimal LakesLength { get; }
+        decimal PalsLength { get; }
+        decimal TroutStreamsLength { get; }
+        decimal RestrictionsLength { get; }
+    }
+
+    public class StreamSummary : IStreamSummary
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal LengthMiles { get; set; }
+        public decimal CentroidLatitude { get; set; }
+        public decimal CentroidLongitude { get; set; }
+        public bool HasBrookTrout { get; set; }
+        public bool HasBrownTrout { get; set; }
+        public bool HasRainbowTrout { get; set; }
+        public bool HasStockedBrookTrout { get; set; }
+        public bool HasStockedBrownTrout { get; set; }
+        public bool HasStockedRainbowTrout { get; set; }
+        public string AlertMessage { get; set; }
+        public virtual decimal LakesLength { get; set; }
+        public virtual decimal PalsLength { get; set; }
+        public virtual decimal TroutStreamsLength { get; set; }
+        public virtual decimal RestrictionsLength { get; set; }
+    }
+
+    public class StreamDetails : StreamSummary
+    {
+        public sealed class CountyModel
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+
         public StreamDetails()
         {
             Pal = new PalCollection();
@@ -35,51 +113,41 @@ namespace TroutDash.Export
             Restrictions = new List<RestrictionCollection>();
             Lakes = new LakeCollection();
             LocalNames = new string[0];
+            Counties = new CountyModel[0];
         }
 
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public CountyModel[] Counties { get; set; }
+
         public string[] LocalNames { get; set; }
-        public decimal LengthMiles { get; set; }
-        public decimal CentroidLatitude { get; set; }
-        public decimal CentroidLongitude { get; set; }
-        
-        public bool HasBrookTrout { get; set; }
-        public bool HasBrownTrout { get; set; }
-        public bool HasRainbowTrout { get; set; }
-        public bool HasStockedBrookTrout { get; set; }
-        public bool HasStockedBrownTrout { get; set; }
-        public bool HasStockedRainbowTrout { get; set; }
-        public string[] Counties { get; set; }
+
         public PalCollection Pal { get; set; }
         public TroutStreamCollection TroutStreams { get; set; }
         public IEnumerable<RestrictionCollection> Restrictions { get; set; }
         public LakeCollection Lakes { get; set; }
-        public string AlertMessage { get; set; }
 
         private static decimal GetLength(IEnumerable<ISection> sections)
         {
             return sections == null ? 0 : sections.Sum(s => s.Stop - s.Start);
         }
 
-        public decimal LakesLength
+        public override decimal LakesLength
         {
-            get { return GetLength(Lakes.Sections); }
+            get { return Lakes == null ? 0.0M : GetLength(Lakes.Sections); }
         }
 
-        public decimal PalsLength
+        public override decimal PalsLength
         {
-            get { return GetLength(Pal.Sections); }
+            get { return Pal == null ? 0.0M : GetLength(Pal.Sections); }
         }
 
-        public decimal TroutStreamsLength
+        public override decimal TroutStreamsLength
         {
-            get { return GetLength(TroutStreams.Sections); }
+            get { return TroutStreams == null ? 0.0M : GetLength(TroutStreams.Sections); }
         }
 
-        public decimal RestrictionsLength
+        public override decimal RestrictionsLength
         {
-            get { return GetLength(Restrictions.SelectMany(i => i.Sections)); }
+            get { return Restrictions == null ? 0.0M : GetLength(Restrictions.SelectMany(i => i.Sections)); }
         }
     }
 
