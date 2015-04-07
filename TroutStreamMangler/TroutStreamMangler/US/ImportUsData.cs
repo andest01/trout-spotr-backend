@@ -62,14 +62,14 @@ namespace TroutStreamMangler.US
         {
             var s = "counties";
             AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
-            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+//            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
         }
 
         private void ImportStates()
         {
             var s = "states";
             AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
-            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+//            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
         }
     }
 }

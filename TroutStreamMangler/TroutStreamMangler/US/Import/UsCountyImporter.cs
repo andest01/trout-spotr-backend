@@ -12,7 +12,7 @@ namespace TroutStreamMangler.US.Import
         protected override void PostImportTable()
         {
             AddSpatialColumn(OriginalSpatialColumn, 4326, "Multipolygon");
-            AddSpatialColumn(OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+//            AddSpatialColumn(OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
         }
     }
 }
