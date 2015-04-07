@@ -35,24 +35,25 @@ namespace TroutDash.DatabaseImporter.Convention.Test
 
                 if (item.DatabaseName == "test_mn_import")
                 {
+                    var preferredSRID = 4326;
                     AddSpatialColumn("geom", 4326, "Multipolygon", "easements", "localhost", "postgres", item.DatabaseName);
-                    AddSpatialColumn("geom", 3857, "Multipolygon", "easements", "localhost", "postgres", item.DatabaseName);
+                    AddSpatialColumn("geom", preferredSRID, "Multipolygon", "easements", "localhost", "postgres", item.DatabaseName);
 
                     AddSpatialColumn("geom", 4326, "Multipolygon", "lakes", "localhost", "postgres", item.DatabaseName);
-                    AddSpatialColumn("geom", 3857, "Multipolygon", "lakes", "localhost", "postgres", item.DatabaseName);
+                    AddSpatialColumn("geom", preferredSRID, "Multipolygon", "lakes", "localhost", "postgres", item.DatabaseName);
 
 
                     AddSpatialColumn("geom", 4326, "Multipolygon", "state_parks", "localhost", "postgres", item.DatabaseName);
-                    AddSpatialColumn("geom", 3857, "Multipolygon", "state_parks", "localhost", "postgres", item.DatabaseName);
+                    AddSpatialColumn("geom", preferredSRID, "Multipolygon", "state_parks", "localhost", "postgres", item.DatabaseName);
 
                     AddSpatialColumn("geom", 4326, "Multipolygon", "stream_regs", "localhost", "postgres", item.DatabaseName);
-                    AddSpatialColumn("geom", 3857, "Multipolygon", "stream_regs", "localhost", "postgres", item.DatabaseName);
+                    AddSpatialColumn("geom", preferredSRID, "Multipolygon", "stream_regs", "localhost", "postgres", item.DatabaseName);
 
                     AddSpatialColumn("geom", 4326, "Multipolygon", "wma", "localhost", "postgres", item.DatabaseName);
-                    AddSpatialColumn("geom", 3857, "Multipolygon", "wma", "localhost", "postgres", item.DatabaseName);
+                    AddSpatialColumn("geom", preferredSRID, "Multipolygon", "wma", "localhost", "postgres", item.DatabaseName);
 
                     AddSpatialColumn("geom", 4326, "Multipolygon", "trout_lakes", "localhost", "postgres", item.DatabaseName);
-                    AddSpatialColumn("geom", 3857, "Multipolygon", "trout_lakes", "localhost", "postgres", item.DatabaseName);
+                    AddSpatialColumn("geom", preferredSRID, "Multipolygon", "trout_lakes", "localhost", "postgres", item.DatabaseName);
 
                     DoStuff("streams", "926915", "localhost", "postgres", "test_mn_import", "geom");
                     DoStuff("trout_streams", "926915", "localhost", "postgres", "test_mn_import", "geom");
@@ -80,9 +81,9 @@ namespace TroutDash.DatabaseImporter.Convention.Test
                 _userName, _databaseName, updateTableScript);
             ExecuteShellCommand.ExecuteProcess(updateCommand);
             ApplyNonUniqueIndexToColumn("kittle_nbr", _tableName, _hostName, _userName, _databaseName);
-
+            var preferredSRID = 4326;
             AddSpatialColumn(CleanedSpatialColumn, 4326, MultilineString, _tableName, _hostName, _userName, _databaseName);
-            AddSpatialColumn(CleanedSpatialColumn, 3857, MultilineString, _tableName, _hostName, _userName, _databaseName);
+            AddSpatialColumn(CleanedSpatialColumn, preferredSRID, MultilineString, _tableName, _hostName, _userName, _databaseName);
         }
 
         protected void ApplyNonUniqueIndexToColumn(string columnName, string _tableName, string _hostName, string _userName, string _databaseName)
