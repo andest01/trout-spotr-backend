@@ -6,7 +6,7 @@ namespace TroutDash.DatabaseImporter.Convention
 {
     public static class ExecuteShellCommand
     {
-        public static void ExecuteProcess(string command)
+        public static void  ExecuteProcess(string command, DirectoryInfo defaultDirectory = null)
         {
             var process = new Process();
             var startInfo = new ProcessStartInfo
@@ -16,11 +16,18 @@ namespace TroutDash.DatabaseImporter.Convention
                 Arguments = "/C " + command,
                 CreateNoWindow = false,
                 UseShellExecute = false,
-                RedirectStandardError = false,
-                RedirectStandardOutput = false,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
             };
+            if (defaultDirectory != null)
+            {
+                startInfo.WorkingDirectory = defaultDirectory.FullName;
+            }
+
             process.StartInfo = startInfo;
             process.Start();
+            string stdoutx = process.StandardOutput.ReadToEnd();
+            string stderrx = process.StandardError.ReadToEnd();   
             process.WaitForExit(80000);
         }
 
