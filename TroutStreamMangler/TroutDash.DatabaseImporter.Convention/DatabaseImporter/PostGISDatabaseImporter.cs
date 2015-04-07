@@ -56,8 +56,9 @@ namespace TroutDash.DatabaseImporter.Convention.DatabaseImporter
 
         public void CreateDatabase()
         {
-            DropDatabase();
-            CreateZeDatabase();
+            DropDatabase(_connection);
+            CreateZeDatabase(_connection);
+            CreateGisExtensions(_connection);
             AddSpacialReferenceSystem();
         }
 
@@ -76,43 +77,53 @@ namespace TroutDash.DatabaseImporter.Convention.DatabaseImporter
             }
         }
 
-        private void CreateZeDatabase()
+        public static void CreateZeDatabase(IDatabaseConnection dbConnection)
         {
             Console.WriteLine("Creating database...");
-            var createScript = String.Format(CreateDatabaseTemplate, DatabaseName, UserName);
+            var createScript = String.Format(CreateDatabaseTemplate, dbConnection.DatabaseName, dbConnection.UserName);
             var createCommand = String.Format(@"psql -q  --host={0} --username={1} -d postgres --command ""{2}""",
-                HostName, UserName, createScript);
+                dbConnection.HostName, dbConnection.UserName, createScript);
             ExecuteShellCommand.ExecuteProcess(createCommand);
 
+            
+        }
+
+        private static void CreateGisExtensions(IDatabaseConnection dbConnection)
+        {
             Console.WriteLine("Enabling GIS extensions...");
-            var alterTableScript = String.Format(AlterNewTableTemplate, DatabaseName);
-            var alterCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
-                UserName, DatabaseName, alterTableScript);
+            var alterTableScript = String.Format(AlterNewTableTemplate, dbConnection.DatabaseName);
+            var alterCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""",
+                dbConnection.HostName,
+                dbConnection.UserName, dbConnection.DatabaseName, alterTableScript);
             ExecuteShellCommand.ExecuteProcess(alterCommand);
 
-            var postGisCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
-                UserName, DatabaseName, AddPostGisExtension);
+            var postGisCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""",
+                dbConnection.HostName,
+                dbConnection.UserName, dbConnection.DatabaseName, AddPostGisExtension);
             ExecuteShellCommand.ExecuteProcess(postGisCommand);
 
-            var topologyCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
-                UserName, DatabaseName, AddPostGisTopologyExtension);
+            var topologyCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""",
+                dbConnection.HostName,
+                dbConnection.UserName, dbConnection.DatabaseName, AddPostGisTopologyExtension);
             ExecuteShellCommand.ExecuteProcess(topologyCommand);
 
-            var fuzzyCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
-                UserName, DatabaseName, AddPostGisFuzzyStrMatchExtension);
+            var fuzzyCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""",
+                dbConnection.HostName,
+                dbConnection.UserName, dbConnection.DatabaseName, AddPostGisFuzzyStrMatchExtension);
             ExecuteShellCommand.ExecuteProcess(fuzzyCommand);
 
-            var tigerCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
-                UserName, DatabaseName, AddPostGisTigerGeocoderExtension);
+            var tigerCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""",
+                dbConnection.HostName,
+                dbConnection.UserName, dbConnection.DatabaseName, AddPostGisTigerGeocoderExtension);
             ExecuteShellCommand.ExecuteProcess(tigerCommand);
         }
 
-        private void DropDatabase()
+        public static void DropDatabase(IDatabaseConnection dbConnection)
         {
             Console.WriteLine("Dropping database...");
-            var dropCommand = String.Format(DropDatabaseTemplate, DatabaseName);
+            var dropCommand = String.Format(DropDatabaseTemplate, dbConnection.DatabaseName);
             var dropScript = String.Format(@"psql -q  --host={1} --username={2} -d postgres --command ""{0}""",
-                dropCommand, HostName, UserName);
+                dropCommand, dbConnection.HostName, dbConnection.UserName);
             ExecuteShellCommand.ExecuteProcess(dropScript);
         }
 
