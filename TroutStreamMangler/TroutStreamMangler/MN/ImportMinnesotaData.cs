@@ -38,7 +38,7 @@ namespace TroutStreamMangler
             ExecuteProcess(updateCommand);
 
             AddSpatialColumn(_tableName, CleanedSpatialColumn, 4326, MultilineString);
-            AddSpatialColumn(_tableName, CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
+//            AddSpatialColumn(_tableName, CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
 
             Console.WriteLine("Adding index...");
             ApplyNonUniqueIndexToColumn(_tableName, "kittle_nbr");
@@ -84,7 +84,7 @@ namespace TroutStreamMangler
             ExecuteProcess(updateCommand);
 
             AddSpatialColumn(_tableName, CleanedSpatialColumn, 4326, MultilineString);
-            AddSpatialColumn(_tableName, CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
+//            AddSpatialColumn(_tableName, CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
 
             Console.WriteLine("Adding index...");
             ApplyNonUniqueIndexToColumn(_tableName, "kittle_nbr");
@@ -260,7 +260,7 @@ namespace TroutStreamMangler
             ExecuteProcess(updateCommand);
 
             AddSpatialColumn(StreamsTableName, CleanedSpatialColumn, 4326, MultilineString);
-            AddSpatialColumn(StreamsTableName, CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
+//            AddSpatialColumn(StreamsTableName, CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
 
             Console.WriteLine("Adding index...");
             ApplyNonUniqueIndexToColumn(StreamsTableName, "kittle_nbr");
@@ -283,7 +283,7 @@ namespace TroutStreamMangler
             ExecuteProcess(updateCommand);
 
             AddSpatialColumn(TroutStreamsTableName, CleanedSpatialColumn, 4326, MultilineString);
-            AddSpatialColumn(TroutStreamsTableName, CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
+//            AddSpatialColumn(TroutStreamsTableName, CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
 
             Console.WriteLine("Adding index...");
             ApplyNonUniqueIndexToColumn(TroutStreamsTableName, "kittle_nbr");
@@ -292,41 +292,41 @@ namespace TroutStreamMangler
 
         private void ImportLakes()
         {
-            var soughtDirectory = MoveTo("Lakes");
-            Import(soughtDirectory);
-
-            AddSpatialColumn(LakeTableName, OriginalSpatialColumn, 4326, "Multipolygon");
-            AddSpatialColumn(LakeTableName, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
             TrimGeometry(LakeTableName);
+            AddSpatialColumn(LakeTableName, OriginalSpatialColumn, 4326, "Multipolygon");
+//            AddSpatialColumn(LakeTableName, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
         }
 
         private void ImportTroutLakes()
         {
-            AddSpatialColumn(TroutLakeTableName, OriginalSpatialColumn, 4326, "Multipolygon");
-            AddSpatialColumn(TroutLakeTableName, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
             TrimGeometry(TroutLakeTableName);  
+            AddSpatialColumn(TroutLakeTableName, OriginalSpatialColumn, 4326, "Multipolygon");
+//            AddSpatialColumn(TroutLakeTableName, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+            
         }
 
         private void ImportRegulationSections()
         {
             var s = "strm_regsln3";
-            AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
-            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+            AddSpatialColumn(s, OriginalSpatialColumn, 4326, MultilineString);
+//            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
         }
 
         private void ImportEasements()
         {
             var s = "mndnr_fisheries_acquisition";
+            TrimGeometry(s);
             AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
-            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+//            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
         }
 
         private void ImportWildlifeManagementAreas()
         {
-            var s = "dnr_wildlife_management_area_boundaries_publicly_accessible";
-            AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
-            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+            var s = "dnr_wma_boundaries_pa";
             TrimGeometry(s);
+            AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
+//            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+            
         }
 
         protected virtual void TrimGeometry(string tableName)
@@ -345,8 +345,9 @@ namespace TroutStreamMangler
             var soughtDirectory = MoveTo(@"PubliclyAccessibleLands\StateParks");
             Import(soughtDirectory);
             var s = "dnr_stat_plan_areas_prk";
+            TrimGeometry(s);
             AddSpatialColumn(s, OriginalSpatialColumn, 4326, "Multipolygon");
-            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+//            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
         }
 
         protected internal override FileInfo OnAddSpacialReferenceSystem()

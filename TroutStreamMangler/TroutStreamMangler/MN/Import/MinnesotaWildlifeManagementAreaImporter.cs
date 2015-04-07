@@ -5,7 +5,7 @@ namespace TroutStreamMangler.MN.Import
     public class MinnesotaWildlifeManagementAreaImporter : ShapefileTableImporter
     {
         public MinnesotaWildlifeManagementAreaImporter(string rootDirectory, IDbConnection connection, string shapefileSrid)
-            : base(rootDirectory, connection, "dnr_wildlife_management_area_boundaries_publicly_accessible", shapefileSrid)
+            : base(rootDirectory, connection, "dnr_wma_boundaries_pa", shapefileSrid)
         {
         }
 
@@ -13,7 +13,7 @@ namespace TroutStreamMangler.MN.Import
         {
             TrimGeometry();
             AddSpatialColumn(OriginalSpatialColumn, 4326, "Multipolygon");
-            AddSpatialColumn(OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+//            AddSpatialColumn(OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
         }
     }
 }

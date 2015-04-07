@@ -25,7 +25,7 @@ namespace TroutStreamMangler.MN.Import
             ApplyNonUniqueIndexToColumn("kittle_nbr");
 
             AddSpatialColumn(CleanedSpatialColumn, 4326, MultilineString);
-            AddSpatialColumn(CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
+//            AddSpatialColumn(CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
 
             
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Npgsql;
+using TroutDash.DatabaseImporter.Convention;
 
 namespace TroutStreamMangler.MN
 {
@@ -23,65 +24,15 @@ namespace TroutStreamMangler.MN
 
     public class GetLinearOffsets
     {
-        public GetLinearOffsets()
+        private readonly IDatabaseConnection _dbConnection;
+
+        public GetLinearOffsets(IDatabaseConnection dbConnection)
         {
+            _dbConnection = dbConnection;
         }
 
 
-        /*
-         SELECT intersection_data.stream_id, 
-       intersection_data.stream_number, 
-       intersection_data.stream_name, 
-       intersection_data.body_name, 
-       intersection_data.body_id, 
-       intersection_data.mini_line, 
-       intersection_data.geometry_type, 
-       St_linelocatepoint(St_linemerge(stream_route.geom), St_startpoint(intersection_data.mini_line)) AS start_point ,
-       St_linelocatepoint(St_linemerge(stream_route.geom), St_endpoint(intersection_data.mini_line))   AS end_point,
-       St_length(stream_route.geom)                                                                    AS outer_length
-FROM   ( 
-              SELECT dumped.stream_id, 
-                     dumped.stream_number, 
-                     dumped.stream_name, 
-                     dumped.body_name, 
-                     dumped.body_id, 
-                     st_linemerge((dumped.geom_dump).geom)               AS mini_line, 
-                     geometrytype(st_linemerge((dumped.geom_dump).geom)) AS geometry_type 
-              FROM   ( 
-                            SELECT stream_id, 
-                                   stream_number, 
-                                   stream_name, 
-                                   body_name, 
-                                   body_id, 
-                                   st_dump(intersection_geom) AS geom_dump 
-                            FROM   ( 
-                                          SELECT stream.gid                                            AS stream_id,
-                                                 stream.kittle_nam                                        stream_number,
-                                                 stream.kittle_nam                                        stream_name,
-                                                 lake.pw_basin_n                                       AS body_name,
-                                                 lake.dnr_hydro_                                       AS body_id,
-                                                 st_intersection(stream.geom, lake.geom)               AS intersection_geom,
-                                                 geometrytype(st_intersection(stream.geom, lake.geom)) AS geom_type
-                                          FROM   PUBLIC.streams_with_measured_kittle_routes stream,
-                                                 ( 
-                                                          SELECT   new_reg                                 AS dnr_hydro_,
-                                                                   'Some Regulation'                       AS pw_basin_n,
-                                                                   st_buffer(st_multi(st_union(geom)), 10) AS geom
-                                                          FROM     ( 
-                                                                          SELECT regulation.new_reg,
-                                                                                 'asdf' AS pw_basin_n,
-                                                                                 regulation.geom
-                                                                          FROM   strm_regsln3 regulation,
-                                                                                 streams_with_measured_kittle_routes route
-                                                                          WHERE  st_intersects(st_envelope(route.geom), regulation.geom)
-                                                                          AND    route.gid = 1383) AS subquery
-                                                          GROUP BY new_reg) lake 
-                                          WHERE  stream.gid = 1383 
-                                          AND    st_intersects(lake.geom, stream.geom)) AS complex ) AS dumped ) AS intersection_data,
-       PUBLIC.streams_with_measured_kittle_routes stream_route 
-WHERE  stream_route.gid = 1383
-         */
-        public static IEnumerable<LinearReferenceResult> ExecuteBufferedLinearReferenceResults(string streamTableName,
+        public IEnumerable<LinearReferenceResult> ExecuteBufferedLinearReferenceResults(string streamTableName,
             string streamNameColumn,
             string streamIdColumn,
             string streamId,
@@ -152,7 +103,7 @@ WHERE  stream_route.{2} = {4}";
 
         }
 
-        public static IEnumerable<LinearReferenceResult> ExecuteLinearReference(string streamTableName,
+        public IEnumerable<LinearReferenceResult> ExecuteLinearReference(string streamTableName,
             string streamNameColumn,
             string streamIdColumn,
             string streamId,
@@ -211,11 +162,10 @@ WHERE  stream_route.{2} = {4}
             }
         }
 
-        private static IEnumerable<LinearReferenceResult> ExecuteQuery(string sql)
+        private IEnumerable<LinearReferenceResult> ExecuteQuery(string sql)
         {
-            NpgsqlConnection conn =
-                new NpgsqlConnection(
-                    "Server=localhost;Port=5432;User Id=postgres;Password=fakepassword;Database=mn_import;");
+            var connection = String.Format("Server={0};Port=5432;User Id={1};Database={2};Password=fakepassword;", _dbConnection.HostName, _dbConnection.UserName, _dbConnection.DatabaseName);
+            var conn = new NpgsqlConnection(connection);
             conn.Open();
 
             NpgsqlCommand command = new NpgsqlCommand(sql, conn);
@@ -361,9 +311,8 @@ FROM   streams_with_measured_kittle_routes strouter,
 WHERE  strouter.gid = '{0}'
 ";
 
-            NpgsqlConnection conn =
-                new NpgsqlConnection(
-                    "Server=localhost;Port=5432;User Id=postgres;Password=fakepassword;Database=mn_import;");
+            var connection = String.Format("Server={0};Port=5432;User Id={1};Database={2};Password=fakepassword;", _dbConnection.HostName, _dbConnection.UserName, _dbConnection.DatabaseName);
+            var conn = new NpgsqlConnection(connection);
             conn.Open();
 
             var sql = string.Format(linearReferenceString, streamId, geometryTable);
