@@ -80,6 +80,7 @@
     <Compile Include="Models\Mapping\publicly_accessible_land_typeMap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\Mapping\regionMap.cs" />
     <Compile Include="Models\Mapping\restrictionMap.cs" />
     <Compile Include="Models\Mapping\restriction_routeMap.cs" />
     <Compile Include="Models\Mapping\restriction_sectionMap.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Models\publicly_accessible_land_type.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\region.cs" />
     <Compile Include="Models\restriction.cs" />
     <Compile Include="Models\restriction_section.cs" />
     <Compile Include="Models\spatial_ref_sys.cs" />

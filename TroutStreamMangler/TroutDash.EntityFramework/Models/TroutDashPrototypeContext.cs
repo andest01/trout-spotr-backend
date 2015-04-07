@@ -11,7 +11,7 @@ namespace TroutDash.EntityFramework.Models
         }
 
         public TroutDashPrototypeContext()
-            : base("Name=TroutDash")
+            : base("Name=troutdash2")
         {
             Database.SetInitializer<TroutDashPrototypeContext>(null);
         }
@@ -28,6 +28,7 @@ namespace TroutDash.EntityFramework.Models
         public DbSet<lake> lakes { get; set; }
         public DbSet<lake_section> lake_sections { get; set; }
         public DbSet<restriction_route> restriction_routes { get; set; }
+        public DbSet<region> regions { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -43,6 +44,7 @@ namespace TroutDash.EntityFramework.Models
             modelBuilder.Configurations.Add(new lakeMap());
             modelBuilder.Configurations.Add(new lake_sectionMap());
             modelBuilder.Configurations.Add(new restriction_routeMap());
+            modelBuilder.Configurations.Add(new regionMap());
         }
     }
 }

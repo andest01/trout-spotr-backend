@@ -19,7 +19,7 @@ namespace TroutDash.EntityFramework.Models.Mapping
     {
         string Geom_4326 { get; set; }
         GeoAPI.Geometries.IGeometry Geometry_4326 { get; }
-        string Geom_3857 { get; set; }
-        GeoAPI.Geometries.IGeometry Geometry_3857 { get; }
+//        string Geom_3857 { get; set; }
+//        GeoAPI.Geometries.IGeometry Geometry_3857 { get; }
     }
 }

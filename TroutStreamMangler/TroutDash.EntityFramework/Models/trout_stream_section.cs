@@ -23,18 +23,6 @@ namespace TroutDash.EntityFramework.Models
         public decimal stop { get; set; }
         public virtual stream stream { get; set; } 
         private static readonly WKBReader _reader = new WKBReader();
-//        [Column("geom")]
-//        public string Geom { get; set; }
-//        private Lazy<IGeometry> _geom;
-//        public virtual GeoAPI.Geometries.IGeometry Geometry
-//        {
-//            get
-//            {
-//                var bytes = WKBReader.HexToBytes(Geom);
-//                var geom = _reader.Read(bytes);
-//                return geom;
-//            }
-//        }
 
         public int stream_gid { get; set; }
     }

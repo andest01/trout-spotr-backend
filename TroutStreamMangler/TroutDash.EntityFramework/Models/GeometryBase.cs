@@ -55,27 +55,27 @@ namespace TroutDash.EntityFramework.Models
         protected GeometryExtended() : base()
         {
             _geom4326 = new Lazy<IGeometry>(() => GetGeometry(() => Geom_4326));
-            _geom3857 = new Lazy<IGeometry>(() => GetGeometry(() => Geom_3857));
+//            _geom3857 = new Lazy<IGeometry>(() => GetGeometry(() => Geom_3857));
         }
 
         private readonly Lazy<IGeometry> _geom4326;
-        private readonly Lazy<IGeometry> _geom3857;
+//        private readonly Lazy<IGeometry> _geom3857;
 
         [Column("geom_4326")]
         public virtual string Geom_4326 { get; set; }
 
-        [Column("geom_3857")]
-        public virtual string Geom_3857 { get; set; }
+//        [Column("geom_3857")]
+//        public virtual string Geom_3857 { get; set; }
 
 
         public virtual IGeometry Geometry_4326
         {
             get { return _geom4326.Value; }
         }
-
-        public virtual IGeometry Geometry_3857
-        {
-            get { return _geom3857.Value; }
-        }
+//
+//        public virtual IGeometry Geometry_3857
+//        {
+//            get { return _geom3857.Value; }
+//        }
     }
 }

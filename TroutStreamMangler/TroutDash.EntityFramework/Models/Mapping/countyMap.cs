@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace TroutDash.EntityFramework.Models.Mapping
@@ -30,6 +31,7 @@ namespace TroutDash.EntityFramework.Models.Mapping
             this.Property(t => t.name).HasColumnName("name");
             this.Property(t => t.lsad).HasColumnName("lsad");
             this.Property(t => t.state_gid).HasColumnName("state_gid");
+            this.Property(t => t.stream_count).HasColumnName("stream_count");
 
             // Relationships
             this.HasMany(t => t.stream)
@@ -44,6 +46,10 @@ namespace TroutDash.EntityFramework.Models.Mapping
             this.HasRequired(t => t.state)
                 .WithMany(t => t.counties)
                 .HasForeignKey(d => d.state_gid);
+
+            this.HasOptional(i => i.region)
+                .WithMany(i => i.counties)
+                .HasForeignKey(i => i.region_id);
 
         }
     }
