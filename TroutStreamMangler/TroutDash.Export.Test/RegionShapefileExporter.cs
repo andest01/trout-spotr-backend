@@ -23,7 +23,7 @@ namespace TroutDash.Export.Test
                 "restriction_route"
             };
             var targetDirectory = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
-            var dbConnection = new DatabaseConnection("TroutDash", "localhost", "postgres");
+            var dbConnection = new DatabaseConnection("troutdash2", "localhost", "postgres");
             var t = new RegionToShapefileExporter(context, targetDirectory, shapes, dbConnection, new JsonExporter(context));
             t.Export();
         }

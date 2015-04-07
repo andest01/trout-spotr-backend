@@ -40,7 +40,7 @@ namespace TroutDash.Export.Test
         {
             var regions = _context.regions.ToList();
             List<RegionDetails> regionalStreamProperties = _jsonExporter.GetRegionDetails().ToList();
-//            CreateRegion();
+            CreateRegion();
 
 
             foreach (var region in regions)
