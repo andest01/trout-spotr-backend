@@ -29,13 +29,13 @@ namespace TroutStreamMangler
         {
             using (var c = new NpgsqlConnection(connection))
             {
-                return new DatabaseConnection(c.Database, "postgres", c.Host);
+                return new DatabaseConnection(c.Database, c.Host, "postgres");
             }
         }
 
         private static IDatabaseConnection GetTroutDashConnection()
         {
-            return GetDbConnection(ConfigurationManager.ConnectionStrings["TroutDash"].ConnectionString);
+            return GetDbConnection(ConfigurationManager.ConnectionStrings["troutdash2"].ConnectionString);
         }
 
         private static IDatabaseConnection GetMnConnection()
@@ -66,7 +66,7 @@ namespace TroutStreamMangler
 
             var manifest = container.Resolve<IDatabaseManifest>();
             var importers = manifest.GetDatabaseImporters(new DirectoryInfo("."));
-            
+//            
             var usImporter = importers.Single(i => i.DatabaseName == "us_import");
             usImporter.CreateDatabase();
             usImporter.Import();
@@ -81,11 +81,21 @@ namespace TroutStreamMangler
                 }
 
 
+
             PostImportUsData(null);
             PostImportMinnesotaData(null);
 
-            ExportUsData(null);
-            ExportMinnesotaData(null);
+            var dbConnection = GetTroutDashConnection();
+            var mnConnection = GetMnConnection();
+            // dropdb -h localhost -U postgres --if-exists TroutDash2
+            PostGisDatabaseImporter.DropDatabase(dbConnection);
+            PostGisDatabaseImporter.CreateZeDatabase(dbConnection);
+
+            var restoreDbCommand = String.Format(@"psql -U {0} -d {1} -a -f {2}", dbConnection.UserName, dbConnection.DatabaseName, "Streams_backup_2015_04_06_1.backup");
+            ExecuteShellCommand.ExecuteProcess(restoreDbCommand);
+
+            ExportUsData(null, dbConnection);
+            ExportMinnesotaData(null, dbConnection, mnConnection);
 
              return 0;
         }
@@ -97,19 +107,23 @@ namespace TroutStreamMangler
 
         protected const string NonUniqueColumnBstarIndex = @"CREATE UNIQUE INDEX ix_{0}_{1} ON public.{0} USING btree (gid ASC NULLS LAST); ALTER TABLE public.{0} CLUSTER ON ix_{0}_{1};";  // table name, column name
 
-        private static void ExportMinnesotaData(string[] args)
+        private static void ExportMinnesotaData(string[] args, IDatabaseConnection dbConnection, IDatabaseConnection dbMnImportConnection)
         {
-            var minnesotaExporter = new ExportMinnesotaData()
+            var minnesotaExporter = new ExportMinnesotaData(dbConnection, dbMnImportConnection, new CentroidResetter(dbConnection))
             {
-                FileLocation = @"MN/Data/Restrictions/regulations.json"
+                FileLocation = @"MN/Data/Restrictions/regulations.json",
+                StreamMetadataFileLocation = @"MN/Data/Streams/StreamMetadata.csv",
+                
             };
             minnesotaExporter.Run(args);
         }
 
-        private static void ExportUsData(string[] args)
+        private static void ExportUsData(string[] args, IDatabaseConnection dbConnection)
         {
-            var usExporter = new ExportUsData()
+            var usConnection = GetUsConnection();
+            var usExporter = new ExportUsData(dbConnection, usConnection)
             {
+                RegionCsv = @"US/Data/Regions/"
             };
             usExporter.Run(args);
         }

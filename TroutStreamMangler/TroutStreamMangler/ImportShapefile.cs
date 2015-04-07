@@ -14,7 +14,7 @@ namespace TroutStreamMangler
     public class ImportShapefile : ConsoleCommand, IDatabaseImporter
     {
         private int _timeout = 5*60*1000;
-        public static readonly int PreferredSrid = 3857;
+        public static readonly int PreferredSrid = 4326;
 
         public ImportShapefile()
         {
