@@ -28,3 +28,4 @@
 /TroutStreamMangler/TroutDash.Export/obj
 /TroutStreamMangler/TroutDash.Export.Test/obj
 /TroutStreamMangler/TroutDash.Export.Test/bin
+/TroutStreamMangler/TroutDash.DatabaseImporter.Convention/*.user
