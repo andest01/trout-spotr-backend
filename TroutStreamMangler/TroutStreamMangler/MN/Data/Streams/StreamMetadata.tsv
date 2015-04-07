@@ -1,0 +1,849 @@
+Id	Name	Alt Name	Counties	IsBrook	IsBrookStocked	IsBrown	IsBrownStocked	IsRainbow	IsRainbowStocked	Status	QA PASS
+M-009-017-010	Ahrensfeld Creek		Winona	TRUE		TRUE					
+M-050-050-001	Albrechts Creek		Pine								
+S-005-001	Amity Creek		St. Louis	TRUE				TRUE			
+S-005-001-001	Amity Creek, East Branch		St. Louis	TRUE							
+S-000.7-003	Anderson Creek		Carlton	TRUE							
+H-001-030-026-004	Angora Creek		St. Louis								
+H-001-092-021-015-002	Arrowhead Creek		Lake								
+H-001-040	Ash River		St. Louis								
+S-075-008	Assinika Creek		Cook								
+M-055-017	Assumption Creek		Carver	TRUE	TRUE						
+H-026-047-041	Auganash Creek		Clearwater								
+H-026-047-033-001	Bad Boy Creek		Mahnomen								
+H-026-047-033-001-001	Bad Boy Creek		Mahnomen,Clearwater								
+M-009-010-002	Badger Creek		Houston	TRUE		TRUE					
+M-009-010-002-B001	Badger Creek		Houston	TRUE		TRUE					
+M-004-007	Ballpark Creek		Houston			TRUE					
+S-064-007	Bally Creek		Cook								
+M-050-049-003	Bangs Brook		Pine								
+S-038	Baptism River		Lake								
+S-038-B001	Baptism River		Lake								
+S-038-008	Baptism River, East Branch		Lake								
+M-063-081-003	Barbour Creek		Crow Wing								
+S-058-005	Barker Creek		Cook								
+M-050-049-005-000.1	Barnes Spring		Pine								
+H-026-030-070-001	Battle River, South Branch		Koochiching,Beltrami								
+M-026-006	Bear Creek		Winona	TRUE		TRUE					
+S-002-016-001	Beartrap Creek		St. Louis	TRUE							
+S-002-016-001-B001	Beartrap Creek		St. Louis	TRUE							
+H-001-040-027-003	Beauty Creek		St. Louis								
+M-009-010-003	Beaver Creek		Houston			TRUE	TRUE	TRUE	TRUE		
+M-031-006	Beaver Creek		Winona,Wabasha			TRUE					
+M-009-010-003-008	Beaver Creek, East		Houston	TRUE		TRUE					
+M-009-010-003-009	Beaver Creek, West		Houston	TRUE		TRUE					
+S-035	Beaver River		Lake								
+S-035-001	Beaver River, East Branch		Lake								
+S-035-006	Beaver River, West Branch		Lake								
+S-088-009-001	Beaverdam Creek		Cook								
+I-006	Bee Creek		Houston	TRUE		TRUE					
+H-024-055-007	Bemis Hill Creek		Roseau								
+S-002-016-017-001	Berry Creek		Lake,St. Louis	TRUE		TRUE					
+M-009-021	Big Springs Creek		Fillmore	TRUE		TRUE					
+S-015	Big Sucker Creek		St. Louis								
+S-035-010	Big Thirtynine Creek		Lake								
+M-050-050-002-003	Bjorks Creek		Pine								
+M-063-087-003-001-001	Black Bear Brook		Crow Wing								
+M-055-004	Black Dog Creek		Dakota								
+H-001-040-017	Black Duck River		St. Louis								
+M-103-001-002	Blackhoof Creek		Crow Wing								
+S-001-003	Blackhoof River		Carlton								
+S-001-003-B002	Blackhoof River		Carlton								
+S-038-008-006	Blesner Creek		Lake								
+S-053-006	Blind Temperance Creek		Cook								
+S-075-013	Bluff Creek		Cook								
+M-063-087-003	Borden Creek		Crow Wing	TRUE	TRUE						
+M-009-017-006	Borson Spring		Winona	TRUE		TRUE					
+H-026-081-017-006	Brandberg Creek		Otter Tail								
+M-065-011	Briggs Creek		Benton,Sherburne								
+M-050-012	Brown's Creek		Washington			TRUE	TRUE				
+M-128-003	Bruce Creek		Itasca								
+M-128-003-B001	Bruce Creek		Itasca								
+S-075	Brule River		Cook								
+M-009-004	Brush Valley Creek		Houston			TRUE					
+H-026-047-042	Buckboard Creek		Clearwater								
+S-002-000.5	Buckingham Creek		St. Louis								
+S-029-002	Bud Creek		Lake								
+M-045	Bullard Creek		Goodhue	TRUE							
+M-106-013-004	Bungo Creek		Cass								
+M-146-017-003	Bungoshine Creek		Hubbard								
+M-078-002	Bunker Hill Creek		Morrison,Benton	TRUE		TRUE					
+M-001-010	Burg Creek	Berg Creek	Houston			TRUE					
+M-024-002	Burns Valley Creek, East		Winona	TRUE		TRUE					
+M-024-002-001	Burns Valley Creek, West		Winona	TRUE		TRUE					
+S-053-014-001	Burnt Creek		Cook								
+M-009-001-001	Butterfield Creek		Houston	TRUE		TRUE					
+S-045-008-001	Cabin Creek		Lake								
+M-063-081-001-002	Camp Creek		Crow Wing								
+M-009-025-003	Camp Creek		Fillmore			TRUE	TRUE	TRUE	TRUE		
+M-009-025-003-B001	Camp Creek		Fillmore			TRUE	TRUE	TRUE	TRUE		
+H-001-092-021-015-002-001-001	Camp Creek		Lake								
+H-001-092-016-006	Camp E Creek		Lake								
+M-009-019	Camp Hayward Creek		Fillmore	TRUE		TRUE					
+M-095.1	Camp Ripley Brook		Morrison	TRUE							
+M-009-011-002	Campbell Creek		Winona,Houston	TRUE							
+M-055-166-010	Canby Creek		Yellow Medicine,Lac qui Parle,Lincoln								
+M-009-025-010	Canfield Creek		Fillmore			TRUE					
+S-017-004-002	Captain Jacobson Creek		St. Louis	TRUE		TRUE		TRUE			
+S-058-002	Caribou Creek		Cook								
+S-047	Caribou River		Lake								
+S-079	Carlson Creek		Cook	TRUE							
+S-064	Cascade River		Cook								
+S-024	Castle Danger Creek		Lake					TRUE			
+M-096-028	Cat River		Wadena								
+M-106-013-006	Cedar Creek		Cass								
+S-053-002-001	Cedar Creek		Cook								
+S-035-001-002	Cedar Creek		Lake								
+M-018	Cedar Valley Creek		Winona	TRUE		TRUE					
+S-002-016-002	Chalberg Creek		St. Louis								
+S-003	Chester Creek		St. Louis								
+S-003-009	Chester Creek, East Branch		St. Louis								
+S-002-016-005	Chicken Creek		St. Louis								
+S-002-016-005-B002	Chicken Creek		St. Louis								
+M-009-010-010-002	Chickentown Creek		Fillmore	TRUE							
+S-000.7-002.5	Clear Creek		Carlton								
+S-001.5	Clear Creek		Carlton								
+M-043-006	Clear Creek		Goodhue	TRUE							
+H-026-030-019	Clearwater River		Polk,Mahnomen,Red Lake,Pennington,Clearwater,Beltrami								
+H-026-030-019-B001	Clearwater River		Red Lake								
+S-069	Cliff Creek		Cook								
+S-002-016-027	Cloudy Spring Creek		Lake								
+S-002-000.7	Coffee Creek		St. Louis								
+M-159-001.5	Cold Creek		Hubbard								
+M-034-048	Cold Spring Brook		Wabasha,Goodhue	TRUE		TRUE					
+M-074-004	Cold Springs Creek		Stearns								
+M-074-004-001	Cold Springs Creek		Stearns								
+M-050-049-003-002	Cons Creek		Pine								
+S-002-035-019-002	Coolidge Creek		St. Louis								
+M-009-017-005-005	Coolridge Creek		Winona	TRUE		TRUE					
+M-009-017-005-005-B001	Coolridge Creek		Winona	TRUE		TRUE					
+M-009-011-005	Corey Creek		Winona	TRUE							
+M-096-001-005-002-001	Cory Brook		Cass	TRUE							
+M-055-158-014	Cottonwood Creek		Chippewa,Swift								
+M-050-034-001-001	County Ditch 3		Chisago								
+M-004	Crooked Creek		Houston	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE		
+M-050-049	Crooked Creek		Pine			TRUE	TRUE	TRUE	TRUE		
+M-004-009	Crooked Creek, South Fork		Houston	TRUE	TRUE	TRUE	TRUE				
+M-050-049-005	Crooked Creek, West Fork		Pine	TRUE							
+S-052-B000.1	Cross River		Cook								
+S-052-B000.3	Cross River		Cook								
+S-052-B000.5	Cross River		Cook								
+S-052-B000.5-001	Cross River		Cook								
+S-052-B001	Cross River		Cook								
+S-052	Cross River		Lake,Cook								
+S-023	Crow Creek		Lake								
+S-038-012	Crown Creek		Lake								
+M-009-025-004-004	Crystal Creek		Fillmore			TRUE					
+M-009-007	Crystal Creek		Houston	TRUE		TRUE					
+M-050-052	Crystal Creek		Pine								
+M-096-001-007-001	Cullen Brook		Crow Wing								
+S-065	Cut Face Creek		Cook								
+M-106-013-005	Dabill Creek		Cass								
+S-026-002	Dago Creek		Lake								
+M-014	Dakota Creek		Winona	TRUE		TRUE					
+M-014-B001	Dakota Creek		Winona	TRUE		TRUE					
+M-009-012	Daley Creek		Fillmore,Houston	TRUE		TRUE					
+H-001-030-023-008	Dark River		St. Louis								
+H-026-081-028-003	Dead Horse Creek		Becker								
+S-001-002	Deer Creek		Carlton								
+M-027	Deering Valley Creek		Winona			TRUE					
+H-001-092-016-001	Denley Creek		Lake								
+S-067	Devil Track River		Cook								
+M-009-023	Diamond Creek		Fillmore	TRUE		TRUE					
+M-009-023-001	Diamond Creek, South Fork		Fillmore	TRUE		TRUE					
+H-001-029-004-003	Dinner Creek		Koochiching								
+S-044.1	Dragon Creek		Lake								
+H-001-092-021-015-008	Dumbbell River		Lake								
+S-068	Durfee Creek		Cook								
+M-009-025-001	Duschee Creek		Fillmore	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE		
+S-002-014-002	Dutch Slough		St. Louis								
+M-055-009	Eagle Creek		Scott			TRUE					
+M-055-009-003	Eagle Creek, East Branch		Scott								
+S-038-008-B001	East Baptism River		Lake								
+S-038-008-B001-001	East Baptism River		Lake								
+S-073	East Colville Creek		Cook								
+M-032	East Indian Creek		Wabasha	TRUE		TRUE					
+S-045-007-002	East Moose Creek		Lake								
+S-002-041	East Swan River		St. Louis								
+S-002-041-B001	East Swan River		St. Louis								
+H-001-046-023	East Two River		St. Louis								
+H-001-046-023-001.5	East Two River		St. Louis								
+H-001-046-023-B001	East Two River		St. Louis								
+H-001-046-023-B002	East Two River		St. Louis								
+H-001-046-023-B003	East Two River		St. Louis								
+S-038-008-005	Egge Creek		Lake								
+M-001-011	Eitzen Creek		Houston	TRUE		TRUE					
+S-067-004	Elbow Creek		Cook								
+S-002-010-002.6	Elm Creek		Carlton,St. Louis								
+S-022	Encampment River		Lake								
+M-009-025-014	Etna Creek		Fillmore			TRUE	TRUE				
+M-009-025-014-001	Etna Creek, South Branch		Fillmore	TRUE	TRUE						
+M-071-005	Fairhaven Creek		Stearns	TRUE							
+S-066	Fall River		Cook								
+S-075-011	Falls Creek		Cook								
+M-096-021	Farnham Creek		Cass,Wadena								
+S-080	Farquhar Creek		Cook								
+H-001-040-017-006	Fawn Creek		St. Louis								
+M-096-018	Fawn Creek		Todd,Wadena								
+H-026-047-007-002	Felton Creek		Clay								
+M-009-017-012	Ferguson Creek		Winona	TRUE		TRUE					
+M-009-014	Ferndale Creek		Fillmore,Houston	TRUE		TRUE					
+S-075-015	Fiddle Creek		Cook								
+M-096-020-015	Finn Creek		Otter Tail								
+S-002-032-007	Floodwood River, West Branch		Itasca,St. Louis								
+S-077	Flute Reed River		Cook								
+H-001-092-021-015-008-001	Folly Creek		Lake								
+H-001-092-021-015-008-001-B001	Folly Creek		Lake								
+S-002-013	Fond du Lac Creek		Carlton								
+M-009-025-009	Forestville Creek		Fillmore			TRUE					
+S-035-001-002-003	Fortythree Creek, West Branch		Lake								
+S-067-005	Fox Farm Creek		Cook								
+M-009-010-010-006	Frego Creek		Fillmore								
+S-011	French River		St. Louis								
+S-064-011	Fry Creek		Cook								
+M-026-001	Garvin Brook		Winona	TRUE		TRUE					
+S-075-001	Gauthier Creek		Cook								
+M-009-011-006	Gernander Creek		Winona	TRUE							
+M-042	Gilbert Creek		Wabasha,Goodhue	TRUE		TRUE					
+S-002-007.5	Gill Creek		Carlton								
+H-001-046-007-001	Gilmore Creek		St. Louis								
+M-024	Gilmore Creek		Winona			TRUE					
+S-002-035-019	Gimlet Creek		St. Louis								
+M-009-010-005.5	Girl Scout Camp Creek		Fillmore,Houston	TRUE							
+M-004-008	Goetzinger Tributary		Houston	TRUE		TRUE					
+S-026	Gooseberry River		Lake								
+M-033	Gorman Creek		Wabasha	TRUE		TRUE					
+S-087	Grand Portage River		Cook								
+H-001-092-008-012	Grassy Creek		St. Louis								
+S-075-007	Greenwood River		Cook								
+S-075-007-B001	Greenwood River		Cook								
+S-075-007-B002	Greenwood River		Cook								
+M-009-024	Gribben Creek		Fillmore	TRUE		TRUE					
+M-009-024-B001	Gribben Creek		Fillmore	TRUE		TRUE					
+M-009-024-B001-001	Gribben Creek		Fillmore	TRUE		TRUE					
+M-050-046-010	Grindstone River		Pine								
+M-009-010-006	Hallum Creek		Fillmore,Houston	TRUE							
+M-009-033-008-006	Hamilton Creek		Fillmore,Mower								
+M-034-041	Hammond Creek		Wabasha	TRUE		TRUE					
+H-001-030-018-007	Harrigan Creek		Itasca								
+H-001-092-016-001-001-003	Harris Creek		Lake								
+S-002-010-002	Hay Creek		Carlton,St. Louis								
+M-096-011-005	Hay Creek		Cass								
+M-046	Hay Creek		Goodhue			TRUE					
+H-001-029-004-003-007	Hay Creek		Koochiching								
+M-050-048-001	Hay Creek		Pine	TRUE							
+M-096-020-001	Hay Creek		Wadena								
+M-096-020-001-B000.5	Hay Creek		Wadena								
+M-096-020-001-B001	Hay Creek		Wadena								
+S-053-002	Heartbreak Creek		Cook								
+S-053-002-B001	Heartbreak Creek		Cook								
+S-053-002-B002	Heartbreak Creek		Cook								
+M-034-013	Helbig Creek		Wabasha	TRUE							
+M-096-038	Hellcamp Creek		Hubbard								
+S-002-016-004	Hellwig Creek		St. Louis								
+M-009-017-005-006	Hemmingway Creek		Winona	TRUE		TRUE					
+M-161.5	Hennepin Creek		Hubbard,Beltrami								
+H-026-047-045	Hier Creek		Clearwater								
+H-001-092-021-011-008	Hill Creek		Lake								
+M-106-013-003	Hoblin Creek		Cass								
+S-038-009	Hockamin Creek		Lake								
+S-084	Hollow Rock Creek		Cook								
+H-026-081-023-001	Holmstad Creek		Otter Tail								
+S-053-009	Honeymoon Creek		Cook								
+S-052-006	Houghtaling Creek		Lake								
+S-002-016-011-007	Humphrey Creek		St. Louis								
+S-001-005-001	Hunters Creek		Carlton								
+S-063	Indian Camp Creek		Cook								
+S-002-016-019	Indian Creek		Lake,St. Louis								
+S-002-016-019-D001	Indian Creek		St. Louis								
+H-001-092-021-011-003	Inga Creek		Lake								
+S-088-008-001	Irish Creek		Cook								
+H-001-092-021-011-004	Jack Pine Creek		Lake								
+M-055-106	John's Creek		Brown								
+H-001-030-026-005	Johnson Creek		St. Louis								
+S-002-014-002-004	Johnson Creek		St. Louis								
+M-073	Johnson Creek		Stearns			TRUE	TRUE				
+S-061	Jonvick Creek		Cook								
+S-067-006	Junco Creek		Cook								
+M-146-014	Kabekona River		Hubbard								
+S-072	Kadunce Creek		Cook								
+M-146-014-000.05-001	Kawishiwash Creek		Hubbard								
+M-009-033-008-004	Kedron Creek		Fillmore,Mower			TRUE					
+S-002-002	Keene Creek		St. Louis								
+M-055-004-000.5	Kennaley's Creek		Dakota								
+S-070	Kimball Creek		Cook								
+M-050-046-029-023	King Creek		Carlton								
+S-002-003	Kingsbury Creek		St. Louis								
+S-002-003-D001	Kingsbury Creek		St. Louis								
+S-002-003-D002	Kingsbury Creek		St. Louis								
+H-001-040-027	Kinmount Creek		St. Louis								
+S-002-016-025	Kinney Creek		Lake								
+M-009-040	Kinney Creek		Olmsted			TRUE					
+M-074-005	Kinzer Creek		Stearns								
+M-043-009	Klair Creek		Goodhue								
+S-017	Knife River		Lake,St. Louis								
+S-017-004	Knife River, West Branch		Lake,St. Louis								
+S-002-003.5	Knowlton Creek		St. Louis								
+S-053-013-001	Koski Creek		Cook								
+M-009-010-003-009-006	Larson Creek		Houston	TRUE		TRUE					
+M-088-012	Larson Creek		Todd								
+M-050-046-028-010	Larsons Creek		Pine								
+M-163	LaSalle Creek		Hubbard,Clearwater								
+H-026-056-009-005-006	Lawndale Creek		Wilkin								
+M-050-028	Lawrence Creek		Chisago	TRUE		TRUE					
+H-026-030-019-007-001-013	Lengby Creek		Polk								
+I-023-001	LeRoy Trout Pond		Mower								
+S-038-007	Leskinen Creek		Lake								
+S-005	Lester River		St. Louis								
+S-005-B001	Lester River		St. Louis								
+M-121	Libby Brook		Aitkin								
+S-038-004	Lindstrom Creek		Lake								
+S-074	Little Brule Creek		Cook								
+M-048-012	Little Cannon River		Goodhue			TRUE	TRUE	TRUE	TRUE		
+S-002-016-014	Little Cloquet River		St. Louis								
+S-067-002	Little Devil Track River		Cook								
+S-026-003	Little Gooseberry River		Lake								
+M-050-048-001-002	Little Hay Creek		Pine	TRUE							
+H-001-092-021-010	Little Isabella River		Lake								
+M-009-033-005	Little Jordan Creek		Fillmore	TRUE	TRUE	TRUE	TRUE				
+S-017-005	Little Knife River		Lake								
+S-017-001	Little Knife River		St. Louis								
+S-017-001-D001	Little Knife River		St. Louis								
+S-046	Little Manitou River		Lake								
+S-044	Little Marais River		Lake								
+S-064-010-002	Little Mississippi Creek		Cook								
+S-002-016-021-003	Little Mud Creek		Lake								
+S-000.7-002-001	Little Net River		Carlton,Pine								
+S-002-009-001	Little Otter Creek		Carlton								
+M-017-002	Little Pickwick Creek		Winona	TRUE		TRUE					
+M-137-008	Little Pokegama Creek		Itasca								
+M-088-011-001	Little Rice Lake Outlet		Todd								
+M-078	Little Rock Creek		Morrison,Benton	TRUE		TRUE					
+M-074-066	Little Sauk Creek		Todd								
+S-019-001	Little Stewart River		Lake								
+S-075-008-003	Little Stony Creek		Cook								
+S-016	Little Sucker River		St. Louis								
+S-035-010-002	Little Thirtynine Creek		Lake								
+M-031-018-004	Logan Creek		Olmsted			TRUE					
+H-026-081-012-004	Long Branch Creek		Otter Tail								
+M-094-021	Long Brook, Lower South		Crow Wing								
+M-094-023	Long Brook, Upper South		Crow Wing								
+M-034-022	Long Creek		Wabasha			TRUE					
+M-115-006	Long Lake Creek		Aitkin								
+H-001-092-004-003	Longstorff Creek		St. Louis								
+M-009-009-003	Looney Creek		Winona,Houston	TRUE							
+M-009-033-002	Lost Creek		Fillmore			TRUE					
+M-050-047-001	Lost Creek		Pine								
+H-001-030-011	Lost River		Koochiching,St. Louis								
+H-026-030-019-007	Lost River		Polk,Red Lake,Clearwater								
+S-075-012-004	Lullaby Creek		Cook								
+M-073-002	Luxemburg Creek		Stearns			TRUE					
+M-009-031	Lynch Creek		Fillmore,Olmsted	TRUE	TRUE	TRUE	TRUE				
+M-009-033-010-001	Mahoods Creek		Fillmore			TRUE					
+S-045	Manitou River		Lake								
+S-045-B001	Manitou River		Lake								
+S-045-009	Manitou River, South Branch		Lake								
+M-009-010-008	Maple Creek		Fillmore	TRUE		TRUE					
+S-064-008	Mark Creek		Cook								
+M-096-021-004	Martin Creek		Cass								
+S-047-011	Martin Creek		Lake								
+H-001-092-016-009-009-001	Mary Ann Creek		Lake								
+M-137-009	Matuska's Creek		Itasca								
+S-017-008	Mc Carthy Creek		Lake,St. Louis								
+H-026-030-069-001-002	Meadow Creek		Beltrami								
+S-002-001.5	Merritt Creek		St. Louis								
+M-117-015	Michaud Brook		Cass								
+M-034-021	Middle Creek		Wabasha	TRUE		TRUE					
+S-002-010-B004	Midway River		Carlton								
+S-002-010	Midway River		Carlton,St. Louis								
+H-001-092-016-005-001	Mike Kelly Creek		Lake								
+M-009-034	Mill Creek		Fillmore,Olmsted			TRUE	TRUE	TRUE	TRUE		
+S-002-001	Miller Creek		St. Louis								
+M-041	Miller Creek		Wabasha			TRUE					
+M-015	Miller Valley Creek		Winona	TRUE							
+S-026-001-005	Mink Creek		Lake								
+S-002-007	Mission Creek		Carlton,St. Louis								
+M-050-044-006	Mission Creek		Pine								
+S-064-010	Mississippi Creek		Cook								
+S-058-004-001	Mistletoe Creek		Cook								
+H-001-092-021-011	Mitawan Creek		Lake								
+M-009-011	Money Creek		Winona,Houston			TRUE					
+M-009-011-008	Money Creek, West Branch		Winona			TRUE					
+S-067-002-004	Monker Creek		Cook								
+S-075-003	Mons Creek		Cook								
+S-045-008	Moose Creek		Lake								
+M-050-046-029-B001.9	Moose Horn River		Carlton								
+M-050-046-029-B002	Moose Horn River		Carlton								
+M-050-046-029-B002-B001	Moose Horn River		Carlton								
+M-050-046-029-B003	Moose Horn River		Carlton								
+M-050-046-029	Moose Horn River		Carlton,Pine								
+M-117-011-002	Morrison Brook		Aitkin,Itasca								
+M-096-011	Mosquito Creek		Cass								
+M-096-037-001	Muckey Creek		Hubbard								
+S-001.2	Mud Creek		Carlton								
+S-067-004-003	Mud Creek		Cook								
+M-055-158-034-007	Mud Creek		Pope,Swift								
+S-002-016-014-004	Mud Creek		St. Louis								
+H-026-030-066	Mud River		Beltrami								
+S-002-016-021	Murphy Creek		Lake								
+S-076	Myhr Creek		Cook								
+H-026-030-019-007-024	Nassett Creek		Clearwater								
+M-146-017-001	Necktie River		Cass,Hubbard,Beltrami								
+M-146-017-001-B001	Necktie River		Hubbard								
+M-090-007.5	Nelson Hay Creek		Morrison								
+S-001-005	Nemadji Creek		Carlton								
+S-001	Nemadji River		Carlton,Pine								
+S-000.7	Nemadji River, South Fork		Carlton								
+S-064-009	Nestor Creek		Cook								
+S-000.7-002	Net River		Carlton,Pine								
+M-001-009	New Yorker Hollow Creek		Houston	TRUE		TRUE					
+M-009-010-010-003	Newburg Creek		Fillmore	TRUE		TRUE					
+S-035-001-002-002	Nicado Creek		Lake								
+S-045-007	Ninemile Creek		Lake								
+S-045-007-B001	Ninemile Creek		Lake								
+H-001-040-017-008	Ninemile Creek		St. Louis								
+H-001-092-016-005	Nip Creek		Lake								
+H-001-092-016-001-001	Nira Creek		Lake								
+H-026-030-069-004	O'Brien Creek		Beltrami								
+M-050-019	Old Mill Stream		Washington	TRUE							
+S-038-010	Oliver Creek		Lake								
+M-096-001-008-002	Olson Brook		Cass								
+S-056	Onion River		Cook								
+S-002-009	Otter Creek		Carlton								
+S-002-009-B001	Otter Creek		Carlton								
+S-037	Palisade Creek		Lake								
+S-053-008	Pancake Creek		Cook								
+S-002-032-007-003	Pancake Creek		Itasca								
+M-009-025-003-001	Partridge Creek		Fillmore			TRUE					
+M-055-060	Paul's Creek		Le Sueur			TRUE	TRUE	TRUE	TRUE		
+S-053-011	Pecore Creek		Cook								
+M-050-046-007	Pelkey Creek		Pine								
+M-096-002-004	Peterson Creek		Cass								
+M-026-001-008	Peterson Creek		Winona	TRUE		TRUE					
+M-128-018.5	Pickerel Creek		Itasca								
+M-017	Pickwick Creek		Winona	TRUE		TRUE					
+S-058-002-001	Pike Lake Creek		Cook								
+M-048-011	Pine Creek		Dakota,Goodhue	TRUE		TRUE					
+M-009-017-005-B001	Pine Creek		Winona								
+M-009-017-005	Pine Creek		Winona,Fillmore	TRUE	TRUE	TRUE	TRUE				
+M-011	Pine Creek		Winona,Houston	TRUE		TRUE					
+M-011-021	Pine Creek, South Fork		Winona	TRUE		TRUE					
+S-075-011-001	Pine Mountain Creek		Cook								
+S-002-014	Pine River		St. Louis								
+M-106-013	Pine River, South Fork		Cass								
+H-001-003-001-003	Pitt Creek		Lake of the Woods								
+M-024-001	Pleasant Valley Creek		Winona	TRUE		TRUE					
+S-053-012	Plouff Creek		Cook								
+S-053-012-B001	Plouff Creek		Cook								
+S-053-012-B002	Plouff Creek		Cook								
+M-137-007	Pokegama Creek		Itasca								
+M-146-017-002	Pokety Creek		Hubbard								
+S-058	Poplar River		Cook								
+S-058-B001	Poplar River		Cook								
+S-058-B002	Poplar River		Cook								
+S-088-009	Portage Brook		Cook								
+M-120-005-B006	Prairie River		Carlton								
+M-120-005-B007	Prairie River		Carlton								
+M-120-005	Prairie River		Carlton,Aitkin,St. Louis								
+M-055-126-001	Ramsey Creek		Redwood,Yellow Medicine			TRUE	TRUE	TRUE	TRUE		
+S-001.9	Red River		Carlton								
+S-083	Red Rock Creek		Cook								
+M-055-126	Redwood River		Redwood,Murray,Lyon,Pipestone			TRUE	TRUE	TRUE	TRUE		
+S-081	Reservation River		Cook								
+M-009-030	Rice Creek		Fillmore			TRUE	TRUE				
+M-009-010-005	Riceford Creek		Fillmore,Houston			TRUE					
+M-009-010-005-B001	Riceford Creek		Houston			TRUE					
+M-073-001	Robinson Hill Creek		Stearns			TRUE					
+S-001-001	Rock Creek		Carlton								
+S-045-006	Rock Cut Creek		Lake								
+S-002-010-004	Rocky Run		St. Louis								
+M-096-002-003	Rogers Brook		Cass								
+M-026	Rollingstone Creek		Winona								
+M-026-007	Rollingstone Creek		Winona								
+M-026-002	Rollingstone Creek, Middle Branch		Winona			TRUE					
+S-057	Rollins Creek		Cook								
+M-009-033	Root River, Middle Branch		Fillmore			TRUE					
+M-009-025-B001	Root River, South Branch		Fillmore	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE		
+M-009-025-B002	Root River, South Branch		Fillmore	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE		
+M-009-025-B003	Root River, South Branch		Fillmore	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE		
+M-009-025-B004	Root River, South Branch		Fillmore	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE		
+M-009-025	Root River, South Branch		Fillmore,Mower	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE		
+M-009-010-B002	Root River, South Fork		Fillmore	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE		
+M-009-010	Root River, South Fork		Fillmore,Houston	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE		
+M-011-009	Rose Valley Creek		Winona	TRUE		TRUE					
+M-128-010-004	Rosholt Creek		Itasca								
+M-094-012	Round Lake Creek		Crow Wing								
+M-009-017	Rush Creek		Winona,Fillmore			TRUE					
+H-026-081-021	Rush Lake Creek		Otter Tail								
+S-002-035-022-002	Ryan Creek		St. Louis								
+M-101	Sand Creek		Crow Wing								
+M-128-010	Sand Creek		Itasca								
+M-050-048	Sand Creek		Pine								
+H-001-030-023-003	Sand Creek		St. Louis								
+H-001-030-023-003-B003	Sand Creek		St. Louis								
+S-002-006	Sargent Creek		St. Louis								
+S-053-014	Sawbill Creek		Cook								
+S-038-006	Sawmill Creek		Lake								
+I-037-034	Scheldorf Creek		Cottonwood			TRUE	TRUE	TRUE	TRUE		
+H-026-047-034	Schermerhorn Creek		Mahnomen								
+S-012	Schmidt Creek		St. Louis								
+M-159	Schoolcraft River		Hubbard,Beltrami								
+S-038-008-007	Schoolhouse Creek		Lake								
+M-009-017-001-000.5	Schueler Creek		Fillmore,Houston	TRUE		TRUE					
+M-009-017-001	Schueler Creek		Winona,Fillmore	TRUE		TRUE					
+H-001-092-021-015-008-002	Scott Creek		Lake								
+M-040	Second Creek		Wabasha	TRUE							
+S-049.5	Section 16 Creek		Cook								
+S-000.7-001.5	Section 36 Creek		Carlton								
+H-001-092-004-001	Section Thirty Creek		Lake,St. Louis								
+M-055-071.5	Seven Mile Creek		Nicollet			TRUE	TRUE				
+M-009-033-001	Shady Creek		Fillmore			TRUE					
+M-009-010-009	Shattuck Creek	Nepstad Creek	Fillmore	TRUE		TRUE					
+S-032	Shipwreck Creek		Lake								
+S-002-008	Silver Creek		Carlton								
+S-021	Silver Creek		Lake								
+M-009-009	Silver Creek		Winona,Houston	TRUE							
+S-053-007	Sixmile Creek		Cook								
+S-001-004	Skunk Creek		Carlton								
+S-026-001	Skunk Creek		Lake								
+S-002-009.5	Slaughterhouse Creek		Carlton								
+M-079	Smart's Creek		Stearns	TRUE							
+M-137	Smith Creek		Itasca								
+H-001-092-021-007-001	Snake Creek		Lake								
+M-032.5	Snake Creek		Wabasha	TRUE							
+H-001-092-021-007	Snake River		Lake								
+M-065-007	Snake River		Sherburne								
+H-026-081-042	Solid Bottom Creek		Clearwater,Becker								
+M-026-003	Speltz Creek		Winona	TRUE		TRUE					
+H-001-092-021-010-004	Sphagnum Creek		Lake								
+S-029	Split Rock River		Lake								
+S-029-B001	Split Rock River		Lake								
+S-029-001	Split Rock River, East Branch		Lake								
+M-106-004-002-001	Spring Brook		Cass								
+M-106-008-001	Spring Brook		Crow Wing								
+M-048-020	Spring Brook		Rice	TRUE							
+M-071-007	Spring Brook		Stearns								
+H-026-030-069-003-004	Spring Creek		Beltrami								
+S-001-004.7	Spring Creek		Carlton								
+M-047	Spring Creek		Goodhue	TRUE	TRUE	TRUE	TRUE				
+M-128-010-003	Spring Creek		Itasca								
+M-055-108	Spring Creek		Nicollet,Redwood,Brown								
+M-050-046-010-001	Spring Creek		Pine								
+S-002-016-005-001	Spring Creek		St. Louis								
+S-002-016-014-013	Spring Creek		St. Louis								
+M-034-020	Spring Creek		Wabasha			TRUE					
+H-026-030-019-025	Spring Lake Creek		Beltrami								
+M-009-033-010-B002	Spring Valley Creek		Fillmore								
+M-009-033-010-B002-001	Spring Valley Creek		Fillmore								
+M-009-033-010-B003	Spring Valley Creek		Fillmore								
+M-009-033-010-B003-B001	Spring Valley Creek		Fillmore								
+M-009-033-010-B004	Spring Valley Creek		Fillmore								
+M-009-033-010-B005	Spring Valley Creek		Fillmore								
+M-009-033-010	Spring Valley Creek		Fillmore,Mower			TRUE		TRUE	TRUE		
+S-062	Spruce Creek		Cook								
+M-096-010-028	Spruce Creek		Douglas,Otter Tail								
+M-146-014-008	Stall Creek		Hubbard								
+S-017-003	Stanley Creek		Lake,St. Louis								
+S-000.7-001	State Line Creek		Carlton								
+S-002-004	Stewart Creek		St. Louis								
+S-019	Stewart River		Lake								
+S-019-B001	Stewart River		Lake								
+S-075-014	Stickle Creek		Cook								
+M-026-001-005	Stockton Valley Creek		Winona	TRUE		TRUE					
+S-071	Stone Creek		Cook								
+M-096-001-006	Stoney Brook		Cass								
+S-002-017-002	Stoney Brook, Martin Branch		St. Louis								
+S-000.7-002.6	Stony Brook		Carlton								
+H-001-030-023-002-003	Stony Brook		Itasca,St. Louis								
+M-096-001-006-005	Stony Brook, North Fork		Cass								
+S-026-001-009	Stony Creek		Lake								
+M-009-008	Storer Creek		Houston	TRUE		TRUE					
+M-026-005	Straight Creek		Winona			TRUE					
+M-096-035-002-002-004	Straight Lake Creek		Becker								
+M-096-035-002-002-003.5	Straight River		Becker								
+M-096-035-002-002	Straight River		Hubbard,Becker								
+S-030	Stream Number 30		Lake								
+S-052-002	Stumble Creek		Cook								
+S-088-010	Stump River		Cook								
+M-167	Sucker Brook		Clearwater								
+H-026-081-012-008	Sucker Creek		Becker								
+S-048	Sugar Loaf Creek		Cook								
+M-009-001-002	Sullivan Creek		Houston	TRUE		TRUE					
+S-002-016-023	Sullivan Creek		Lake								
+S-064-006	Sundling Creek		Cook								
+S-064-006-B001	Sundling Creek		Cook								
+S-088-008	Swamp River		Cook								
+S-075-012-008	Swamper Creek		Cook								
+S-053-013	Swanson Creek		Cook								
+M-009-010-001	Swede Bottom Creek		Houston	TRUE							
+H-001-029-022.1	Swine Creek		Itasca								
+S-058-004	Tait River		Cook								
+S-007	Talmadge River		St. Louis								
+S-007-B001	Talmadge River		St. Louis								
+S-053	Temperance River		Cook								
+S-053-B000.5	Temperance River		Cook								
+S-053-B000.5-001	Temperance River		Cook								
+S-053-B001	Temperance River		Cook								
+M-071-006	Thiel Creek		Wright,Stearns	TRUE							
+S-064-012	Thompson Creek		Cook								
+S-064-012-D001	Thompson Creek		Cook								
+M-009-001	Thompson Creek		Houston	TRUE	TRUE	TRUE	TRUE				
+M-071-002	Threemile Creek	Hanson Brook	Stearns								
+S-038-008-002	Tikkanen Creek		Lake								
+S-075-010	Timber Creek		Cook								
+S-004	Tischer Creek		St. Louis								
+H-026-081-028	Toad River		Becker,Otter Tail								
+H-026-081-028-B001	Toad River		Becker,Otter Tail								
+H-004-002	Tomato Creek		Lake of the Woods								
+H-001-092-021-015-008-005	Tomlinson Creek		Lake								
+S-053-010	Torgenson Creek		Cook								
+M-009-026	Torkelson Creek		Fillmore	TRUE		TRUE					
+S-038-008-003	Tower Creek		Lake								
+S-002-016-021-001	Trappers Creek		Lake								
+M-004-005	Trib 5 to Crooked Creek		Houston			TRUE					
+M-031-010	Tributary 10 to Whitewater River		Winona	TRUE		TRUE					
+M-048-007	Trout Brook		Dakota,Goodhue								
+M-046-001	Trout Brook		Goodhue								
+H-001-029-005.5	Trout Brook		Koochiching								
+H-001-029-005.6	Trout Brook		Koochiching								
+M-034-009	Trout Brook		Wabasha								
+M-034-049-001	Trout Brook	Mazeppa Creek	Wabasha,Goodhue								
+M-074-053-005-002	Trout Creek		Todd								
+M-011-016	Trout Ponds Creek		Winona								
+M-031-019-002	Trout Run		Winona,Olmsted								
+M-009-029	Trout Run Creek		Winona,Fillmore,Olmsted								
+M-031-001	Trout Valley Creek		Winona,Wabasha	TRUE		TRUE					
+S-051	Two Island River		Lake,Cook								
+M-122	Two Rivers Spring		Aitkin	TRUE	TRUE						
+M-096-020-007	Union Creek		Wadena,Otter Tail								
+H-026-081-028-003-006	Unnamed Creek		Becker								
+H-026-081-028-047	Unnamed Creek		Becker								
+H-026-047-045-006	Unnamed Creek		Clearwater								
+S-064-007-020	Unnamed Creek		Cook								
+S-064-009-004	Unnamed Creek		Cook								
+S-064-010-004	Unnamed Creek		Cook								
+S-064-015	Unnamed Creek		Cook								
+S-067-002-005	Unnamed Creek		Cook								
+S-075-004.5	Unnamed Creek		Cook								
+S-075-004.9	Unnamed Creek		Cook								
+S-088-008-001-001	Unnamed Creek		Cook								
+M-009-010-005-004	Unnamed Creek		Fillmore								
+M-009-010-010-002-003	Unnamed Creek		Fillmore								
+M-009-010-010-006-002	Unnamed Creek		Fillmore								
+M-009-010-010-006-002-002	Unnamed Creek		Fillmore								
+M-009-010-B003	Unnamed Creek		Fillmore								
+M-009-018.7	Unnamed Creek		Fillmore								
+M-009-023-001-005	Unnamed Creek		Fillmore								
+M-009-025-004-B001	Unnamed Creek		Fillmore								
+M-009-025-009-008	Unnamed Creek		Fillmore								
+M-009-010-005-003	Unnamed Creek		Fillmore,Houston								
+M-034-049-001-006	Unnamed Creek		Goodhue								
+M-045-007	Unnamed Creek		Goodhue								
+M-045-007-001	Unnamed Creek		Goodhue								
+M-046-002	Unnamed Creek		Goodhue								
+M-001-004	Unnamed Creek		Houston								
+M-001-032	Unnamed Creek		Houston								
+M-004-008-002	Unnamed Creek		Houston								
+M-009-001-002-006	Unnamed Creek		Houston								
+M-009-004-001	Unnamed Creek		Houston								
+M-009-008-004	Unnamed Creek		Houston								
+M-009-010-003-009-006-002	Unnamed Creek		Houston								
+M-009-010-003-009-006-003	Unnamed Creek		Houston								
+M-009-010-003-009-006-003-001	Unnamed Creek		Houston								
+M-009-010-003-B001	Unnamed Creek		Houston								
+M-009-012-006	Unnamed Creek		Houston								
+S-047-012.5	Unnamed Creek		Lake								
+M-009-040-003	Unnamed Creek		Olmsted								
+M-031-018-B001	Unnamed Creek		Olmsted								
+M-032-031	Unnamed Creek		Wabasha								
+M-040-010	Unnamed Creek		Wabasha								
+M-042-009	Unnamed Creek		Wabasha								
+H-026-056-009-005-006-002	Unnamed Creek		Wilkin								
+M-009-011-005-007	Unnamed Creek		Winona								
+M-009-017-005-005-006.5	Unnamed Creek		Winona								
+M-009-017-005-006-014	Unnamed Creek		Winona								
+M-009-017-015	Unnamed Creek		Winona								
+M-011-016-003	Unnamed Creek		Winona								
+M-011-016-004	Unnamed Creek		Winona								
+M-011-016-B001	Unnamed Creek		Winona								
+M-011-021-005	Unnamed Creek		Winona								
+M-011-021-005-001	Unnamed Creek		Winona								
+M-015-010	Unnamed Creek		Winona								
+M-017-002-B001	Unnamed Creek		Winona								
+M-018-012	Unnamed Creek		Winona								
+M-018-B001	Unnamed Creek		Winona								
+M-024-002-009	Unnamed Creek		Winona								
+M-026-001-005-019	Unnamed Creek		Winona								
+M-026-006-008	Unnamed Creek		Winona								
+M-026-006-008-002	Unnamed Creek		Winona								
+M-026-006-B001	Unnamed Creek		Winona								
+M-026-007-B001	Unnamed Creek		Winona								
+M-027-002	Unnamed Creek		Winona								
+M-055-081	Unnamed Stream		Blue Earth								
+M-055-085	Unnamed Stream		Blue Earth								
+M-055-086	Unnamed Stream		Blue Earth								
+M-050-046-029-023-002	Unnamed Stream		Carlton								
+M-050-046-029-B002-001	Unnamed Stream		Carlton								
+M-120-005-018	Unnamed Stream		Carlton								
+M-120-005-018-001	Unnamed Stream		Carlton								
+M-120-005-018-D001	Unnamed Stream		Carlton								
+S-000.7-001.5-004	Unnamed Stream		Carlton								
+S-000.7-002.3	Unnamed Stream		Carlton								
+S-001-002-002	Unnamed Stream		Carlton								
+S-001-004-004	Unnamed Stream		Carlton								
+S-001-004-005	Unnamed Stream		Carlton								
+S-001-005-007	Unnamed Stream		Carlton								
+S-001.2-006	Unnamed Stream		Carlton								
+S-001.2-007	Unnamed Stream		Carlton								
+S-002-008-001	Unnamed Stream		Carlton								
+S-002-008-001-005	Unnamed Stream		Carlton								
+S-002-010-002-000.7	Unnamed Stream		Carlton								
+S-002-011.5	Unnamed Stream		Carlton								
+S-000.7-002-007	Unnamed Stream		Carlton,Pine								
+S-002-010-002.3	Unnamed Stream		Carlton,St. Louis								
+M-106-004-002-001-001	Unnamed Stream		Cass								
+M-106-013-005-001-001	Unnamed Stream		Cass								
+M-117-015-003-001	Unnamed Stream		Cass								
+M-050-026	Unnamed Stream		Chisago								
+M-050-027	Unnamed Stream		Chisago								
+MAJ-070310575	Unnamed Stream		Chisago								
+MAJ-090222938	Unnamed Stream		Clearwater								
+MAJ-040129492	Unnamed Stream		Cook								
+MAJ-22773	Unnamed Stream		Cook								
+M-100-002	Unnamed Stream		Crow Wing								
+M-049-012	Unnamed Stream		Dakota								
+M-055-004-001	Unnamed Stream		Dakota								
+M-055-004-004.5	Unnamed Stream		Dakota								
+M-055-004-007	Unnamed Stream		Dakota								
+M-146-014-012	Unnamed Stream		Hubbard								
+M-159-008	Unnamed Stream		Hubbard								
+M-135-005-003	Unnamed Stream		Itasca								
+M-137-003-001	Unnamed Stream		Itasca								
+M-137-010	Unnamed Stream		Itasca								
+M-137-011	Unnamed Stream		Itasca								
+S-002-032-011	Unnamed Stream		Itasca								
+H-001-029-004-003-003	Unnamed Stream		Koochiching								
+S-002-016-018-003	Unnamed Stream		Lake								
+S-017-009	Unnamed Stream		Lake								
+S-017-014	Unnamed Stream		Lake								
+S-019-020	Unnamed Stream		Lake								
+S-019-B002	Unnamed Stream		Lake								
+S-021-001	Unnamed Stream		Lake								
+S-026-002-007	Unnamed Stream		Lake								
+S-027.7	Unnamed Stream		Lake								
+S-017-004-001	Unnamed Stream		Lake,St. Louis								
+S-017-004-010.5	Unnamed Stream		Lake,St. Louis								
+S-017-006	Unnamed Stream		Lake,St. Louis								
+M-055-059.5	Unnamed Stream		Le Sueur								
+M-055-179-074	Unnamed Stream		Otter Tail								
+M-050-048-010	Unnamed Stream		Pine								
+M-050-049-B001	Unnamed Stream		Pine								
+MAJ-090216006	Unnamed Stream		Polk,Mahnomen								
+H-001-046-023-001.5-001	Unnamed Stream		St. Louis								
+H-001-046-023-001.5-002	Unnamed Stream		St. Louis								
+MAJ_090382883	Unnamed Stream		St. Louis								
+MAJ-09038891	Unnamed Stream		St. Louis								
+S-002-010-003	Unnamed Stream		St. Louis								
+S-002-010-004-003	Unnamed Stream		St. Louis								
+S-002-010-004-006	Unnamed Stream		St. Louis								
+S-002-010-009	Unnamed Stream		St. Louis								
+S-002-014-002-003	Unnamed Stream		St. Louis								
+S-002-014-002-004-001	Unnamed Stream		St. Louis								
+S-002-014-003	Unnamed Stream		St. Louis								
+S-002-014-004	Unnamed Stream		St. Louis								
+S-002-016-001-002	Unnamed Stream		St. Louis								
+S-002-016-001-002-002	Unnamed Stream		St. Louis								
+S-002-016-001.5	Unnamed Stream		St. Louis								
+S-002-016-004-006	Unnamed Stream		St. Louis								
+S-002-016-004-007	Unnamed Stream		St. Louis								
+S-002-016-004-007-001	Unnamed Stream		St. Louis								
+S-002-016-006-005	Unnamed Stream		St. Louis								
+S-002-016-008-002	Unnamed Stream		St. Louis								
+S-002-016-008-008	Unnamed Stream		St. Louis								
+S-002-016-009	Unnamed Stream		St. Louis								
+S-002-016-009.5	Unnamed Stream		St. Louis								
+S-002-016-009.5-B001	Unnamed Stream		St. Louis								
+S-002-016-011-006	Unnamed Stream		St. Louis								
+S-002-016-011-006-002	Unnamed Stream		St. Louis								
+S-002-016-011.7	Unnamed Stream		St. Louis								
+S-002-016-013	Unnamed Stream		St. Louis								
+S-002-018-013	Unnamed Stream		St. Louis								
+S-002-035-019-002-003	Unnamed Stream		St. Louis								
+S-002-041-005	Unnamed Stream		St. Louis								
+S-002-041-005-006	Unnamed Stream		St. Louis								
+S-002-041-011	Unnamed Stream		St. Louis								
+S-002-041-011-001	Unnamed Stream		St. Louis								
+S-004-003	Unnamed Stream		St. Louis								
+S-005-007	Unnamed Stream		St. Louis								
+S-005-010	Unnamed Stream		St. Louis								
+S-005-010-002	Unnamed Stream		St. Louis								
+S-005-010-002-001	Unnamed Stream		St. Louis								
+S-005-012	Unnamed Stream		St. Louis								
+S-007-002	Unnamed Stream		St. Louis								
+S-011-001	Unnamed Stream		St. Louis								
+S-011-005	Unnamed Stream		St. Louis								
+S-011-015	Unnamed Stream		St. Louis								
+S-011-017	Unnamed Stream		St. Louis								
+S-015-000.5	Unnamed Stream		St. Louis								
+S-015-001	Unnamed Stream		St. Louis								
+S-017-001-003	Unnamed Stream		St. Louis								
+S-017-001-008	Unnamed Stream		St. Louis								
+S-017-003-006	Unnamed Stream		St. Louis								
+M-071-002-004	Unnamed Stream		Stearns								
+M-071-005-001	Unnamed Stream		Stearns								
+MAJ-070440903	Unnamed Stream		Wabasha								
+M-096-020-001-B000.5-001	Unnamed Stream		Wadena								
+M-050-017	Unnamed Stream		Washington								
+M-050-022.5	Unnamed Stream		Washington								
+M-050-024	Unnamed Stream		Washington								
+M-050-024.1	Unnamed Stream		Washington								
+MAJ-070310105	Unnamed Stream		Washington								
+MAJ-070310570	Unnamed Stream		Washington								
+MAJ-070310571	Unnamed Stream		Washington								
+MAJ-070310687	Unnamed Stream		Washington								
+MAJ-070310691	Unnamed Stream		Washington								
+S-002-016-006	Us-kab-wan-ka River		St. Louis								
+M-050-007-002	Valley Branch		Washington	TRUE		TRUE		TRUE	TRUE		
+M-050-007	Valley Creek		Washington	TRUE		TRUE		TRUE	TRUE		
+M-050-007-B001	Valley Creek		Washington	TRUE		TRUE		TRUE	TRUE		
+H-001-030-018	Valley River		Itasca,Koochiching								
+M-106-001-005	Van Sickle Brook		Crow Wing								
+H-001-030-023-002-010	Venning Creek		Itasca								
+H-001-030-023-002-010-B001	Venning Creek		Itasca								
+H-001-030-023-002-010-B002	Venning Creek		Itasca								
+M-049	Vermillion River		Scott,Dakota,Goodhue			TRUE		TRUE	TRUE		
+M-049-005	Vermillion River, South Branch		Dakota			TRUE					
+M-009-010-007	Vesta Creek		Fillmore	TRUE							
+H-001-092-021-011-007	Victor Creek		Lake								
+M-096-037	Wallingford Brook		Hubbard								
+S-052-006-001	Wanless Creek		Lake								
+M-128-008	Warba Creek		Itasca								
+M-064-023	Washington Creek		Meeker								
+M-009-025-002	Watson Creek		Fillmore			TRUE					
+M-009-025-002-021	Watson Creek		Fillmore			TRUE					
+H-001-092-021-010-007	Weiss Creek		Lake								
+H-001-092-016-009-009	Wenho Creek		Lake								
+M-034-020-001	West Albany Creek		Wabasha			TRUE					
+S-017-004-B002	West Branch		St. Louis								
+H-001-092-021-015-002-001	West Camp Creek		Lake								
+M-034-017	West Indian Creek		Wabasha	TRUE		TRUE					
+H-001-046-024	West Two River		St. Louis								
+S-002-035-022	Whiteface River, South Branch		St. Louis								
+M-031	Whitewater River		Winona,Wabasha			TRUE		TRUE	TRUE		
+M-031-019	Whitewater River, Middle Branch		Winona,Olmsted	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE		
+M-031-018	Whitewater River, North Branch		Winona,Wabasha,Olmsted			TRUE		TRUE	TRUE		
+M-031-017	Whitewater River, South Branch		Winona,Olmsted			TRUE		TRUE	TRUE		
+M-100	Whitley's Creek		Crow Wing	TRUE	TRUE	TRUE	TRUE				
+S-002-016-026	Whyte Creek		Lake								
+M-050-049-002	Wilbur Brook		Pine								
+M-007	Wildcat Creek		Houston			TRUE					
+M-009-025-004	Willow Creek		Fillmore			TRUE	TRUE	TRUE	TRUE		
+M-071-009	Willow Creek		Meeker,Stearns								
+M-096-020-017	Willow Creek		Otter Tail								
+M-001	Winnebago Creek		Houston	TRUE		TRUE	TRUE	TRUE	TRUE		
+M-009-010-010	Wisel Creek		Fillmore			TRUE	TRUE	TRUE	TRUE		
+M-050-049-005-002	Wolf Creek		Pine								
+S-067-001	Woods Creek		Cook								
+I-027-009	Woodson Creek		Mower								
+S-002-057-003	Wyman Creek		St. Louis								
+S-002-057-003-B001	Wyman Creek Braid		St. Louis								
