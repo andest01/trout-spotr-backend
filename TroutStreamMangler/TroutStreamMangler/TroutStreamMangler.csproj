@@ -1,0 +1,413 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0128C895-025A-4CE0-B1E6-E99E67D77910}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TroutStreamMangler</RootNamespace>
+    <AssemblyName>TroutStreamMangler</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Extras.FakeItEasy">
+      <HintPath>..\packages\Autofac.Extras.FakeItEasy.3.0.2\lib\net40\Autofac.Extras.FakeItEasy.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\packages\Caliburn.Micro.Core.2.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform">
+      <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="CsvHelper">
+      <HintPath>..\packages\CsvHelper.2.10.0\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Devart.Data">
+      <HintPath>..\packages\dotConnect.Express.for.PostgreSQL.7.3.254\lib\Devart.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Devart.Data.PostgreSql">
+      <HintPath>..\packages\dotConnect.Express.for.PostgreSQL.7.3.254\lib\Devart.Data.PostgreSql.dll</HintPath>
+    </Reference>
+    <Reference Include="Devart.Data.PostgreSql.Entity.Spatials, Version=7.3.274.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\packages\FakeItEasy.1.18.0\lib\net40\FakeItEasy.dll</HintPath>
+    </Reference>
+    <Reference Include="GeoAPI, Version=1.7.3.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\GeoAPI.1.7.3\lib\net45-client\GeoAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="ManyConsole">
+      <HintPath>..\packages\ManyConsole.0.4.2.17\lib\ManyConsole.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>..\packages\Npgsql.2.2.1\lib\net45\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="NDesk.Options">
+      <HintPath>..\packages\NDesk.Options.0.2.1\lib\NDesk.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite, Version=1.13.3.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NetTopologySuite.1.13.3.2\lib\net45\NetTopologySuite.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO.PostGis">
+      <HintPath>..\packages\NetTopologySuite.IO.PostGis.1.13.2\lib\net403-client\NetTopologySuite.IO.PostGis.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\packages\Npgsql.2.2.1\lib\net45\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql.EntityFramework">
+      <HintPath>..\packages\Npgsql.EntityFramework.2.2.1\lib\net45\Npgsql.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="PowerCollections, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NetTopologySuite.1.13.3.2\lib\net45\PowerCollections.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MinnesotaDataProcessor.cs" />
+    <Compile Include="DataProcessor.cs" />
+    <Compile Include="IDatabaseImporter.cs" />
+    <Compile Include="AdministrativeImporterBase.cs" />
+    <Compile Include="IDataProcessor.cs" />
+    <Compile Include="MN\LakeExporter.cs" />
+    <Compile Include="MN\RegionModel.cs" />
+    <Compile Include="MN\ExportMinnesotaData.cs" />
+    <Compile Include="IDatabaseExporter.cs" />
+    <Compile Include="MN\ExportRegulationSections.cs" />
+    <Compile Include="MN\GetLinearOffsets.cs" />
+    <Compile Include="MN\ImportMinnesotaData.cs" />
+    <Compile Include="ImportShapefile.cs" />
+    <Compile Include="MN\Import\MinnesotaDatabaseImport.cs" />
+    <Compile Include="MN\Import\MinnesotaEasementsImporter.cs" />
+    <Compile Include="MN\Import\MinnesotaLakeImporter.cs" />
+    <Compile Include="MN\Import\MinnesotaRegulationSectionsImporter.cs" />
+    <Compile Include="MN\Import\MinnesotaStateParksImporter.cs" />
+    <Compile Include="MN\Import\MinnesotaStreamRouteImporter.cs" />
+    <Compile Include="MN\Import\MinnesotaTableManifest.cs" />
+    <Compile Include="MN\Import\MinnesotaWildlifeManagementAreaImporter.cs" />
+    <Compile Include="MN\Models\dnr_hydro_features_all.cs" />
+    <Compile Include="MN\Models\dnr_stat_plan_areas_prk.cs" />
+    <Compile Include="MN\Models\dnr_wildlife_management_area_boundaries_publicly_accessible.cs" />
+    <Compile Include="MN\Models\mndnr_fisheries_acquisition.cs" />
+    <Compile Include="MN\Models\RestricitonSection.cs" />
+    <Compile Include="MN\Models\MinnesotaShapeDataContext.cs" />
+    <Compile Include="MN\Models\StreamRoute.cs" />
+    <Compile Include="MN\Models\strm_regsln3.cs" />
+    <Compile Include="MN\Models\trout_streams_minnesota.cs" />
+    <Compile Include="MN\RegionCountyModel.cs" />
+    <Compile Include="MN\RegionsBuilder.cs" />
+    <Compile Include="MN\SequenceRestarter.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="US\Import\UsTableManifest.cs" />
+    <Compile Include="US\Import\UsCountyImporter.cs" />
+    <Compile Include="US\Import\UsDatabaseImport.cs" />
+    <Compile Include="US\Import\UsStateImporter.cs" />
+    <Compile Include="US\Models\Abbreviation.cs" />
+    <Compile Include="US\Models\CensusFipsCodes.cs" />
+    <Compile Include="US\ExportUsData.cs" />
+    <Compile Include="US\ImportUsData.cs" />
+    <Compile Include="US\Models\county.cs" />
+    <Compile Include="US\Models\FipsCode.cs" />
+    <Compile Include="US\Models\state.cs" />
+    <Compile Include="US\Models\UsShapeDataContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="CreateNewPostGISDatabase.bat" />
+    <None Include="mn_import\dnr_wma_boundaries_pa.cpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_wma_boundaries_pa.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_wma_boundaries_pa.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_wma_boundaries_pa.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_wma_boundaries_pa.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_wma_boundaries_pa.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Streams_backup_2015_04_06_1.backup">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="US\Data\Regions\BWCA.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="US\Data\Regions\Metro.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="US\Data\Regions\NorthShore.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="US\Data\Regions\Northwest.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="US\Data\Regions\SoutheasternDriftless.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="US\Data\Regions\Southwest.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MN\Data\Restrictions\regulations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MN\Data\Streams\StreamMetadata.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MN\Data\Streams\StreamMetadata.tsv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydrography_stream_trout_lakes.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydrography_stream_trout_lakes.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydrography_stream_trout_lakes.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydrography_stream_trout_lakes.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydrography_stream_trout_lakes.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydro_features_all.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydro_features_all.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydro_features_all.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydro_features_all.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_hydro_features_all.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_stat_plan_areas_prk.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_stat_plan_areas_prk.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_stat_plan_areas_prk.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_stat_plan_areas_prk.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\dnr_stat_plan_areas_prk.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\mndnr_fisheries_acquisition.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\mndnr_fisheries_acquisition.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\mndnr_fisheries_acquisition.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\mndnr_fisheries_acquisition.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\mndnr_fisheries_acquisition.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\StreamMetadata\StreamMetadata.tsv" />
+    <None Include="mn_import\streams_with_measured_kittle_routes.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\streams_with_measured_kittle_routes.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\streams_with_measured_kittle_routes.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\streams_with_measured_kittle_routes.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\streams_with_measured_kittle_routes.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\strm_regsln3.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\strm_regsln3.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\strm_regsln3.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\strm_regsln3.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\strm_regsln3.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\trout_streams_minnesota.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\trout_streams_minnesota.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\trout_streams_minnesota.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\trout_streams_minnesota.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\trout_streams_minnesota.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="US\Data\US_FIPS_Codes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="US\Data\US_State_Abbreviations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="us_import\counties.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="us_import\counties.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="us_import\counties.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="us_import\counties.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="us_import\counties.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="us_import\states.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="us_import\states.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="us_import\states.qpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="us_import\states.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="us_import\states.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MN\SridImport.sql" />
+    <Content Include="mn_import\dnr_wma_boundaries_pa.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mn_import\SridDefinition\926915.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="US\Data\Regions\RegionNames.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="us_import\SridDefinition\4269.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IA\" />
+    <Folder Include="MN\Export\" />
+    <Folder Include="TroutDash_import\" />
+    <Folder Include="US\Export\" />
+    <Folder Include="WI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TroudDash.GIS\TroudDash.GIS.csproj">
+      <Project>{BC9C4D96-8950-4232-B005-B17A5D6C8387}</Project>
+      <Name>TroudDash.GIS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TroutDash.DatabaseImporter.Convention\TroutDash.DatabaseImporter.Convention.csproj">
+      <Project>{8324BF5C-9F41-4AC6-BF3D-7C365E1FE607}</Project>
+      <Name>TroutDash.DatabaseImporter.Convention</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TroutDash.DatabaseImporter\TroutDash.DatabaseImporter.csproj">
+      <Project>{8F3259F0-BDF8-48E8-8434-682E537586DD}</Project>
+      <Name>TroutDash.DatabaseImporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TroutDash.EntityFramework\TroutDash.EntityFramework.csproj">
+      <Project>{b8a442bb-4e61-4f79-a3d6-0aac6d247d26}</Project>
+      <Name>TroutDash.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TroutDash.Export\TroutDash.Export.csproj">
+      <Project>{18E5AD93-D519-4FE9-B9EF-9A50D32C0A83}</Project>
+      <Name>TroutDash.Export</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

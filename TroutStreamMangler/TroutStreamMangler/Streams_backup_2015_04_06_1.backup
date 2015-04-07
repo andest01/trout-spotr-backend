@@ -1,0 +1,1558 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.4
+-- Dumped by pg_dump version 9.3.4
+-- Started on 2015-04-06 21:35:20
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 6 (class 2615 OID 3365482)
+-- Name: tiger; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA tiger;
+
+
+ALTER SCHEMA tiger OWNER TO postgres;
+
+--
+-- TOC entry 289 (class 3079 OID 3365483)
+-- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS fuzzystrmatch WITH SCHEMA public;
+
+
+--
+-- TOC entry 3906 (class 0 OID 0)
+-- Dependencies: 289
+-- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance between strings';
+
+
+--
+-- TOC entry 288 (class 3079 OID 3365494)
+-- Name: postgis; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+
+
+--
+-- TOC entry 3907 (class 0 OID 0)
+-- Dependencies: 288
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
+
+
+--
+-- TOC entry 285 (class 3079 OID 3366780)
+-- Name: postgis_tiger_geocoder; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder WITH SCHEMA tiger;
+
+
+--
+-- TOC entry 3908 (class 0 OID 0)
+-- Dependencies: 285
+-- Name: EXTENSION postgis_tiger_geocoder; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION postgis_tiger_geocoder IS 'PostGIS tiger geocoder and reverse geocoder';
+
+
+--
+-- TOC entry 8 (class 2615 OID 3367200)
+-- Name: topology; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA topology;
+
+
+ALTER SCHEMA topology OWNER TO postgres;
+
+--
+-- TOC entry 283 (class 3079 OID 11750)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 3909 (class 0 OID 0)
+-- Dependencies: 283
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- TOC entry 284 (class 3079 OID 3367201)
+-- Name: address_standardizer; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS address_standardizer WITH SCHEMA tiger;
+
+
+--
+-- TOC entry 282 (class 3079 OID 3367208)
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 3910 (class 0 OID 0)
+-- Dependencies: 282
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
+
+
+--
+-- TOC entry 287 (class 3079 OID 3367217)
+-- Name: pgrouting; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS pgrouting WITH SCHEMA public;
+
+
+--
+-- TOC entry 3911 (class 0 OID 0)
+-- Dependencies: 287
+-- Name: EXTENSION pgrouting; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pgrouting IS 'pgRouting Extension';
+
+
+--
+-- TOC entry 286 (class 3079 OID 3367264)
+-- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
+
+
+--
+-- TOC entry 3912 (class 0 OID 0)
+-- Dependencies: 286
+-- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
+
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 1537 (class 1255 OID 3367414)
+-- Name: clean_int(text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION clean_int(i text) RETURNS integer
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+begin
+    return cast(cast(i as float) as integer);
+exception
+    when invalid_text_representation then
+        return null;
+    when numeric_value_out_of_range then
+        return null;
+end;
+$$;
+
+
+ALTER FUNCTION public.clean_int(i text) OWNER TO postgres;
+
+--
+-- TOC entry 1538 (class 1255 OID 3367415)
+-- Name: labelgrid(geometry, numeric, numeric); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION labelgrid(geometry geometry, grid_width numeric, pixel_width numeric) RETURNS text
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+begin
+    if pixel_width = 0 then
+        return 'null';
+    end if;
+    return st_astext(st_snaptogrid(
+            geometry,
+            grid_width/2*pixel_width,  -- x origin
+            grid_width/2*pixel_width,  -- y origin
+            grid_width*pixel_width,    -- x size
+            grid_width*pixel_width     -- y size
+    ));
+end;
+$$;
+
+
+ALTER FUNCTION public.labelgrid(geometry geometry, grid_width numeric, pixel_width numeric) OWNER TO postgres;
+
+--
+-- TOC entry 1539 (class 1255 OID 3367416)
+-- Name: linelabel(numeric, text, geometry); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION linelabel(zoom numeric, label text, geometry geometry) RETURNS boolean
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+begin
+    if zoom > 20 or st_length(geometry) = 0 then
+        -- if length is 0 geom is (probably) a point; keep it
+        return true;
+    else
+        return length(label) BETWEEN 1 AND st_length(geometry)/(2^(20-zoom));
+    end if;
+end;
+$$;
+
+
+ALTER FUNCTION public.linelabel(zoom numeric, label text, geometry geometry) OWNER TO postgres;
+
+--
+-- TOC entry 1540 (class 1255 OID 3367417)
+-- Name: merc_buffer(geometry, numeric); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION merc_buffer(geom geometry, distance numeric) RETURNS geometry
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+begin
+    return st_buffer(
+        geom,
+        distance / cos(radians(st_y(st_transform(st_centroid(geom),4326))))
+    );
+end;
+$$;
+
+
+ALTER FUNCTION public.merc_buffer(geom geometry, distance numeric) OWNER TO postgres;
+
+--
+-- TOC entry 1541 (class 1255 OID 3367418)
+-- Name: merc_dwithin(geometry, geometry, numeric); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION merc_dwithin(geom1 geometry, geom2 geometry, distance numeric) RETURNS boolean
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+begin
+    return st_dwithin(
+        geom1,
+        geom2,
+        distance / cos(radians(st_y(st_transform(st_centroid(geom1),4326))))
+    );
+end;
+$$;
+
+
+ALTER FUNCTION public.merc_dwithin(geom1 geometry, geom2 geometry, distance numeric) OWNER TO postgres;
+
+--
+-- TOC entry 1542 (class 1255 OID 3367419)
+-- Name: merc_length(geometry); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION merc_length(geom geometry) RETURNS numeric
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+begin
+    return st_length(geom) * cos(radians(st_y(st_transform(st_centroid(geom),4326))));
+end;
+$$;
+
+
+ALTER FUNCTION public.merc_length(geom geometry) OWNER TO postgres;
+
+--
+-- TOC entry 1531 (class 1255 OID 3367420)
+-- Name: topoint(geometry); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION topoint(geom geometry) RETURNS geometry
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+begin
+    if geometrytype(geom) = 'POINT' then
+        return geom;
+    elsif st_isempty(st_makevalid(geom)) then
+        -- This should not be necessary with Geos >= 3.3.7, but we're getting
+        -- mystery MultiPoint objects from ST_MakeValid (or somewhere) when
+        -- empty objects are input.
+        return NULL;
+    else
+        return st_pointonsurface(st_makevalid(geom));
+    end if;
+end;
+$$;
+
+
+ALTER FUNCTION public.topoint(geom geometry) OWNER TO postgres;
+
+--
+-- TOC entry 1349 (class 1255 OID 3367421)
+-- Name: z(numeric); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION z(scaledenominator numeric) RETURNS integer
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+begin
+    -- Don't bother if the scale is larger than ~zoom level 0
+    if scaledenominator > 600000000 then
+        return null;
+    end if;
+    return round(log(2,559082264.028/scaledenominator));
+end;
+$$;
+
+
+ALTER FUNCTION public.z(scaledenominator numeric) OWNER TO postgres;
+
+--
+-- TOC entry 1376 (class 1255 OID 3367422)
+-- Name: zres(double precision); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION zres(z double precision) RETURNS double precision
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+begin
+    return (40075016.6855785/(256*2^z));
+end;
+$$;
+
+
+ALTER FUNCTION public.zres(z double precision) OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 247 (class 1259 OID 3367423)
+-- Name: stream; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE stream (
+    gid integer NOT NULL,
+    name character varying(70) NOT NULL,
+    local_name character varying(70),
+    length_mi numeric,
+    centroid_latitude numeric NOT NULL,
+    centroid_longitude numeric NOT NULL,
+    huc_subregion character varying(4),
+    status_message character varying(50),
+    state character varying(20),
+    source character varying(50),
+    state_gid integer NOT NULL,
+    source_id text,
+    slug text NOT NULL,
+    has_brown_trout boolean NOT NULL,
+    has_brook_trout boolean NOT NULL,
+    has_rainbow_trout boolean NOT NULL,
+    is_brown_trout_stocked boolean NOT NULL,
+    is_brook_trout_stocked boolean NOT NULL,
+    is_rainbow_trout_stocked boolean NOT NULL,
+    geom geometry(MultiLineString,4326),
+    my_length smallint
+);
+
+
+ALTER TABLE public.stream OWNER TO postgres;
+
+--
+-- TOC entry 248 (class 1259 OID 3367429)
+-- Name: trout_stream_section_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE trout_stream_section_gid_seq
+    START WITH 3282
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.trout_stream_section_gid_seq OWNER TO postgres;
+
+--
+-- TOC entry 249 (class 1259 OID 3367431)
+-- Name: trout_stream_section; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE trout_stream_section (
+    gid integer DEFAULT nextval('trout_stream_section_gid_seq'::regclass) NOT NULL,
+    section_name character varying(70),
+    length_mi numeric NOT NULL,
+    public_length numeric NOT NULL,
+    centroid_latitude numeric NOT NULL,
+    centroid_longitude numeric NOT NULL,
+    source character varying(20),
+    geom geometry(MultiLineString,4326),
+    source_id text,
+    stream_gid integer,
+    start numeric NOT NULL,
+    stop numeric NOT NULL
+);
+
+
+ALTER TABLE public.trout_stream_section OWNER TO postgres;
+
+--
+-- TOC entry 250 (class 1259 OID 3367438)
+-- Name: Stream_Centroid; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW "Stream_Centroid" AS
+ SELECT trout_section.gid,
+    stream.name,
+    st_closestpoint(stream.geom, st_centroid(trout_section.geom)) AS geom
+   FROM stream stream,
+    trout_stream_section trout_section
+  WHERE (stream.gid = trout_section.stream_gid)
+  ORDER BY trout_section.gid;
+
+
+ALTER TABLE public."Stream_Centroid" OWNER TO postgres;
+
+--
+-- TOC entry 251 (class 1259 OID 3367442)
+-- Name: Stream_Centroid_2; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW "Stream_Centroid_2" AS
+ SELECT stream.gid,
+    stream.name,
+    st_closestpoint(stream.geom, st_centroid(trout_section.geom)) AS geom
+   FROM stream stream,
+    ( SELECT trout_section_1.stream_gid,
+            st_centroid(st_multi(st_union(trout_section_1.geom))) AS geom
+           FROM trout_stream_section trout_section_1
+          GROUP BY trout_section_1.stream_gid) trout_section
+  WHERE (stream.gid = trout_section.stream_gid);
+
+
+ALTER TABLE public."Stream_Centroid_2" OWNER TO postgres;
+
+--
+-- TOC entry 252 (class 1259 OID 3367446)
+-- Name: centroids; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW centroids AS
+ SELECT stream.gid,
+    stream.name,
+    stream.local_name,
+    stream.length_mi,
+    st_closestpoint(stream.geom, st_centroid(trout_section.geom)) AS st_closestpoint
+   FROM stream stream,
+    trout_stream_section trout_section
+  WHERE (trout_section.gid = stream.gid);
+
+
+ALTER TABLE public.centroids OWNER TO postgres;
+
+--
+-- TOC entry 253 (class 1259 OID 3367450)
+-- Name: county; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE county (
+    gid integer NOT NULL,
+    statefp character varying(2),
+    countyfp character varying(3),
+    name character varying(100),
+    lsad character varying(2),
+    state_short character varying(10),
+    state_name character varying(26),
+    geom geometry(MultiPolygon,4326),
+    state_gid integer NOT NULL,
+    region_id integer,
+    stream_count integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.county OWNER TO postgres;
+
+--
+-- TOC entry 254 (class 1259 OID 3367456)
+-- Name: counties_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE counties_gid_seq
+    START WITH 25021
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.counties_gid_seq OWNER TO postgres;
+
+--
+-- TOC entry 3913 (class 0 OID 0)
+-- Dependencies: 254
+-- Name: counties_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE counties_gid_seq OWNED BY county.gid;
+
+
+--
+-- TOC entry 255 (class 1259 OID 3367458)
+-- Name: fake_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE fake_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.fake_seq OWNER TO postgres;
+
+--
+-- TOC entry 256 (class 1259 OID 3367460)
+-- Name: lake_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE lake_gid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lake_gid_seq OWNER TO postgres;
+
+--
+-- TOC entry 257 (class 1259 OID 3367462)
+-- Name: lake; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lake (
+    gid integer DEFAULT nextval('lake_gid_seq'::regclass) NOT NULL,
+    source_id character varying(100) NOT NULL,
+    state_gid integer NOT NULL,
+    geom geometry(MultiPolygon,4326),
+    is_trout_lake boolean NOT NULL,
+    name character varying(70)
+);
+
+
+ALTER TABLE public.lake OWNER TO postgres;
+
+--
+-- TOC entry 258 (class 1259 OID 3367469)
+-- Name: lake_section_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE lake_section_gid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lake_section_gid_seq OWNER TO postgres;
+
+--
+-- TOC entry 259 (class 1259 OID 3367471)
+-- Name: lake_secction; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lake_secction (
+    start double precision NOT NULL,
+    stop double precision NOT NULL,
+    gid integer DEFAULT nextval('lake_section_gid_seq'::regclass) NOT NULL,
+    stream_gid integer NOT NULL,
+    lake_gid integer NOT NULL
+);
+
+
+ALTER TABLE public.lake_secction OWNER TO postgres;
+
+--
+-- TOC entry 260 (class 1259 OID 3367475)
+-- Name: publicly_accessibly_land_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE publicly_accessibly_land_gid_seq
+    START WITH 37283
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.publicly_accessibly_land_gid_seq OWNER TO postgres;
+
+--
+-- TOC entry 261 (class 1259 OID 3367477)
+-- Name: publicly_accessible_land; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE publicly_accessible_land (
+    gid integer DEFAULT nextval('publicly_accessibly_land_gid_seq'::regclass) NOT NULL,
+    area_name character varying(128) NOT NULL,
+    shape_area numeric NOT NULL,
+    geom geometry(MultiPolygon,4326),
+    publicly_accessible_land_type_id integer,
+    state_gid integer NOT NULL
+);
+
+
+ALTER TABLE public.publicly_accessible_land OWNER TO postgres;
+
+--
+-- TOC entry 262 (class 1259 OID 3367484)
+-- Name: publicly_accessible_land_section_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE publicly_accessible_land_section_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.publicly_accessible_land_section_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 263 (class 1259 OID 3367486)
+-- Name: publicly_accessible_land_section; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE publicly_accessible_land_section (
+    id integer DEFAULT nextval('publicly_accessible_land_section_id_seq'::regclass) NOT NULL,
+    start double precision NOT NULL,
+    stop double precision NOT NULL,
+    publicly_accessible_land_type_id integer NOT NULL,
+    stream_gid integer NOT NULL,
+    source_id text
+);
+
+
+ALTER TABLE public.publicly_accessible_land_section OWNER TO postgres;
+
+--
+-- TOC entry 264 (class 1259 OID 3367493)
+-- Name: publicly_accessible_land_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE publicly_accessible_land_type_id_seq
+    START WITH 63
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.publicly_accessible_land_type_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 265 (class 1259 OID 3367495)
+-- Name: publicly_accessible_land_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE publicly_accessible_land_type (
+    id integer DEFAULT nextval('publicly_accessible_land_type_id_seq'::regclass) NOT NULL,
+    type text NOT NULL,
+    description text NOT NULL,
+    is_federal boolean NOT NULL,
+    state_gid integer NOT NULL
+);
+
+
+ALTER TABLE public.publicly_accessible_land_type OWNER TO postgres;
+
+--
+-- TOC entry 266 (class 1259 OID 3367502)
+-- Name: region_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE region_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.region_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 267 (class 1259 OID 3367504)
+-- Name: region; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE region (
+    gid integer DEFAULT nextval('region_id_seq'::regclass) NOT NULL,
+    name character varying(50) NOT NULL,
+    geom geometry(MultiPolygon,4326),
+    long_name character varying(50) DEFAULT ''::character varying NOT NULL
+);
+
+
+ALTER TABLE public.region OWNER TO postgres;
+
+--
+-- TOC entry 268 (class 1259 OID 3367511)
+-- Name: restriction_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE restriction_id_seq
+    START WITH 479
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.restriction_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 269 (class 1259 OID 3367513)
+-- Name: restriction; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE restriction (
+    id integer DEFAULT nextval('restriction_id_seq'::regclass) NOT NULL,
+    legal_text text NOT NULL,
+    short_text text NOT NULL,
+    "isSeasonal" boolean NOT NULL,
+    start_time timestamp with time zone,
+    end_time timestamp with time zone,
+    "isAnglingRestriction" boolean NOT NULL,
+    "isHarvestRestriciton" boolean NOT NULL,
+    state_gid integer NOT NULL,
+    source_id text
+);
+
+
+ALTER TABLE public.restriction OWNER TO postgres;
+
+--
+-- TOC entry 270 (class 1259 OID 3367520)
+-- Name: restriction_route_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE restriction_route_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.restriction_route_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 271 (class 1259 OID 3367522)
+-- Name: restriction_route; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE restriction_route (
+    gid integer DEFAULT nextval('restriction_route_id_seq'::regclass) NOT NULL,
+    restriction_type_id integer NOT NULL,
+    source_id character varying(100) DEFAULT ''::character varying NOT NULL,
+    geom geometry(MultiLineString,4326)
+);
+
+
+ALTER TABLE public.restriction_route OWNER TO postgres;
+
+--
+-- TOC entry 272 (class 1259 OID 3367530)
+-- Name: restriction_section_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE restriction_section_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.restriction_section_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 273 (class 1259 OID 3367532)
+-- Name: restriction_section; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE restriction_section (
+    id integer DEFAULT nextval('restriction_section_id_seq'::regclass) NOT NULL,
+    start double precision NOT NULL,
+    stop double precision NOT NULL,
+    restriction_id integer NOT NULL,
+    stream_gid integer NOT NULL,
+    source_id text
+);
+
+
+ALTER TABLE public.restriction_section OWNER TO postgres;
+
+--
+-- TOC entry 274 (class 1259 OID 3367539)
+-- Name: shortest_line; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW shortest_line AS
+ SELECT stream.gid,
+    stream.name,
+    stream.local_name,
+    stream.length_mi,
+    st_shortestline(stream.geom, st_centroid(trout_section.geom)) AS geom
+   FROM stream stream,
+    trout_stream_section trout_section
+  WHERE (stream.gid = trout_section.gid);
+
+
+ALTER TABLE public.shortest_line OWNER TO postgres;
+
+--
+-- TOC entry 275 (class 1259 OID 3367543)
+-- Name: state; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE state (
+    gid integer NOT NULL,
+    statefp character varying(2) NOT NULL,
+    statefp_2 numeric(10,0),
+    short_name character varying(10),
+    name character varying(26),
+    geom geometry(MultiPolygon,4326)
+);
+
+
+ALTER TABLE public.state OWNER TO postgres;
+
+--
+-- TOC entry 276 (class 1259 OID 3367549)
+-- Name: states_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE states_gid_seq
+    START WITH 409
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.states_gid_seq OWNER TO postgres;
+
+--
+-- TOC entry 3914 (class 0 OID 0)
+-- Dependencies: 276
+-- Name: states_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE states_gid_seq OWNED BY state.gid;
+
+
+--
+-- TOC entry 277 (class 1259 OID 3367551)
+-- Name: stream_county; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE stream_county (
+    trout_stream_gid integer NOT NULL,
+    county_gid integer NOT NULL
+);
+
+
+ALTER TABLE public.stream_county OWNER TO postgres;
+
+--
+-- TOC entry 278 (class 1259 OID 3367554)
+-- Name: stream_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE stream_gid_seq
+    START WITH 7894
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.stream_gid_seq OWNER TO postgres;
+
+--
+-- TOC entry 3915 (class 0 OID 0)
+-- Dependencies: 278
+-- Name: stream_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE stream_gid_seq OWNED BY stream.gid;
+
+
+--
+-- TOC entry 279 (class 1259 OID 3367556)
+-- Name: stream_publicly_accessible_land; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE stream_publicly_accessible_land (
+    trout_stream_gid integer NOT NULL,
+    publicly_accessible_land_gid integer NOT NULL
+);
+
+
+ALTER TABLE public.stream_publicly_accessible_land OWNER TO postgres;
+
+--
+-- TOC entry 280 (class 1259 OID 3367559)
+-- Name: streams_with_measured_kittle_routes_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE streams_with_measured_kittle_routes_gid_seq
+    START WITH 91804
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.streams_with_measured_kittle_routes_gid_seq OWNER TO postgres;
+
+--
+-- TOC entry 281 (class 1259 OID 3367561)
+-- Name: streams_with_measured_kittle_routes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE streams_with_measured_kittle_routes (
+    gid integer DEFAULT nextval('streams_with_measured_kittle_routes_gid_seq'::regclass) NOT NULL,
+    dnr_hydro_ integer,
+    fw_id integer,
+    kittle_nbr character varying(50),
+    kittle_nam character varying(50),
+    route_mi numeric,
+    from_meas numeric,
+    to_meas numeric,
+    length_mi numeric,
+    fixed_star numeric,
+    fixed_st_1 numeric,
+    fixed_end_ numeric,
+    fixed_end1 numeric,
+    fixed character varying(1),
+    entire character varying(1),
+    valid character varying(1),
+    label character varying(200),
+    edited_by character varying(16),
+    edited_dat date,
+    edit_comme character varying(50),
+    event_type character varying(16),
+    publish_da date,
+    content_da date,
+    shape_leng numeric,
+    geom geometry(MultiLineString,4326)
+);
+
+
+ALTER TABLE public.streams_with_measured_kittle_routes OWNER TO postgres;
+
+--
+-- TOC entry 3685 (class 2604 OID 3367568)
+-- Name: gid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY county ALTER COLUMN gid SET DEFAULT nextval('counties_gid_seq'::regclass);
+
+
+--
+-- TOC entry 3698 (class 2604 OID 3367569)
+-- Name: gid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY state ALTER COLUMN gid SET DEFAULT nextval('states_gid_seq'::regclass);
+
+
+--
+-- TOC entry 3683 (class 2604 OID 3367570)
+-- Name: gid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY stream ALTER COLUMN gid SET DEFAULT nextval('stream_gid_seq'::regclass);
+
+
+--
+-- TOC entry 3756 (class 2606 OID 3367572)
+-- Name: PK_Stream_County; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY stream_county
+    ADD CONSTRAINT "PK_Stream_County" PRIMARY KEY (trout_stream_gid, county_gid);
+
+
+--
+-- TOC entry 3758 (class 2606 OID 3367574)
+-- Name: PK_Stream_publicly_accessible_land; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY stream_publicly_accessible_land
+    ADD CONSTRAINT "PK_Stream_publicly_accessible_land" PRIMARY KEY (trout_stream_gid, publicly_accessible_land_gid);
+
+
+--
+-- TOC entry 3720 (class 2606 OID 3367576)
+-- Name: PK_lake_section_gid; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lake_secction
+    ADD CONSTRAINT "PK_lake_section_gid" PRIMARY KEY (gid);
+
+
+--
+-- TOC entry 3712 (class 2606 OID 3367578)
+-- Name: counties_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY county
+    ADD CONSTRAINT counties_pkey PRIMARY KEY (gid);
+
+
+--
+-- TOC entry 3717 (class 2606 OID 3367580)
+-- Name: lake_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lake
+    ADD CONSTRAINT lake_pkey PRIMARY KEY (gid);
+
+
+--
+-- TOC entry 3725 (class 2606 OID 3367582)
+-- Name: publicly_accessible_land_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY publicly_accessible_land
+    ADD CONSTRAINT publicly_accessible_land_pkey PRIMARY KEY (gid);
+
+
+--
+-- TOC entry 3728 (class 2606 OID 3367584)
+-- Name: publicly_accessible_land_restriction_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY publicly_accessible_land_section
+    ADD CONSTRAINT publicly_accessible_land_restriction_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3731 (class 2606 OID 3367586)
+-- Name: publicly_accessible_land_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY publicly_accessible_land_type
+    ADD CONSTRAINT publicly_accessible_land_type_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3734 (class 2606 OID 3367588)
+-- Name: region_name_unique; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY region
+    ADD CONSTRAINT region_name_unique UNIQUE (name);
+
+
+--
+-- TOC entry 3736 (class 2606 OID 3367590)
+-- Name: region_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY region
+    ADD CONSTRAINT region_pkey PRIMARY KEY (gid);
+
+
+--
+-- TOC entry 3739 (class 2606 OID 3367592)
+-- Name: restriction_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY restriction
+    ADD CONSTRAINT restriction_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3743 (class 2606 OID 3367594)
+-- Name: restriction_route_gid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY restriction_route
+    ADD CONSTRAINT restriction_route_gid_pk PRIMARY KEY (gid);
+
+
+--
+-- TOC entry 3747 (class 2606 OID 3367596)
+-- Name: restriction_section_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY restriction_section
+    ADD CONSTRAINT restriction_section_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3749 (class 2606 OID 3367598)
+-- Name: state_fips_unique; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY state
+    ADD CONSTRAINT state_fips_unique UNIQUE (statefp);
+
+
+--
+-- TOC entry 3752 (class 2606 OID 3367600)
+-- Name: states_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY state
+    ADD CONSTRAINT states_pkey PRIMARY KEY (gid);
+
+
+--
+-- TOC entry 3703 (class 2606 OID 3367602)
+-- Name: stream_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY stream
+    ADD CONSTRAINT stream_pkey PRIMARY KEY (gid);
+
+
+--
+-- TOC entry 3761 (class 2606 OID 3367604)
+-- Name: streams_with_measured_kittle_routes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY streams_with_measured_kittle_routes
+    ADD CONSTRAINT streams_with_measured_kittle_routes_pkey PRIMARY KEY (gid);
+
+
+--
+-- TOC entry 3709 (class 2606 OID 3367606)
+-- Name: trout_stream_section_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY trout_stream_section
+    ADD CONSTRAINT trout_stream_section_pkey PRIMARY KEY (gid);
+
+
+--
+-- TOC entry 3705 (class 2606 OID 3367608)
+-- Name: un_slug_stream; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY stream
+    ADD CONSTRAINT un_slug_stream UNIQUE (slug);
+
+
+--
+-- TOC entry 3753 (class 1259 OID 3367609)
+-- Name: FKI_Stream_County_County; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX "FKI_Stream_County_County" ON stream_county USING btree (county_gid);
+
+
+--
+-- TOC entry 3754 (class 1259 OID 3367610)
+-- Name: FKI_Stream_publicly_accessible_land_publicly_accessible_land; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX "FKI_Stream_publicly_accessible_land_publicly_accessible_land" ON stream_county USING btree (county_gid);
+
+
+--
+-- TOC entry 3710 (class 1259 OID 3367611)
+-- Name: counties_geom_gist; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX counties_geom_gist ON county USING gist (geom);
+
+
+--
+-- TOC entry 3713 (class 1259 OID 3367612)
+-- Name: fki_county_state_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_county_state_fkey ON county USING btree (state_gid);
+
+
+--
+-- TOC entry 3726 (class 1259 OID 3367613)
+-- Name: fki_pals_trout_stream_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_pals_trout_stream_fkey ON publicly_accessible_land_section USING btree (stream_gid);
+
+
+--
+-- TOC entry 3721 (class 1259 OID 3367614)
+-- Name: fki_publicly_accesible_land_state_gid; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_publicly_accesible_land_state_gid ON publicly_accessible_land USING btree (state_gid);
+
+
+--
+-- TOC entry 3722 (class 1259 OID 3367615)
+-- Name: fki_publicly_accessible_land_type_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_publicly_accessible_land_type_id ON publicly_accessible_land USING btree (publicly_accessible_land_type_id);
+
+
+--
+-- TOC entry 3729 (class 1259 OID 3367616)
+-- Name: fki_publicly_accessible_land_type_state_gid; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_publicly_accessible_land_type_state_gid ON publicly_accessible_land_type USING btree (state_gid);
+
+
+--
+-- TOC entry 3740 (class 1259 OID 3367617)
+-- Name: fki_restriction_route_type_FK; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX "fki_restriction_route_type_FK" ON restriction_route USING btree (restriction_type_id);
+
+
+--
+-- TOC entry 3744 (class 1259 OID 3367618)
+-- Name: fki_restriction_section_restriction_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_restriction_section_restriction_fkey ON restriction_section USING btree (restriction_id);
+
+
+--
+-- TOC entry 3745 (class 1259 OID 3367619)
+-- Name: fki_restriction_section_trout_stream_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_restriction_section_trout_stream_fkey ON restriction_section USING btree (stream_gid);
+
+
+--
+-- TOC entry 3737 (class 1259 OID 3367620)
+-- Name: fki_restriction_state_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_restriction_state_fkey ON restriction USING btree (state_gid);
+
+
+--
+-- TOC entry 3714 (class 1259 OID 3367621)
+-- Name: fki_slake_state_fk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_slake_state_fk ON lake USING btree (state_gid);
+
+
+--
+-- TOC entry 3706 (class 1259 OID 3367622)
+-- Name: fki_trout_stream_section_stream; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_trout_stream_section_stream ON trout_stream_section USING btree (stream_gid);
+
+
+--
+-- TOC entry 3700 (class 1259 OID 3367623)
+-- Name: fki_trout_stream_state_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_trout_stream_state_fkey ON stream USING btree (state_gid);
+
+
+--
+-- TOC entry 3715 (class 1259 OID 3367624)
+-- Name: lake_geom_gist; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX lake_geom_gist ON lake USING gist (geom);
+
+
+--
+-- TOC entry 3718 (class 1259 OID 3367625)
+-- Name: lake_source_id_IDX; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX "lake_source_id_IDX" ON lake USING btree (source_id);
+
+
+--
+-- TOC entry 3723 (class 1259 OID 3367626)
+-- Name: publicly_accessible_land_geom_gist; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX publicly_accessible_land_geom_gist ON publicly_accessible_land USING gist (geom);
+
+
+--
+-- TOC entry 3732 (class 1259 OID 3367627)
+-- Name: region_geom_gist; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX region_geom_gist ON region USING gist (geom);
+
+
+--
+-- TOC entry 3741 (class 1259 OID 3367628)
+-- Name: restriction_route_geom_gist; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX restriction_route_geom_gist ON restriction_route USING gist (geom);
+
+
+--
+-- TOC entry 3750 (class 1259 OID 3367629)
+-- Name: states_geom_gist; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX states_geom_gist ON state USING gist (geom);
+
+
+--
+-- TOC entry 3701 (class 1259 OID 3367630)
+-- Name: stream_geom2d_gist; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX stream_geom2d_gist ON stream USING gist (geom);
+
+
+--
+-- TOC entry 3759 (class 1259 OID 3367631)
+-- Name: streams_with_measured_kittle_routes_geom2d_gist; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX streams_with_measured_kittle_routes_geom2d_gist ON streams_with_measured_kittle_routes USING gist (geom);
+
+
+--
+-- TOC entry 3707 (class 1259 OID 3367632)
+-- Name: trout_stream_section_geom_gist; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX trout_stream_section_geom_gist ON trout_stream_section USING gist (geom);
+
+
+--
+-- TOC entry 3777 (class 2606 OID 3367633)
+-- Name: FK_Stream_County_County; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY stream_county
+    ADD CONSTRAINT "FK_Stream_County_County" FOREIGN KEY (county_gid) REFERENCES county(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3778 (class 2606 OID 3367638)
+-- Name: FK_Stream_County_Stream; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY stream_county
+    ADD CONSTRAINT "FK_Stream_County_Stream" FOREIGN KEY (trout_stream_gid) REFERENCES stream(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3779 (class 2606 OID 3367643)
+-- Name: FK_Stream_publicly_accessible_land_Stream; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY stream_publicly_accessible_land
+    ADD CONSTRAINT "FK_Stream_publicly_accessible_land_Stream" FOREIGN KEY (trout_stream_gid) REFERENCES stream(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3780 (class 2606 OID 3367648)
+-- Name: FK_Stream_publicly_accessible_land_publicly_accessible_land; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY stream_publicly_accessible_land
+    ADD CONSTRAINT "FK_Stream_publicly_accessible_land_publicly_accessible_land" FOREIGN KEY (publicly_accessible_land_gid) REFERENCES publicly_accessible_land(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3766 (class 2606 OID 3367653)
+-- Name: FK_lake_section_lake; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY lake_secction
+    ADD CONSTRAINT "FK_lake_section_lake" FOREIGN KEY (lake_gid) REFERENCES lake(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3767 (class 2606 OID 3367658)
+-- Name: FK_lake_section_stream; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY lake_secction
+    ADD CONSTRAINT "FK_lake_section_stream" FOREIGN KEY (stream_gid) REFERENCES stream(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3764 (class 2606 OID 3367663)
+-- Name: county_state_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY county
+    ADD CONSTRAINT county_state_fkey FOREIGN KEY (state_gid) REFERENCES state(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3765 (class 2606 OID 3367668)
+-- Name: fk_lake_state; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY lake
+    ADD CONSTRAINT fk_lake_state FOREIGN KEY (state_gid) REFERENCES state(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3769 (class 2606 OID 3367673)
+-- Name: fk_publicly_accesible_land_state_gid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY publicly_accessible_land
+    ADD CONSTRAINT fk_publicly_accesible_land_state_gid FOREIGN KEY (state_gid) REFERENCES state(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3768 (class 2606 OID 3367678)
+-- Name: fk_publicly_accessible_land_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY publicly_accessible_land
+    ADD CONSTRAINT fk_publicly_accessible_land_type_id FOREIGN KEY (publicly_accessible_land_type_id) REFERENCES publicly_accessible_land_type(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3772 (class 2606 OID 3367683)
+-- Name: fk_publicly_accessible_land_type_state_gid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY publicly_accessible_land_type
+    ADD CONSTRAINT fk_publicly_accessible_land_type_state_gid FOREIGN KEY (state_gid) REFERENCES state(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3763 (class 2606 OID 3367688)
+-- Name: fk_trout_stream_section_stream; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY trout_stream_section
+    ADD CONSTRAINT fk_trout_stream_section_stream FOREIGN KEY (stream_gid) REFERENCES stream(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3770 (class 2606 OID 3367693)
+-- Name: pals_trout_stream_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY publicly_accessible_land_section
+    ADD CONSTRAINT pals_trout_stream_fkey FOREIGN KEY (stream_gid) REFERENCES stream(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3771 (class 2606 OID 3370813)
+-- Name: publicly_accessible_land_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY publicly_accessible_land_section
+    ADD CONSTRAINT publicly_accessible_land_type_fkey FOREIGN KEY (publicly_accessible_land_type_id) REFERENCES publicly_accessible_land_type(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3774 (class 2606 OID 3367703)
+-- Name: restriction_route_type_FK; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY restriction_route
+    ADD CONSTRAINT "restriction_route_type_FK" FOREIGN KEY (restriction_type_id) REFERENCES restriction(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3775 (class 2606 OID 3367708)
+-- Name: restriction_section_restriction_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY restriction_section
+    ADD CONSTRAINT restriction_section_restriction_fkey FOREIGN KEY (restriction_id) REFERENCES restriction(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3776 (class 2606 OID 3367713)
+-- Name: restriction_section_trout_stream_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY restriction_section
+    ADD CONSTRAINT restriction_section_trout_stream_fkey FOREIGN KEY (stream_gid) REFERENCES stream(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3773 (class 2606 OID 3367718)
+-- Name: restriction_state_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY restriction
+    ADD CONSTRAINT restriction_state_fkey FOREIGN KEY (state_gid) REFERENCES state(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3762 (class 2606 OID 3367723)
+-- Name: trout_stream_state_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY stream
+    ADD CONSTRAINT trout_stream_state_fkey FOREIGN KEY (state_gid) REFERENCES state(gid) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3905 (class 0 OID 0)
+-- Dependencies: 9
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2015-04-06 21:35:21
+
+--
+-- PostgreSQL database dump complete
+--
+
