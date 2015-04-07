@@ -1,0 +1,339 @@
+<?xml version="1.0"?>
+
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Minnesota DNR - Division of Fish &amp; Wildlife - Fisheries Unit</origin>
+        <pubdate>2005-06-08 00:00:00.0</pubdate>
+        <title>Trout Stream Special Regulations</title>
+        <mgmg1cid />
+        <pubinfo>
+          <publish>Minnesota DNR - Division of Fish &amp; Wildlife - Fisheries Unit</publish>
+        </pubinfo>
+        <onlink>http://deli.dnr.state.mn.us</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>This layer shows Minnesota trout streams that have a special regulation as described in the 2006 Minnesota Fishing Regulations.  Road crossings were determined using the 1991 Air Photos (1 - metre DOQs).  Check the Minnesota Fishing Regulations for detailed information. See http://www.dnr.state.mn.us/rlp/index.html  for legal descriptions and restrictions associated with designated trout waters.</abstract>
+      <purpose>To support planning, fisheries management, research and other resource-related activities with impact on designated trout streams. Also supports recreational identification of these resources.</purpose>
+      <supplinf>Minnesota</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <sngdate>
+          <caldate>09/21/2006</caldate>
+        </sngdate>
+      </timeinfo>
+      <current>Matches special regulations on trout streams in Minnesota, current as of 09/21/2006.</current>
+    </timeperd>
+    <status>
+      <progress>In Work</progress>
+      <update>As Needed</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-92.75567</westbc>
+        <eastbc>-91.55366</eastbc>
+        <northbc>44.55466</northbc>
+        <southbc>43.5767</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekey>designated trout streams, special regulations</themekey>
+      </theme>
+      <place>
+        <placekey>Minnesota</placekey>
+      </place>
+    </keywords>
+    <accconst>None</accconst>
+    <useconst>None</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Lyn Bergquist</cntper>
+          <cntorg>DNR-Fisheries</cntorg>
+        </cntperp>
+        <cntpos>GIS Coordinator</cntpos>
+        <cntaddr>
+          <addrtype>Mailing and Physical</addrtype>
+          <address>
+            500 Lafayette Road
+            Central Office - Box 20
+          </address>
+          <city>Saint Paul</city>
+          <state>MN</state>
+          <postal>55155</postal>
+        </cntaddr>
+        <cntvoice>(651) 259-5189</cntvoice>
+        <cntfax>(651) 297-4961</cntfax>
+        <cntemail>lyn.bergquist@state.mn.us</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <browse>
+      <browsen>http://jmaps.dnr.state.mn.us/gis/dp_datasample.jsp?mpid=39000446&amp;ptid=2&amp;fcid=2&amp;lname=Trout Stream Special Regulations</browsen>
+      <browsed />
+    </browse>
+    <native>ArcView Shapefile</native>
+    <crossref>
+      <citeinfo>
+        <title />
+      </citeinfo>
+    </crossref>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>
+        Source table STRM_WRTLN3.DBF:  Not specifically assessed
+        Source table STRM_REGSLN3.DBF:  Not specifically assessed
+      </attraccr>
+    </attracc>
+    <logic>Data were topologically checked using ArcINFO 8.x prior to Shapefile conversion</logic>
+    <complete>Minnesota</complete>
+    <posacc>
+      <horizpa>
+        <horizpar />
+      </horizpa>
+      <vertacc>
+        <vertaccr />
+      </vertacc>
+    </posacc>
+    <lineage>
+      <srcinfo>
+        <srcscale>
+          Source layer strm_regsln3:  24000
+        </srcscale>
+      </srcinfo>
+      <procstep>
+        <procdesc>
+          Attribute Lineage for source table STRM_WRTLN3.DBF:  Not specifically assessed
+          Attribute Lineage for source table STRM_REGSLN3.DBF:  Not specifically assessed.
+        </procdesc>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <indspref>DNR 24K River and Streams with Trout Regulations</indspref>
+    <direct>vector</direct>
+    <mgmg3obj>line</mgmg3obj>
+    <mgmg3til>state</mgmg3til>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <geograph>
+        <latres />
+        <longres />
+      </geograph>
+      <planar>
+        <mapproj>
+          <mapprojn>Transverse Mercator</mapprojn>
+          <mgmg4par>Not Applicable</mgmg4par>
+          <otherprj>Not Applicable</otherprj>
+        </mapproj>
+        <gridsys>
+          <gridsysn>UTM</gridsysn>
+          <utm>
+            <utmzone>15</utmzone>
+          </utm>
+          <spcs>
+            <spcszone />
+          </spcs>
+          <mgmg4coz />
+          <mgmg4adj>Not Applicable</mgmg4adj>
+        </gridsys>
+        <planci>
+          <coordrep>
+            <absres />
+            <ordres />
+          </coordrep>
+          <distbrep>
+            <distres>
+              Source layer strm_regsln3:
+            </distres>
+          </distbrep>
+          <plandu>meters</plandu>
+        </planci>
+      </planar>
+      <geodetic>
+        <horizdn>NAD83</horizdn>
+        <ellips>GRS1980</ellips>
+      </geodetic>
+    </horizsys>
+    <vertdef>
+      <altsys>
+        <altdatum>Not Applicable</altdatum>
+        <altunits>Not Applicable</altunits>
+      </altsys>
+      <depthsys>
+        <depthdn>Not Applicable</depthdn>
+        <depthdu>Not Applicable</depthdu>
+      </depthsys>
+    </vertdef>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>STRM_WRTLN3.DBF</enttypl>
+        <enttypd>Shapefile Attribute Table for Winter Trout Regulations layer</enttypd>
+      </enttyp>
+      <attr>
+        <attrlabl>New_Reg</attrlabl>
+        <attrdef>Special Regulation as of 2006</attrdef>
+        <attrdomv>
+          <edom>
+            <edomv>1</edomv>
+            <edomvd>12 Inch Minimum for Brook Trout, Bag Limit of 1 (Artificial Lures or Flies Only)</edomvd>
+          </edom>
+          <edom>
+            <edomv>2</edomv>
+            <edomvd>12 to 16 Inch Protected Slot for All Trout (Artificial Lures or Flies Only)</edomvd>
+          </edom>
+          <edom>
+            <edomv>3</edomv>
+            <edomvd>12 to 16 Inch Protected Slot for All Trout (Bait Allowed)</edomvd>
+          </edom>
+          <edom>
+            <edomv>4</edomv>
+            <edomvd>Catch &amp; Release for All Trout (Articifial Lures or Flies Only)</edomvd>
+          </edom>
+          <edom>
+            <edomv>5</edomv>
+            <edomvd>Catch &amp; Release for All Trout (Bait Allowed)</edomvd>
+          </edom>
+          <edom>
+            <edomv>6</edomv>
+            <edomvd>Catch &amp; Release for Brook Trout</edomvd>
+          </edom>
+          <edom>
+            <edomv>7</edomv>
+            <edomvd>Fish Sanctuary, See Regulations for Closures</edomvd>
+          </edom>
+          <edom>
+            <edomv>8</edomv>
+            <edomvd>Special Limits Downstream of Posted Boundary</edomvd>
+          </edom>
+          <edom>
+            <edomv>9</edomv>
+            <edomvd>Winter Fishing Regulation</edomvd>
+          </edom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>STRM_REGSLN3.DBF</enttypl>
+        <enttypd>Shapefile Attribute table for the Trout Stream Regs. Layer</enttypd>
+      </enttyp>
+      <attr>
+        <attrlabl>New_reg</attrlabl>
+        <attrdef>This is a numeric codes representing a special regulation on that portion of stream</attrdef>
+        <attrdomv>
+          <edom>
+            <edomv>1</edomv>
+            <edomvd>12 Inch Minimum for Brook Trout, Bag Limit of 1 (Artificial Lures or Flies Only)</edomvd>
+          </edom>
+          <edom>
+            <edomv>2</edomv>
+            <edomvd>12 to 16 Inch Protected Slot for All Trout (Artificial Lures or Flies Only)</edomvd>
+          </edom>
+          <edom>
+            <edomv>3</edomv>
+            <edomvd>12 to 16 Inch Protected Slot for All Trout (Bait Allowed)</edomvd>
+          </edom>
+          <edom>
+            <edomv>4</edomv>
+            <edomvd>Catch &amp; Release for All Trout (Articifial Lures or Flies Only)</edomvd>
+          </edom>
+          <edom>
+            <edomv>5</edomv>
+            <edomvd>Catch &amp; Release for All Trout (Bait Allowed)</edomvd>
+          </edom>
+          <edom>
+            <edomv>6</edomv>
+            <edomvd>Catch &amp; Release for Brook Trout</edomvd>
+          </edom>
+          <edom>
+            <edomv>7</edomv>
+            <edomvd>Fish Sanctuary, See Regulations for Closures</edomvd>
+          </edom>
+          <edom>
+            <edomv>8</edomv>
+            <edomvd>Special Limits Downstream of Posted Boundary</edomvd>
+          </edom>
+          <edom>
+            <edomv>9</edomv>
+            <edomvd>Winter Fishing Regulation</edomvd>
+          </edom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <overview>
+      <eaover />
+      <eadetcit />
+    </overview>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntperp>
+          <cntper>Hal Watson</cntper>
+          <cntorg>DNR-MIS</cntorg>
+        </cntperp>
+        <cntpos>GIS Database Coordinator</cntpos>
+        <cntaddr>
+          <addrtype>Mailing and Physical</addrtype>
+          <address>500 Lafayette Road, Box 11</address>
+          <city>St. Paul</city>
+          <state>MN</state>
+          <postal>55155-4011</postal>
+        </cntaddr>
+        <cntvoice>(651) 259-5508</cntvoice>
+        <cntfax>(651) 297-4946</cntfax>
+        <cntemail>hal.watson@state.mn.us</cntemail>
+      </cntinfo>
+    </distrib>
+    <resdesc>strm_regsln3</resdesc>
+    <distliab>The Minnesota Department of Natural Resources makes no representation or warranties, express or implied, with respect to the reuse of data provided herewith, regardless of its format or the means of its transmission. There is no guarantee or representation to the user as to the accuracy, currency, suitability, or reliability of this data for any purpose. The user accepts the data 'as is', and assumes all risks associated with its use. By accepting this data, the user agrees not to transmit this data or provide access to it or any part of it to another party unless the user shall include with the data a copy of this disclaimer. The Minnesota Department of Natural Resources assumes no responsibility for actual or consequential damage incurred as a result of any user's reliance on this data.</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>ArcView Shapefile</formname>
+          <formvern>3.x</formvern>
+          <transize />
+        </digtinfo>
+      </digform>
+      <ordering>See Online Linkage or Distribution Contact</ordering>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>2009-01-02 08:24:34.0</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>Lyn Bergquist</cntper>
+          <cntorg>DNR-Fisheries</cntorg>
+        </cntperp>
+        <cntpos>GIS Coordinator</cntpos>
+        <cntaddr>
+          <addrtype>Mailing and Physical</addrtype>
+          <address>
+            500 Lafayette Road
+            Central Office - Box 20
+          </address>
+          <city>Saint Paul</city>
+          <state>MN</state>
+          <postal>55155</postal>
+        </cntaddr>
+        <cntvoice>(651) 259-5189</cntvoice>
+        <cntfax>(651) 297-4961</cntfax>
+        <cntemail>lyn.bergquist@state.mn.us</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>Minnesota Geographic Metadata Guidelines</metstdn>
+    <metstdv>1.2</metstdv>
+    <metextns>
+      <onlink>http://www.gis.state.mn.us/stds/metadata.htm</onlink>
+    </metextns>
+  </metainfo>
+</metadata>
