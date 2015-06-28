@@ -19,12 +19,12 @@ namespace TroutStreamMangler
         protected readonly IEnumerable<string> _desiredSriDs;
         protected readonly bool _removeMeasureValues;
 
-        protected virtual void PreOnRun()
+        protected override void PreOnRun()
         {
             
         }
 
-        protected virtual void PostOnRun()
+        protected override void PostOnRun()
         {
             var alterScript = String.Format(AlterTableToMultiLineString, _tableName, CleanedSpatialColumn, Srid);
 
@@ -62,59 +62,6 @@ namespace TroutStreamMangler
         }
     }
 
-    public class ImportMultilineStringDataImpl : ImportMultilineStringData
-    {
-        public ImportMultilineStringDataImpl(string tableName, string directoryName, string originalSrid, IEnumerable<string> desiredSRIDs, bool removeMeasureValues = false) : base(tableName, directoryName, originalSrid, desiredSRIDs, removeMeasureValues)
-        {
-        }
-
-        protected void Run()
-        {
-            
-
-            var alterScript = String.Format(AlterTableToMultiLineString, _tableName, CleanedSpatialColumn, Srid);
-
-            var alterCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
-                UserName, DatabaseName, alterScript);
-            ExecuteProcess(alterCommand);
-
-            var updateTableScript = String.Format(UpdateMultilineColumn, _tableName, CleanedSpatialColumn, OriginalSpatialColumn);
-            var updateCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
-                UserName, DatabaseName, updateTableScript);
-            ExecuteProcess(updateCommand);
-
-            AddSpatialColumn(_tableName, CleanedSpatialColumn, 4326, MultilineString);
-//            AddSpatialColumn(_tableName, CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
-
-            Console.WriteLine("Adding index...");
-            ApplyNonUniqueIndexToColumn(_tableName, "kittle_nbr");
-        }
-
-        protected internal override string Srid { get { return _originalSrid; } }
-
-        protected internal override int OnRun(string[] remainingArguments)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class ImportMultishapeData
-    {
-        
-    }
-
-    public class Minnesota : DatabaseImporter
-    {
-        public Minnesota(IDbConnection connection, ITableImporterManifest tableManifest) : base(connection, tableManifest)
-        {
-        }
-
-        protected override IEnumerable<FileInfo> SpatialReferenceSystemScripts()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class ImportMinnesotaData : AdministrativeImporterBase
     {
         private const string SRID = "926915";
@@ -125,6 +72,8 @@ namespace TroutStreamMangler
         private const string StreamsTableName = @"streams_with_measured_kittle_routes";
         private const string LakeTableName = @"dnr_hydro_features_all";
         private const string TroutLakeTableName = @"dnr_hydrography_stream_trout_lakes";
+        private const string StateParkTableName = @"state_forest_management_units";
+        private const string RoadsTableName = @"STREETS_LOAD";
         private const string OriginalSpatialColumn = "geom";
         private const string CleanedSpatialColumn = "geom_2d";
 
@@ -219,6 +168,16 @@ namespace TroutStreamMangler
 
             try
             {
+                Console.WriteLine("Importing state forests...");
+                ImportStateForests();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("An error occured.");
+            }
+
+            try
+            {
                 Console.WriteLine("Importing streams...");
                 ImportStreams();
             }
@@ -237,9 +196,44 @@ namespace TroutStreamMangler
                 Console.WriteLine("An error occured.");
             }
 
+            try
+            {
+                Console.WriteLine("Importing Roads...");
+                ImportRoads();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("An error occured.");
+            }
+
             //ImportTroutLakes
 
             return 0;
+        }
+
+        private void ImportStateForests()
+        {
+            // state_forest_management_units
+//            var soughtDirectory = MoveTo(@"PubliclyAccessibleLands\StateForests");
+//            Import(soughtDirectory);
+            TrimGeometry(StateParkTableName);
+            AddSpatialColumn(StateParkTableName, OriginalSpatialColumn, 4326, "Multipolygon");
+            //            AddSpatialColumn(s, OriginalSpatialColumn, ImportShapefile.PreferredSrid, "Multipolygon");
+        }
+
+        private void ImportRoads()
+        {
+            var alterScript = String.Format(AlterTableToMultiLineString, RoadsTableName, CleanedSpatialColumn, "26915");
+
+            var alterCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
+                UserName, DatabaseName, alterScript);
+            ExecuteProcess(alterCommand);
+
+            var updateTableScript = String.Format(UpdateMultilineColumn, RoadsTableName, CleanedSpatialColumn, OriginalSpatialColumn);
+            var updateCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
+                UserName, DatabaseName, updateTableScript);
+            ExecuteProcess(updateCommand);
+            AddSpatialColumn(RoadsTableName, CleanedSpatialColumn, 4326, MultilineString);
         }
 
         private void ImportStreams()

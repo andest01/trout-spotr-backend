@@ -19,6 +19,9 @@ namespace TroutStreamMangler.MN.Models
         public DbSet<dnr_wildlife_management_area_boundaries_publicly_accessible>
             dnr_wildlife_management_area_boundaries_publicly_accessible { get; set; }
 
+        public DbSet<state_forest_management_units>
+            state_forest_management_units { get; set; }
+
         public DbSet<dnr_stat_plan_areas_prk> dnr_stat_plan_areas_prk { get; set; }
         public DbSet<mndnr_fisheries_acquisition> mndnr_fisheries_acquisition { get; set; }
 

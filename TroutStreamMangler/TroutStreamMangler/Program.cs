@@ -50,51 +50,51 @@ namespace TroutStreamMangler
 
         private static int Main(string[] args)
         {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterType<DatabaseConnectionFactory>().As<IDatabaseConnectionFactory>();
-            builder.RegisterType<DatabaseImporterFactory>().As<IDatabaseImporterFactory>();
-            var shapeImporterFactory = new Dictionary<string, IGeometryImporter>();
-//            var importer = msdaf.CreateDatabaseImporter<PostGisDatabaseImporter>(myDirectory);
-
-            shapeImporterFactory.Add(".shp", new ShapefileImporter());
-
-            builder.Register((i) => shapeImporterFactory).As<IDictionary<string, IGeometryImporter>>();
-            builder.RegisterType<DatabaseManifest>().As<IDatabaseManifest>();
-
-            var container = builder.Build();
-
-            var manifest = container.Resolve<IDatabaseManifest>();
-            var importers = manifest.GetDatabaseImporters(new DirectoryInfo("."));
-//            
-            var usImporter = importers.Single(i => i.DatabaseName == "us_import");
-            usImporter.CreateDatabase();
-            usImporter.Import();
-
-
-            var states = importers.Where(i => i.DatabaseName != "us_import");
-            foreach (var importer in states)
-                using (importer)
-                {
-                    importer.CreateDatabase();
-                    importer.Import();
-                }
-
-
-
-            PostImportUsData(null);
-            PostImportMinnesotaData(null);
+//            var builder = new ContainerBuilder();
+//
+//            builder.RegisterType<DatabaseConnectionFactory>().As<IDatabaseConnectionFactory>();
+//            builder.RegisterType<DatabaseImporterFactory>().As<IDatabaseImporterFactory>();
+//            var shapeImporterFactory = new Dictionary<string, IGeometryImporter>();
+////            var importer = msdaf.CreateDatabaseImporter<PostGisDatabaseImporter>(myDirectory);
+//
+//            shapeImporterFactory.Add(".shp", new ShapefileImporter());
+//
+//            builder.Register((i) => shapeImporterFactory).As<IDictionary<string, IGeometryImporter>>();
+//            builder.RegisterType<DatabaseManifest>().As<IDatabaseManifest>();
+//
+//            var container = builder.Build();
+//
+//            var manifest = container.Resolve<IDatabaseManifest>();
+//            var importers = manifest.GetDatabaseImporters(new DirectoryInfo("."));
+////            
+//            var usImporter = importers.Single(i => i.DatabaseName == "us_import");
+//            usImporter.CreateDatabase();
+//            usImporter.Import();
+//
+//
+//            var states = importers.Where(i => i.DatabaseName != "us_import");
+//            foreach (var importer in states)
+//                using (importer)
+//                {
+//                    importer.CreateDatabase();
+//                    importer.Import();
+//                }
+//
+//
+//
+//            PostImportUsData(null);
+//            PostImportMinnesotaData(null);
 
             var dbConnection = GetTroutDashConnection();
             var mnConnection = GetMnConnection();
             // dropdb -h localhost -U postgres --if-exists TroutDash2
-            PostGisDatabaseImporter.DropDatabase(dbConnection);
-            PostGisDatabaseImporter.CreateZeDatabase(dbConnection);
-
-            var restoreDbCommand = String.Format(@"psql -U {0} -d {1} -a -f {2}", dbConnection.UserName, dbConnection.DatabaseName, "Streams_backup_2015_04_06_1.backup");
-            ExecuteShellCommand.ExecuteProcess(restoreDbCommand);
-
-            ExportUsData(null, dbConnection);
+//            PostGisDatabaseImporter.DropDatabase(dbConnection);
+//            PostGisDatabaseImporter.CreateZeDatabase(dbConnection);
+//
+//            var restoreDbCommand = String.Format(@"psql -U {0} -d {1} -a -f {2}", dbConnection.UserName, dbConnection.DatabaseName, "Streams_backup_2015_06_24_1_schema.backup");
+//            ExecuteShellCommand.ExecuteProcess(restoreDbCommand);
+//
+//            ExportUsData(null, dbConnection);
             ExportMinnesotaData(null, dbConnection, mnConnection);
 
              return 0;

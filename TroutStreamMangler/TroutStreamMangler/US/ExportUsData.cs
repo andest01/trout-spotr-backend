@@ -8,7 +8,6 @@ using Npgsql;
 using TroutDash.DatabaseImporter.Convention;
 using TroutDash.EntityFramework.Models;
 using TroutStreamMangler.MN;
-using TroutStreamMangler.MN.Models;
 using TroutStreamMangler.US.Models;
 
 namespace TroutStreamMangler.US

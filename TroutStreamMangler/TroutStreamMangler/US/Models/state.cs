@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using TroutDash.EntityFramework.Models;
-using TroutStreamMangler.MN.Models;
+
 
 namespace TroutStreamMangler.US.Models
 {

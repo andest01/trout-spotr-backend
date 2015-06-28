@@ -50,25 +50,41 @@ namespace TroutStreamMangler.MN
         public override int Run(string[] remainingArguments)
         {
             // ORDER MATTERS!
-            var lakeExporter = new LakeExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext(),
-                new SequenceRestarter(_dbConnection), new GetLinearOffsets(_mnImportDbConnection));
-            var regulationsExporter = new RegulationsExporter(new TroutDashPrototypeContext(),
-                new MinnesotaShapeDataContext(), new SequenceRestarter(_dbConnection),
-                new GetLinearOffsets(_mnImportDbConnection));
-            ExportRestrictions();
-            ExportStreams();
-            lakeExporter.ExportLakes();
+//            var lakeExporter = new LakeExporter(new TroutDashPrototypeContext(), new MinnesotaShapeDataContext(),
+//                new SequenceRestarter(_dbConnection), new GetLinearOffsets(_mnImportDbConnection));
+//            var regulationsExporter = new RegulationsExporter(new TroutDashPrototypeContext(),
+//                new MinnesotaShapeDataContext(), new SequenceRestarter(_dbConnection),
+//                new GetLinearOffsets(_mnImportDbConnection));
+//            ExportRestrictions();
+//            ExportStreams();
+//            lakeExporter.ExportLakes();
 //
 //            // EXPORT RELATIONSHIPS AFTER ENTITIES HAVE BEEN LOADED.
-            ExportRestrictionRoutes();
-            regulationsExporter.ExportRestrictionSections();
-            ExportPubliclyAccessibleLand();
-            lakeExporter.ExportLakeSections();
-            ExportCountyToStreamRelations();
-            ExportStreamToPubliclyAccessibleLandRelations();
+//            ExportRestrictionRoutes();
+//            regulationsExporter.ExportRestrictionSections();
+//            ExportPubliclyAccessibleLand();
+//            lakeExporter.ExportLakeSections();
+//            ExportCountyToStreamRelations();
+//            ExportStreamToPubliclyAccessibleLandRelations();
             ExportPubliclyAccessibleLandSections();
+//            ExportStreamAccessPoints();
 
             return 0;
+            }
+
+        private void ExportStreamAccessPoints()
+        {
+            using (var context = new MinnesotaShapeDataContext())
+            using (var troutDashContext = new TroutDashPrototypeContext())
+            {
+                Console.WriteLine("Deleting minnesota stream access points...");
+                var state = troutDashContext.states.First(s => s.short_name == "MN");
+                var pre_existing_sections = state.streams.SelectMany(s => s.stream_access_points).ToList();
+                troutDashContext.stream_access_points.RemoveRange(pre_existing_sections);
+                troutDashContext.SaveChanges();
+
+
+            }
         }
 
 
@@ -230,7 +246,11 @@ namespace TroutStreamMangler.MN
                 Console.WriteLine("Failures: ");
                 badList.ForEach(b => Console.WriteLine(b.kittle_nam + " " + b.kittle_nbr));
                 troutDashContext.SaveChanges();
+            }
 
+            using (var troutDashContext = new TroutDashPrototypeContext())
+            {
+                var minnesota = troutDashContext.states.Single(s => s.short_name == "MN");
                 Console.WriteLine("Saving Metadata for stream... ");
                 using (var writer = File.OpenText(StreamMetadataFileLocation))
                 {
@@ -241,7 +261,11 @@ namespace TroutStreamMangler.MN
                         var id = record.Id;
                         try
                         {
-                            var stream = minnesota.streams.Single(s => s.source == id);
+                            var stream = minnesota.streams.FirstOrDefault(s => s.source == id);
+                            if (stream == null)
+                            {
+                                continue;
+                            }
                             Console.WriteLine("  " + stream.name + " | " + stream.source);
                             stream.has_brook_trout = record.IsBrook ?? false;
                             stream.has_brown_trout = record.IsBrown ?? false;
@@ -259,7 +283,7 @@ namespace TroutStreamMangler.MN
 
                         catch
                         {
-                            
+                            throw;
                         }
                         
                     }
@@ -369,6 +393,13 @@ namespace TroutStreamMangler.MN
                         description = "Land Easement",
                         is_federal = false,
                         type = "Easement"
+                    },
+                    new publicly_accessible_land_type
+                    {
+                        state = minnesota,
+                        description = "State Forest",
+                        is_federal = false,
+                        type = "State Forest"
                     }
                 };
                 troutDashContext.SaveChanges();
@@ -423,8 +454,24 @@ namespace TroutStreamMangler.MN
                         shape_area = Convert.ToDecimal(i.OriginalGeometry.Area)
                     });
 
+                
+
+                
+
                 Console.WriteLine("Loading wildlife management areas");
                 troutDashContext.publicly_accessible_lands.AddRange(wmas);
+
+                var stateParks = context.state_forest_management_units
+                    .ToList()
+                    .Select(i => new publicly_accessible_land
+                    {
+                        state_gid = minnesota.gid,
+                        Geom = i.Geom_4326,
+                        pal_Id = wmaType.id,
+                        area_name = i.unit_name,
+                        shape_area = Convert.ToDecimal(i.OriginalGeometry.Area)
+                    });
+                troutDashContext.publicly_accessible_lands.AddRange(stateParks);
 
                 Console.WriteLine("Saving publicly accessible land changes");
 
@@ -534,6 +581,19 @@ namespace TroutStreamMangler.MN
                                         SaveEasements(easement, route, "WMA", "dnr_wma_boundaries_pa")
                                             .ToList();
                                     troutDashContext2.PalSection.AddRange(wmas);
+                                    troutDashContext2.SaveChanges();
+                                }
+                            },
+                            () =>
+                            {
+                                using (var troutDashContext2 = new TroutDashPrototypeContext())
+                                {
+                                    var type = "State Forest";
+                                    var easement = troutDashContext2.PalTypes.First(i => i.type == type);
+                                    var stateForests =
+                                        SaveEasements(easement, route, "State Forest", "state_forest_management_units")
+                                            .ToList();
+                                    troutDashContext2.PalSection.AddRange(stateForests);
                                     troutDashContext2.SaveChanges();
                                 }
                             }

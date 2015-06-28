@@ -116,14 +116,12 @@
     <Compile Include="IDatabaseImporter.cs" />
     <Compile Include="AdministrativeImporterBase.cs" />
     <Compile Include="IDataProcessor.cs" />
-    <Compile Include="MN\LakeExporter.cs" />
-    <Compile Include="MN\RegionModel.cs" />
-    <Compile Include="MN\ExportMinnesotaData.cs" />
     <Compile Include="IDatabaseExporter.cs" />
+    <Compile Include="ImportShapefile.cs" />
+    <Compile Include="MN\ExportMinnesotaData.cs" />
     <Compile Include="MN\ExportRegulationSections.cs" />
     <Compile Include="MN\GetLinearOffsets.cs" />
     <Compile Include="MN\ImportMinnesotaData.cs" />
-    <Compile Include="ImportShapefile.cs" />
     <Compile Include="MN\Import\MinnesotaDatabaseImport.cs" />
     <Compile Include="MN\Import\MinnesotaEasementsImporter.cs" />
     <Compile Include="MN\Import\MinnesotaLakeImporter.cs" />
@@ -132,16 +130,18 @@
     <Compile Include="MN\Import\MinnesotaStreamRouteImporter.cs" />
     <Compile Include="MN\Import\MinnesotaTableManifest.cs" />
     <Compile Include="MN\Import\MinnesotaWildlifeManagementAreaImporter.cs" />
+    <Compile Include="MN\LakeExporter.cs" />
     <Compile Include="MN\Models\dnr_hydro_features_all.cs" />
     <Compile Include="MN\Models\dnr_stat_plan_areas_prk.cs" />
     <Compile Include="MN\Models\dnr_wildlife_management_area_boundaries_publicly_accessible.cs" />
+    <Compile Include="MN\Models\MinnesotaShapeDataContext.cs" />
     <Compile Include="MN\Models\mndnr_fisheries_acquisition.cs" />
     <Compile Include="MN\Models\RestricitonSection.cs" />
-    <Compile Include="MN\Models\MinnesotaShapeDataContext.cs" />
     <Compile Include="MN\Models\StreamRoute.cs" />
     <Compile Include="MN\Models\strm_regsln3.cs" />
     <Compile Include="MN\Models\trout_streams_minnesota.cs" />
     <Compile Include="MN\RegionCountyModel.cs" />
+    <Compile Include="MN\RegionModel.cs" />
     <Compile Include="MN\RegionsBuilder.cs" />
     <Compile Include="MN\SequenceRestarter.cs" />
     <Compile Include="Program.cs" />
@@ -163,7 +163,27 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="CreateNewPostGISDatabase.bat" />
+    <None Include="CreateNewPostGISDatabase.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MN\Data\import.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MN\Data\Restrictions\regulations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MN\Data\Streams\StreamMetadata.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MN\Data\Streams\StreamMetadata.tsv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MN\import.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MN\regulations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="mn_import\dnr_wma_boundaries_pa.cpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -182,9 +202,43 @@
     <None Include="mn_import\dnr_wma_boundaries_pa.shx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="mn_import\state_forest_management_units.cpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\state_forest_management_units.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\state_forest_management_units.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\state_forest_management_units.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\state_forest_management_units.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\STREETS_LOAD.cpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\STREETS_LOAD.dbf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\STREETS_LOAD.prj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\STREETS_LOAD.shp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="mn_import\STREETS_LOAD.shx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Streams_backup_2015_04_06_1.backup">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Streams_backup_2015_06_11_1_schema.backup">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Streams_backup_2015_06_24_1_schema.backup" />
     <None Include="US\Data\Regions\BWCA.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -201,15 +255,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="US\Data\Regions\Southwest.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="MN\Data\Restrictions\regulations.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="MN\Data\Streams\StreamMetadata.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="MN\Data\Streams\StreamMetadata.tsv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="mn_import\dnr_hydrography_stream_trout_lakes.dbf">
@@ -359,7 +404,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MN\SridImport.sql" />
+    <Content Include="MN\SridImport.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="mn_import\dnr_wma_boundaries_pa.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -369,12 +416,25 @@
     <None Include="US\Data\Regions\RegionNames.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="mn_import\state_forest_management_units.shp.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mn_import\STREETS_LOAD.shp.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="us_import\SridDefinition\4269.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IA\" />
+    <Folder Include="MN\Data\Lakes\" />
+    <Folder Include="MN\Data\PubliclyAccessibleLands\Easements\" />
+    <Folder Include="MN\Data\PubliclyAccessibleLands\StateForests\" />
+    <Folder Include="MN\Data\PubliclyAccessibleLands\StateParks\" />
+    <Folder Include="MN\Data\PubliclyAccessibleLands\WildlifeManagementAreas\" />
+    <Folder Include="MN\Data\TroutLakes\" />
+    <Folder Include="MN\Data\TroutStreamSections\" />
     <Folder Include="MN\Export\" />
     <Folder Include="TroutDash_import\" />
     <Folder Include="US\Export\" />
