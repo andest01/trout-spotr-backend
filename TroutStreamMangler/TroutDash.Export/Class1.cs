@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TroutDash.Export
 {
@@ -21,6 +19,16 @@ namespace TroutDash.Export
         public string Status { get; set; }
         public string QaPass { get; set; }
     }
+
+    public class StreamNewLandCsv
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string AltName { get; set; }
+        public decimal NewLand { get; set; }
+        public decimal latitude { get; set; }
+        public decimal longitude { get; set; }
+    }
     public interface IJsonExporter
     {
         IEnumerable<StreamDetails> GetStreamDetails();
@@ -35,7 +43,25 @@ namespace TroutDash.Export
         }
         public string RegionName { get; set; }
         public int RegionId { get; set; }
-        public List<CountyDetails> Counties { get; set; } 
+        public List<CountyDetails> Counties { get; set; }
+
+        public int TroutStreamCount
+        {
+            get
+            {
+                return Counties.Sum(c => c.StreamCount);
+            }
+        }
+
+        public decimal TotalTroutStreamLength
+        {
+            get { return Counties.Sum(c => c.TotalTroutStreamLength); }
+        }
+
+        public decimal TotalPublicLength
+        {
+            get { return Counties.Sum(c => c.TotalPublicLength); }
+        }
     }
 
     public class CountyDetails
@@ -49,7 +75,25 @@ namespace TroutDash.Export
         public int CountyId { get; set; }
         public string StateName { get; set; }
         public int StateId { get; set; }
-        public IEnumerable<StreamDetails> Streams { get; set; } 
+        public IEnumerable<StreamDetails> Streams { get; set; }
+
+        public int StreamCount
+        {
+            get
+            {
+                return Streams.Count();
+            }
+        }
+
+        public decimal TotalTroutStreamLength
+        {
+            get { return Streams.Sum(s => s.TroutStreamsLength); }
+        }
+
+        public decimal TotalPublicLength
+        {
+            get { return Streams.Sum(s => s.PalsLength); }
+        }
     }
 
 

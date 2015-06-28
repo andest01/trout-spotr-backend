@@ -26,6 +26,7 @@ namespace TroutDash.EntityFramework.Models
         public string Name { get; set; }
         public virtual ICollection<lake> lakes { get; set; } 
         public virtual ICollection<county> counties { get; set; }
+        
         public virtual ICollection<restriction> restrictions { get; set; }
         public virtual ICollection<stream> streams { get; set; }
         public virtual ICollection<publicly_accessible_land> Pal { get; set; }

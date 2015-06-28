@@ -48,6 +48,10 @@ namespace TroutDash.Export
                 {
                     var c = new CountyDetails();
                     c.CountyName = county.name;
+                    if (county.name == "Scott")
+                    {
+                        
+                    }
                     c.CountyId = county.gid;
                     c.StateId = county.state.gid;
                     c.StateName = county.state.Name;
@@ -157,7 +161,6 @@ namespace TroutDash.Export
             {
                 Start = decimal.Round(pa.start, 3, MidpointRounding.AwayFromZero),
                 Stop = decimal.Round(pa.stop, 3, MidpointRounding.AwayFromZero),
-                Type = String.Empty
             }).ToList();
 
             palCollection.Id = 0;

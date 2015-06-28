@@ -147,7 +147,18 @@ namespace TroutDash.DatabaseImporter.Convention.DatabaseImporter
                 {
                     processor.PreProcess();
                     var geometryImporter = _shapefileImportStrategies.Single(i => i.Key == shapefile.Extension).Value;
-                    geometryImporter.ImportShape(shapefile, _connection, Srid);
+                    // HACK: trying to convert to something i like
+                    var needsConversion =
+                        shapefile.Name.IndexOf("STREETS_LOAD", StringComparison.OrdinalIgnoreCase) >= 0;
+                    if (needsConversion)
+                    {
+                        geometryImporter.ImportShape(shapefile, _connection, "26915");
+                    }
+                    else
+                    {
+                        geometryImporter.ImportShape(shapefile, _connection, Srid);
+                    }
+                    
                     processor.Process();
                     processor.PostProcess();
                 }

@@ -10,9 +10,9 @@ namespace TroutDash.DatabaseImporter.Convention.GeometryImporter
             
         }
 
-        public void ImportShape(FileInfo shapefile, IDatabaseConnection connection, string srid)
+        public void ImportShape(FileInfo shapefile, IDatabaseConnection connection, string srid, string desiredSrid = null)
         {
-            var sqlFile = DumpSqlFromShapefile(shapefile, srid);
+            var sqlFile = DumpSqlFromShapefile(shapefile, srid, desiredSrid);
             try
             {
                 ExecuteShellCommand.ExecuteSql(sqlFile, connection.DatabaseName, connection.HostName, connection.UserName);
@@ -29,13 +29,14 @@ namespace TroutDash.DatabaseImporter.Convention.GeometryImporter
             }
         }
 
-        private FileInfo DumpSqlFromShapefile(FileInfo shapeFile, string srid)
+        private FileInfo DumpSqlFromShapefile(FileInfo shapeFile, string srid, string toSrid = null)
         {
             var shortName = Path.GetFileNameWithoutExtension(shapeFile.Name);
             Console.WriteLine("Starting import for file named " + Path.GetFileNameWithoutExtension(shapeFile.Name));
             Console.WriteLine("Creating sql file for " + shapeFile);
+            var sridConversion = String.IsNullOrEmpty(toSrid) ? srid : srid + ":" + toSrid;
             const string commandTemplate = "shp2pgsql -d -s {2} -I -W LATIN1 {0} {1} > {1}.sql";
-            var command = String.Format(commandTemplate, shapeFile.FullName, shortName, srid);
+            var command = String.Format(commandTemplate, shapeFile.FullName, shortName, sridConversion);
             ExecuteShellCommand.ExecuteProcess(command);
 
             var sqlFileName = Path.GetFileNameWithoutExtension(shapeFile.FullName) + ".sql";

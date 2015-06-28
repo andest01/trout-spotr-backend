@@ -105,7 +105,7 @@ namespace TroutDash.Export.Test
             ExecuteShellCommand.ExecuteProcess(simplify, currentDirectory);
             // streamData.geo.json
             // Add our points.
-            var regionScript = String.Format(@"topojson ./streamProperties.json ./regions.min.topo.json -p -o state.topo.json");
+            var regionScript = String.Format(@"topojson ./streamProperties.json ./regions.min.topo.json -p -o tableOfContents.topo.json");
             ExecuteShellCommand.ExecuteProcess(regionScript, currentDirectory);
         }
 

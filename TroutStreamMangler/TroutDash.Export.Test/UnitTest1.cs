@@ -54,6 +54,16 @@ namespace TroutDash.Export.Test
         }
 
         [TestMethod]
+        public void CurrentLength()
+        {
+            var exporter = new JsonExporter(new TroutDashPrototypeContext());
+            var results = exporter.GetStreamDetails().ToList();
+
+            var totalMilesOfStreams = results.Sum(r => r.TroutStreamsLength);
+            var totalMilesOfPublicLand = results.Sum(r => r.PalsLength);
+        }
+
+        [TestMethod]
         public void CreateEmptySpeciesCsv()
         {
             var context = new TroutDashPrototypeContext();
@@ -92,6 +102,37 @@ namespace TroutDash.Export.Test
                 csv.WriteRecords(rows);
             }
             
+
+
+
+        }
+
+        [TestMethod]
+        public void CreateNewLandCsv()
+        {
+            var exporter = new JsonExporter(new TroutDashPrototypeContext());
+            var results = exporter.GetStreamDetails().ToList();
+
+            var rows = results.Select(s =>
+            {
+
+
+                return new StreamNewLandCsv()
+                {
+                    Name = s.Name,
+                    Id = s.Id,
+                    NewLand = s.PalsLength,
+                    latitude = s.CentroidLatitude,
+                    longitude = s.CentroidLongitude
+                };
+            }).ToList();
+
+            using (var writer = File.CreateText("StreamLength2.csv"))
+            {
+                var csv = new CsvWriter(writer);
+                csv.WriteRecords(rows);
+            }
+
 
 
 

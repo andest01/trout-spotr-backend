@@ -86,6 +86,7 @@
     <Compile Include="Models\Mapping\restriction_sectionMap.cs" />
     <Compile Include="Models\Mapping\stateMap.cs" />
     <Compile Include="Models\Mapping\streamMap.cs" />
+    <Compile Include="Models\Mapping\stream_access_pointMap.cs" />
     <Compile Include="Models\Mapping\trout_stream_sectionMap.cs" />
     <Compile Include="Models\publicly_accessible_land.cs">
       <SubType>Code</SubType>
@@ -102,6 +103,7 @@
     <Compile Include="Models\spatial_ref_sys.cs" />
     <Compile Include="Models\state.cs" />
     <Compile Include="Models\stream.cs" />
+    <Compile Include="Models\stream_access_point.cs" />
     <Compile Include="Models\TroutDashPrototypeContext.cs" />
     <Compile Include="Models\trout_stream_section.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

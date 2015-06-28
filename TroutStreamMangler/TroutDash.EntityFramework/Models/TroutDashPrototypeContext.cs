@@ -29,6 +29,7 @@ namespace TroutDash.EntityFramework.Models
         public DbSet<lake_section> lake_sections { get; set; }
         public DbSet<restriction_route> restriction_routes { get; set; }
         public DbSet<region> regions { get; set; }
+        public DbSet<stream_access_point> stream_access_points { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -45,6 +46,7 @@ namespace TroutDash.EntityFramework.Models
             modelBuilder.Configurations.Add(new lake_sectionMap());
             modelBuilder.Configurations.Add(new restriction_routeMap());
             modelBuilder.Configurations.Add(new regionMap());
+            modelBuilder.Configurations.Add(new stream_access_pointMap());
         }
     }
 }
