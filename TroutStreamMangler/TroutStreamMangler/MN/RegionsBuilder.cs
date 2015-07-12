@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using CsvHelper;
+using TroutStreamMangler.US;
 
 namespace TroutStreamMangler.MN
 {

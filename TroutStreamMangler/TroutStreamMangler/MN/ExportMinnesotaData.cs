@@ -15,6 +15,7 @@ using TroutDash.DatabaseImporter.Convention;
 using TroutDash.EntityFramework.Models;
 using TroutDash.Export;
 using TroutStreamMangler.MN.Models;
+using TroutStreamMangler.US;
 
 namespace TroutStreamMangler.MN
 {
@@ -27,6 +28,16 @@ namespace TroutStreamMangler.MN
         private readonly SequenceRestarter _sequenceRestarter;
         public const decimal METERS_IN_MILE = 1609.34M;
 
+        public class MnRoadType
+        {
+            // type, name, isFederal, stateId
+            public string abc { get; set; }
+            public string name { get; set; }
+            public bool isFederal { get; set; }
+            public string stateId { get; set; }
+            public int road_type_id { get; set; }
+        }
+
         public ExportMinnesotaData(IDatabaseConnection dbConnection, IDatabaseConnection mnImportDbConnection,
             CentroidResetter centroidResetter)
         {
@@ -35,7 +46,8 @@ namespace TroutStreamMangler.MN
             _centroidResetter = centroidResetter;
             _sequenceRestarter = new SequenceRestarter(dbConnection);
             IsCommand("ExportMn", "Exports minnesota data into trout dash. must be run after ImportMn.");
-            HasRequiredOption("regulationJson=", "the location of the regulation json", j => FileLocation = j);
+            HasRequiredOption("regulationJson=", "the location of the regulation json", j => RegulationsFileLocation = j);
+            HasRequiredOption("roadTypesJson=", "the location of the road types json", j => RoadTypesFileLocation = j);
             HasOption("streamMetadata=", "the location of the stream data for species, status, etc",
                 j => StreamMetadataFileLocation = j);
 
@@ -43,8 +55,10 @@ namespace TroutStreamMangler.MN
             _sequenceRestarter = new SequenceRestarter(dbConnection);
         }
 
+        public string RoadTypesFileLocation { get; set; }
 
-        public string FileLocation { get; set; }
+
+        public string RegulationsFileLocation { get; set; }
         public string StreamMetadataFileLocation { get; set; }
 
         public override int Run(string[] remainingArguments)
@@ -55,8 +69,16 @@ namespace TroutStreamMangler.MN
 //            var regulationsExporter = new RegulationsExporter(new TroutDashPrototypeContext(),
 //                new MinnesotaShapeDataContext(), new SequenceRestarter(_dbConnection),
 //                new GetLinearOffsets(_mnImportDbConnection));
+//            var streamAccessPointsExporter = new StreamAccessPointsExporter(new TroutDashPrototypeContext(),
+//                new MinnesotaShapeDataContext(), new SequenceRestarter(_dbConnection),
+//                new GetLinearOffsets(_mnImportDbConnection));
+//
 //            ExportRestrictions();
+//            ExportMnRoadTypes();
 //            ExportStreams();
+//            ExportMnRoads();
+//
+//
 //            lakeExporter.ExportLakes();
 //
 //            // EXPORT RELATIONSHIPS AFTER ENTITIES HAVE BEEN LOADED.
@@ -66,11 +88,112 @@ namespace TroutStreamMangler.MN
 //            lakeExporter.ExportLakeSections();
 //            ExportCountyToStreamRelations();
 //            ExportStreamToPubliclyAccessibleLandRelations();
-            ExportPubliclyAccessibleLandSections();
-//            ExportStreamAccessPoints();
+//            ExportPubliclyAccessibleLandSections();
+//            
+//            
+            ExportStreamAccessPoints();
 
             return 0;
             }
+
+        private void ExportMnRoads()
+        {
+            using (var context = new MinnesotaShapeDataContext())
+            using (var troutDashContext = new TroutDashPrototypeContext())
+            {
+                const int UncategorizedRoad = 100;
+                
+                // Remove old MN road types.
+                Console.WriteLine("Deleting Minnesota roads...");
+                var minnesota = troutDashContext.states.Single(s => s.short_name == "MN");
+                troutDashContext.roads.RemoveRange(minnesota.roads);
+                troutDashContext.SaveChanges();
+                Console.WriteLine("Done deleting Minnesota roads.");
+
+                Console.WriteLine("Getting Minnesota roads...");
+                var roadTypes = minnesota.road_types.ToDictionary(i => i.source);
+
+                var roads = context.streets_load.ToList().Select(i =>
+                {
+                    var key = Convert.ToInt32(i.route_syst).ToString();
+                    var roadTypeId = -1;
+                    if (i.route_syst == "1")
+                    {
+                        roadTypeId = 1;
+                    }
+
+                    else if (i.route_syst == "2")
+                    {
+                        roadTypeId = 2;
+                    }
+                    else {
+                        roadTypeId = roadTypes.ContainsKey(key) == false
+                        ? roadTypes.Single(j => j.Value.source == UncategorizedRoad.ToString()).Value.id : 
+                        roadTypes[key].id;
+                    }
+
+                    var t = new road()
+                    {
+                        name = i.street_nam,
+                        local_name = "",
+                        state_gid = minnesota.gid,
+                        road_type_id = roadTypeId,
+                        Geom = i.Geom_4326
+                    };
+
+                    return t;
+                }).ToList();
+
+                Console.WriteLine("Saving Minnesota roads...");
+                troutDashContext.roads.AddRange(roads);
+                troutDashContext.SaveChanges();
+                Console.WriteLine("Done saving Minnesota roads.");
+
+            }
+        }
+
+        private void ExportMnRoadTypes()
+        {
+            
+            using (var context = new MinnesotaShapeDataContext())
+            using (var troutDashContext = new TroutDashPrototypeContext())
+            {
+                // Remove old MN road types.
+                Console.WriteLine("Deleting Minnesota road types...");
+                var minnesota = troutDashContext.states.Single(s => s.short_name == "MN");
+                troutDashContext.road_types.RemoveRange(minnesota.road_types.ToList());
+                troutDashContext.SaveChanges();
+                Console.WriteLine("Done deleting Minnesota road types.");
+
+                Console.WriteLine("Getting Minnesota road types...");
+                var roadTypes = GetMnRoadTypes().ToList().Select(i => new road_type()
+                {
+                    description = i.name,
+                    state_gid = minnesota.gid,
+                    source = i.road_type_id.ToString(),
+                    type = i.abc,
+                });
+
+                Console.WriteLine("Saving Minnesota road types...");
+                troutDashContext.road_types.AddRange(roadTypes);
+                troutDashContext.SaveChanges();
+                Console.WriteLine("Done saving Minnesota road types.");
+
+            }
+        }
+
+        private IEnumerable<MnRoadType> GetMnRoadTypes()
+        {
+            using (var textStream = File.OpenText(RoadTypesFileLocation))
+            {
+                var csv = new CsvReader(textStream);
+                while (csv.Read())
+                {
+                    var record = csv.GetRecord<MnRoadType>();
+                    yield return record;
+                }
+            }
+        }
 
         private void ExportStreamAccessPoints()
         {
@@ -83,7 +206,113 @@ namespace TroutStreamMangler.MN
                 troutDashContext.stream_access_points.RemoveRange(pre_existing_sections);
                 troutDashContext.SaveChanges();
 
+                var roadIntersections = GetRoadStreamIntersections().ToList();
+                troutDashContext.stream_access_points.AddRange(roadIntersections);
+                troutDashContext.SaveChanges();
+            }
+        }
 
+        private IEnumerable<stream_access_point> GetRoadStreamIntersections()
+        {
+            const string query =
+@"SELECT
+  subquery.road_gid,
+  subquery.stream_gid,
+  subquery.stream_name,
+  subquery.road_name,
+  ST_X((subquery.intersection_dump).geom) AS latitude,
+  ST_Y((subquery.intersection_dump).geom) AS longitude,
+  St_linelocatepoint(subquery.mini_line, (subquery.intersection_dump).geom) AS offset,
+  (subquery.intersection_dump).geom,
+  geometrytype((subquery.intersection_dump).geom) AS geometry_type,
+  ST_DWithin(pal.geom, (subquery.intersection_dump).geom, 0.0008) as is_within_land,
+  row_number() over () as fake_id
+  
+FROM (SELECT
+  road.gid AS road_gid,
+  stream.gid AS stream_gid,
+  stream.name AS stream_name,
+  road.name AS road_name,
+  ST_Dump(ST_Intersection(stream.geom, road.geom)) AS intersection_dump,
+  ST_linemerge(stream.geom) AS mini_line
+
+FROM stream,
+     road
+
+WHERE ST_Intersects(stream.geom, road.geom)) AS subquery
+left join publicly_accessible_land as pal 
+on ST_DWithin(pal.geom, (subquery.intersection_dump).geom, 0.0008)";
+            return DoStuff(query);
+
+        }
+
+        private IEnumerable<stream_access_point> DoStuff(string sql)
+        {
+            var connection = String.Format("Server={0};Port=5432;User Id={1};Database={2};CommandTimeout=60;Password=fakepassword;Timeout=60;", _dbConnection.HostName, _dbConnection.UserName, _dbConnection.DatabaseName);
+            var conn = new NpgsqlConnection(connection);
+            conn.Open();
+
+            NpgsqlCommand command = new NpgsqlCommand(sql, conn);
+
+
+            try
+            {
+                NpgsqlDataReader dr = command.ExecuteReader();
+                while (dr.Read())
+                {
+                    var l = new stream_access_point();
+
+                    // sometimes when a line intercepts a polygon you can
+                    // get a point, e.g. the EXACT mouth of a river.
+                    // ignore these non-line geometries.
+                    l.is_accessible = false;
+                    l.linear_offset = 0.0M;
+                    l.road_gid = dr.GetInt32(0);
+                    l.stream_gid = dr.GetInt32(1);
+                    l.street_name = dr.GetString(3);
+                    
+                    l.centroid_latitude = Convert.ToDecimal(dr.GetDouble(5));
+                    l.centroid_longitude = Convert.ToDecimal(dr.GetDouble(4));
+                    l.linear_offset = Convert.ToDecimal(dr.GetDouble(6));
+                    var asdf = dr.GetFieldDbType(9);
+                    var isAccessible = dr.IsDBNull(9) == false ? dr.GetBoolean(9) : false;
+                    l.is_accessible = isAccessible;
+                    l.Geom = dr.GetString(7);
+
+//                    l.IntersectionGeometryType = dr.GetString(6);
+//                    var isLineString = String.Equals("Linestring", l.IntersectionGeometryType,
+//                        StringComparison.OrdinalIgnoreCase);
+//                    if (isLineString == false)
+//                    {
+//                        yield break;
+//                    }
+//
+//                    if (dr.IsDBNull(1))
+//                    {
+//                        yield break;
+//                    }
+//
+//                    l.StreamId = dr.GetInt32(0);
+//                    l.StreamNumber = dr.IsDBNull(1) ? "Unnamed" : dr.GetString(1);
+//                    l.StreamName = dr.IsDBNull(2) ? "" : dr.GetString(2);
+//                    l.GeometryName = dr.IsDBNull(3) ? "" : dr.GetString(3);
+//                    var asdf = dr[4];
+//                    l.GeometryId = Convert.ToInt32(asdf);
+//
+//                    l.IntersectionGeometry = dr.GetString(5);
+//
+//
+//                    l.StartPoint = dr.GetDouble(7);
+//                    l.EndPoint = dr.GetDouble(8);
+//                    l.StreamLength = dr.GetDouble(9);
+
+                    yield return l;
+                }
+            }
+
+            finally
+            {
+                conn.Close();
             }
         }
 
@@ -207,10 +436,12 @@ namespace TroutStreamMangler.MN
 
         private IEnumerable<MinnesotaRestriction> GetRestrictions()
         {
-            var file = File.ReadAllText(FileLocation);
+            var file = File.ReadAllText(RegulationsFileLocation);
             var results = JsonConvert.DeserializeObject<MinnesotaRestriction[]>(file);
             return results;
         }
+
+
 
         public void ExportStreams()
         {
@@ -231,17 +462,7 @@ namespace TroutStreamMangler.MN
 
                 var badList = new List<trout_streams_minnesota>();
 
-                troutStreamSectionIds.AsParallel().ForAll(section =>
-                {
-//                    var c = contex
-                    SaveStream(section, minnesota.Name, minnesota.gid, badList);
-                });
-//                Parallel.ForEach(troutStreamSectionIds,
-//                    section => SaveStream(section, context, minnesota, troutDashContext, badList));
-//                foreach (var section in troutStreamSectionIds.AsParallel())
-//                {
-//                    SaveStream(section, context, minnesota, troutDashContext, badList);
-//                }
+                troutStreamSectionIds.AsParallel().ForAll(section => SaveStream(section, minnesota.Name, minnesota.gid, badList));
 
                 Console.WriteLine("Failures: ");
                 badList.ForEach(b => Console.WriteLine(b.kittle_nam + " " + b.kittle_nbr));
@@ -335,7 +556,7 @@ namespace TroutStreamMangler.MN
             stream.is_brook_trout_stocked = true;
             stream.is_brown_trout_stocked = true;
             stream.is_rainbow_trout_stocked = true;
-            stream.length_mi = Convert.ToDecimal(route.OriginalGeometry.Length) / 1609.3440M; // fix later.
+            stream.length_mi = Convert.ToDecimal(route.OriginalGeometry.Length)/METERS_IN_MILE; // fix later.
             stream.local_name = route.kittle_nam;
             stream.slug = Guid.NewGuid().ToString();
             stream.source_id = route.gid.ToString();
@@ -510,7 +731,7 @@ namespace TroutStreamMangler.MN
         {
             var kittleNumber = route.source_id;
             Console.WriteLine(palType + "... ");
-            var offsets = _getLinearOffsets.GetStuff(kittleNumber, table).ToArray();
+            var offsets = _getLinearOffsets.GetOffsets(kittleNumber, table).ToArray();
             foreach (var offset in offsets)
             {
                 var section = new publicly_accessible_land_section();
@@ -659,7 +880,7 @@ namespace TroutStreamMangler.MN
                 var centroid = asdf4236.Centroid;
                 trout_section.centroid_latitude = Convert.ToDecimal(centroid.X);
                 trout_section.centroid_longitude = Convert.ToDecimal(centroid.Y);
-                trout_section.length_mi = Convert.ToDecimal(s.Length) / 1609.3440M;
+                trout_section.length_mi = Convert.ToDecimal(s.Length) / METERS_IN_MILE;
                 trout_section.public_length = 0;
                 trout_section.section_name = asdf.kittle_nam ?? "Unnamed Stream";
                 trout_section.source_id = asdf.kittle_nbr;
@@ -685,8 +906,8 @@ namespace TroutStreamMangler.MN
                 trout_section.Geom = asdf.Geom_4326;
                 var result = t.GetIntersectionOfLine(routeMultilineString.Geometries.First() as ILineString, s).ToList();
 
-                trout_section.start = (decimal)result[0] / 1609.3440M;
-                trout_section.stop = (decimal)result[1] / 1609.3440M;
+                trout_section.start = (decimal)result[0] / METERS_IN_MILE;
+                trout_section.stop = (decimal)result[1] / METERS_IN_MILE;
 
                 yield return trout_section;
 

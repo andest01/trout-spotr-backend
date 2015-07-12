@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using ManyConsole;
@@ -7,61 +6,6 @@ using TroutDash.DatabaseImporter;
 
 namespace TroutStreamMangler
 {
-    public abstract class ImportMultilineStringData : AdministrativeImporterBase
-    {
-        protected const string AlterTableToMultiLineString = @"ALTER TABLE {0} ADD {1} geometry(MultiLineString, {2})";
-        protected const string UpdateMultilineColumn = @"UPDATE {0} SET {1} = ST_Force_2D({2})";
-        protected const string CleanedSpatialColumn = "geom_2d";
-        protected const string OriginalSpatialColumn = "geom";
-        protected readonly string _tableName;
-        protected readonly string _directoryName;
-        protected readonly string _originalSrid;
-        protected readonly IEnumerable<string> _desiredSriDs;
-        protected readonly bool _removeMeasureValues;
-
-        protected override void PreOnRun()
-        {
-            
-        }
-
-        protected override void PostOnRun()
-        {
-            var alterScript = String.Format(AlterTableToMultiLineString, _tableName, CleanedSpatialColumn, Srid);
-
-            var alterCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
-                UserName, DatabaseName, alterScript);
-            ExecuteProcess(alterCommand);
-
-            var updateTableScript = String.Format(UpdateMultilineColumn, _tableName, CleanedSpatialColumn, OriginalSpatialColumn);
-            var updateCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
-                UserName, DatabaseName, updateTableScript);
-            ExecuteProcess(updateCommand);
-
-            AddSpatialColumn(_tableName, CleanedSpatialColumn, 4326, MultilineString);
-//            AddSpatialColumn(_tableName, CleanedSpatialColumn, ImportShapefile.PreferredSrid, MultilineString);
-
-            Console.WriteLine("Adding index...");
-            ApplyNonUniqueIndexToColumn(_tableName, "kittle_nbr");
-        }
-
-        protected ImportMultilineStringData(string tableName, string directoryName, string originalSrid, IEnumerable<string> desiredSRIDs, bool removeMeasureValues = false)
-        {
-            _tableName = tableName;
-            _directoryName = directoryName;
-            _originalSrid = originalSrid;
-            _desiredSriDs = desiredSRIDs;
-            _removeMeasureValues = removeMeasureValues;
-        }
-
-        protected void Run()
-        {
-            PreOnRun();
-            var soughtDirectory = MoveTo(_directoryName);
-            Import(soughtDirectory);
-            PostOnRun();
-        }
-    }
-
     public class ImportMinnesotaData : AdministrativeImporterBase
     {
         private const string SRID = "926915";
@@ -223,16 +167,43 @@ namespace TroutStreamMangler
 
         private void ImportRoads()
         {
-            var alterScript = String.Format(AlterTableToMultiLineString, RoadsTableName, CleanedSpatialColumn, "26915");
+            
+            TrimGeometry(RoadsTableName);
+
+            // may need to change "926915" to "26915"
+            var alterScript = String.Format(AlterTableToMultiLineString, RoadsTableName, CleanedSpatialColumn, "926915");
 
             var alterCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
                 UserName, DatabaseName, alterScript);
             ExecuteProcess(alterCommand);
-
+//            // clone results
+//            var newTableName = RoadsTableName + "_copy";
+//            
+//            const string commandTemplate = "CREATE TABLE {0} (LIKE {1} INCLUDING ALL)";
+//            var newTableCommand = String.Format(commandTemplate, newTableName, RoadsTableName);
+//            var cloneCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
+//                UserName, DatabaseName, newTableCommand);
+//            ExecuteProcess(cloneCommand);
+//
+//            // stupid one line limits of psql... there must be a way to get multi-line.
+//            var query = @"INSERT INTO public.streets_load_copy (street_nam, street_pre, base_name, street_typ, street_suf, e_911, route_syst, route_numb, tis_code, divided_on, traffic_di, shape_leng, geom, geom_2d) (SELECT DISTINCT On (road.tis_code) road.street_nam, road.street_pre, road.base_name, road.street_typ, road.street_suf, road.e_911, road.route_syst, road.route_numb, road.tis_code, road.divided_on, road.traffic_di, road.shape_leng, road.geom, unified.geom_2d FROM streets_load AS road, (SELECT f.tis_code, St_multi(St_union(f.geom_2d)) AS geom_2d FROM streets_load AS f GROUP BY tis_code) AS unified WHERE unified.tis_code = road.tis_code);";
+//
+//            var copyCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
+//                UserName, DatabaseName, query);
+//            ExecuteProcess(copyCommand);
+//
+////            var truncateQuery = String.Format(@"TRUNCATE {0} RESTART IDENTITY;", RoadsTableName);
+////            var truncateCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
+////                UserName, DatabaseName, truncateQuery);
+////            ExecuteProcess(truncateCommand);
+//
+//            // copy them back over from the temp table to the real table.
+//
             var updateTableScript = String.Format(UpdateMultilineColumn, RoadsTableName, CleanedSpatialColumn, OriginalSpatialColumn);
             var updateCommand = String.Format(@"psql -q  --host={0} --username={1} -d {2} --command ""{3}""", HostName,
                 UserName, DatabaseName, updateTableScript);
             ExecuteProcess(updateCommand);
+
             AddSpatialColumn(RoadsTableName, CleanedSpatialColumn, 4326, MultilineString);
         }
 

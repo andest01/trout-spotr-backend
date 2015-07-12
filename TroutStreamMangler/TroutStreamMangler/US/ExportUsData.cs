@@ -28,7 +28,10 @@ namespace TroutStreamMangler.US
             _abbrevs = new Lazy<Dictionary<string, Abbreviation>>(CreateAbbreviations);
             _fips = new Lazy<ILookup<int, FipsCode>>(CreateFipCode);
             HasOption("regionCsv=", "the location of the regions csv, etc", j => RegionCsv = j);
+            HasOption("roadTypeCsv=", "the location of the road type csv, etc", j => RoadTypeCsv = j);
         }
+
+        public string RoadTypeCsv { get; set; }
 
         public string RegionCsv { get; set; }
 
@@ -68,15 +71,40 @@ namespace TroutStreamMangler.US
             {
                 ImportStatesAndCounties();
                 ImportRegions();
+                ImportFederalRoadTypes();
             }
 
             // update or delete on table "county" violates foreign key constraint "FK_Stream_County_County" on table "stream_county"
             catch (Exception)
             {
                 throw;
-            }
+            }   
 
             return 0;
+        }
+
+        private void ImportFederalRoadTypes()
+        {
+            var roadTypes = GetRoadTypes();
+
+            using (var troutDashContext = new TroutDashPrototypeContext())
+            {
+                Console.WriteLine("Deleting all regions");
+                troutDashContext.road_types.RemoveRange(troutDashContext.road_types);
+                troutDashContext.SaveChanges();
+
+                foreach (var roadType in roadTypes)
+                {
+                    var dbRoadType = new road_type();
+                    dbRoadType.description = roadType.name;
+                    dbRoadType.source = "0";
+                    dbRoadType.type = roadType.type;
+
+                    troutDashContext.road_types.Add(dbRoadType);
+                }
+
+                troutDashContext.SaveChanges();
+            }
         }
 
         private void ImportRegions()
@@ -115,6 +143,18 @@ namespace TroutStreamMangler.US
                     troutDashContext.SaveChanges();
                 }
             }
+        }
+
+        private IEnumerable<RoadTypeModel> GetRoadTypes()
+        {
+            const string regionNamesFileName = "RoadTypes.csv";
+            var regionDirectory = new DirectoryInfo(RoadTypeCsv);
+            var roadTypeFile = regionDirectory.EnumerateFiles("*.csv", SearchOption.TopDirectoryOnly)
+                .Single(f => f.Name == regionNamesFileName);
+            var types =
+                RegionsBuilder.GetCsvModel<RoadTypeModel>(roadTypeFile.FullName).ToList();
+
+            return types;
         }
 
         private string DisolveCountyGeometriesByRegion(RegionModel region)

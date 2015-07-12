@@ -18,8 +18,12 @@ namespace TroutDash.EntityFramework.Models
             this.restriction_section = new List<restriction_section>();
             this.counties = new List<county>();
             this.trout_stream_sections = new List<trout_stream_section>();
-            this.lake_sections = new Collection<lake_section>();
-            this.stream_access_points = new Collection<stream_access_point>();
+            this.lake_sections = new List<lake_section>();
+            this.stream_access_points = new List<stream_access_point>();
+            this.roads = new List<road>();
+
+            
+
         }
 
         public int gid { get; set; }
@@ -48,5 +52,7 @@ namespace TroutDash.EntityFramework.Models
         public virtual ICollection<county> counties { get; set; }
         public virtual ICollection<trout_stream_section> trout_stream_sections { get; set; }
         public virtual ICollection<lake_section> lake_sections { get; set; }
+        public virtual ICollection<road> roads { get; set; }
+        public virtual ICollection<road_crossing> road_crossings { get; set; } 
     }
 }

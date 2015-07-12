@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TroutDash.DatabaseImporter.Convention;
 using TroutStreamMangler.MN;
+using TroutStreamMangler.US;
 
 namespace TroutStreamMangler.Test
 {

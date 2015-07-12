@@ -50,15 +50,15 @@ namespace TroutStreamMangler
 
         private static int Main(string[] args)
         {
-//            var builder = new ContainerBuilder();
-//
-//            builder.RegisterType<DatabaseConnectionFactory>().As<IDatabaseConnectionFactory>();
-//            builder.RegisterType<DatabaseImporterFactory>().As<IDatabaseImporterFactory>();
-//            var shapeImporterFactory = new Dictionary<string, IGeometryImporter>();
-////            var importer = msdaf.CreateDatabaseImporter<PostGisDatabaseImporter>(myDirectory);
-//
-//            shapeImporterFactory.Add(".shp", new ShapefileImporter());
-//
+            var builder = new ContainerBuilder();
+
+            builder.RegisterType<DatabaseConnectionFactory>().As<IDatabaseConnectionFactory>();
+            builder.RegisterType<DatabaseImporterFactory>().As<IDatabaseImporterFactory>();
+            var shapeImporterFactory = new Dictionary<string, IGeometryImporter>();
+//            var importer = msdaf.CreateDatabaseImporter<PostGisDatabaseImporter>(myDirectory);
+
+            shapeImporterFactory.Add(".shp", new ShapefileImporter());
+
 //            builder.Register((i) => shapeImporterFactory).As<IDictionary<string, IGeometryImporter>>();
 //            builder.RegisterType<DatabaseManifest>().As<IDatabaseManifest>();
 //
@@ -87,13 +87,14 @@ namespace TroutStreamMangler
 
             var dbConnection = GetTroutDashConnection();
             var mnConnection = GetMnConnection();
-            // dropdb -h localhost -U postgres --if-exists TroutDash2
+//             dropdb -h localhost -U postgres --if-exists TroutDash2
 //            PostGisDatabaseImporter.DropDatabase(dbConnection);
 //            PostGisDatabaseImporter.CreateZeDatabase(dbConnection);
 //
-//            var restoreDbCommand = String.Format(@"psql -U {0} -d {1} -a -f {2}", dbConnection.UserName, dbConnection.DatabaseName, "Streams_backup_2015_06_24_1_schema.backup");
+//            Console.WriteLine("Restoring database");
+//            var restoreDbCommand = String.Format(@"psql -U {0} -d {1} -a -f {2}", dbConnection.UserName, dbConnection.DatabaseName, "Streams_backup_2015_07_08_3_schema.backup");
 //            ExecuteShellCommand.ExecuteProcess(restoreDbCommand);
-//
+
 //            ExportUsData(null, dbConnection);
             ExportMinnesotaData(null, dbConnection, mnConnection);
 
@@ -111,9 +112,9 @@ namespace TroutStreamMangler
         {
             var minnesotaExporter = new ExportMinnesotaData(dbConnection, dbMnImportConnection, new CentroidResetter(dbConnection))
             {
-                FileLocation = @"MN/Data/Restrictions/regulations.json",
+                RegulationsFileLocation = @"MN/Data/Restrictions/regulations.json",
                 StreamMetadataFileLocation = @"MN/Data/Streams/StreamMetadata.csv",
-                
+                RoadTypesFileLocation = @"MN/Data/Roads/MnRoadTypes.csv"
             };
             minnesotaExporter.Run(args);
         }
@@ -123,7 +124,8 @@ namespace TroutStreamMangler
             var usConnection = GetUsConnection();
             var usExporter = new ExportUsData(dbConnection, usConnection)
             {
-                RegionCsv = @"US/Data/Regions/"
+                RegionCsv = @"US/Data/Regions/",
+                RoadTypeCsv = @"US/Data/Roads/"
             };
             usExporter.Run(args);
         }

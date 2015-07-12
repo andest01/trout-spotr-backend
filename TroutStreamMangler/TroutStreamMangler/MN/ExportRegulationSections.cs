@@ -40,6 +40,28 @@ namespace TroutStreamMangler.MN
         }
     }
 
+    public class StreamAccessPointsExporter : IDisposable
+    {
+        private readonly TroutDashPrototypeContext _troutDashContext2;
+        private readonly MinnesotaShapeDataContext _minnesotaContext2;
+        private readonly SequenceRestarter _sequenceRestarter;
+        private readonly GetLinearOffsets _getLinearOffsets;
+        public StreamAccessPointsExporter(TroutDashPrototypeContext troutDashContext,
+            MinnesotaShapeDataContext minnesotaContext, SequenceRestarter sequenceRestarter, GetLinearOffsets getLinearOffsets)
+        {
+            _troutDashContext2 = troutDashContext;
+            _minnesotaContext2 = minnesotaContext;
+            _sequenceRestarter = sequenceRestarter;
+            _getLinearOffsets = getLinearOffsets;
+        }
+
+        public void Dispose()
+        {
+            
+        }
+    }
+
+
     public class RegulationsExporter : IDisposable
     {
         private readonly TroutDashPrototypeContext _troutDashContext2;

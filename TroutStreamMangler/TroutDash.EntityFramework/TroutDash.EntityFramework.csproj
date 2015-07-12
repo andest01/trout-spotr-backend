@@ -84,6 +84,8 @@
     <Compile Include="Models\Mapping\restrictionMap.cs" />
     <Compile Include="Models\Mapping\restriction_routeMap.cs" />
     <Compile Include="Models\Mapping\restriction_sectionMap.cs" />
+    <Compile Include="Models\Mapping\roadMap.cs" />
+    <Compile Include="Models\Mapping\road_typeMap.cs" />
     <Compile Include="Models\Mapping\stateMap.cs" />
     <Compile Include="Models\Mapping\streamMap.cs" />
     <Compile Include="Models\Mapping\stream_access_pointMap.cs" />
@@ -100,6 +102,8 @@
     <Compile Include="Models\region.cs" />
     <Compile Include="Models\restriction.cs" />
     <Compile Include="Models\restriction_section.cs" />
+    <Compile Include="Models\road.cs" />
+    <Compile Include="Models\road_type.cs" />
     <Compile Include="Models\spatial_ref_sys.cs" />
     <Compile Include="Models\state.cs" />
     <Compile Include="Models\stream.cs" />

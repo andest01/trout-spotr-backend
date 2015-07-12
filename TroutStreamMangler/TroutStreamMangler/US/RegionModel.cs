@@ -1,11 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TroutStreamMangler.MN;
 
-namespace TroutStreamMangler.MN
+namespace TroutStreamMangler.US
 {
+    public class RoadTypeModel
+    {
+        // type, name, isFederal, stateId
+        public string type { get; set; }
+        public string name { get; set; }
+        public bool isFederal { get; set; }
+        public string stateId { get; set; }
+    }
+
+
     [DebuggerDisplay("{regionName}, counties: {CountyCount}")]
     public class RegionModel
     {

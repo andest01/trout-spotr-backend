@@ -35,5 +35,7 @@ namespace TroutStreamMangler.MN.Models
 
         // Trout Stream Sections
         public DbSet<trout_streams_minnesota> trout_streams_minnesota { get; set; }
+
+        public DbSet<streets_load> streets_load { get; set; }
     }
 }

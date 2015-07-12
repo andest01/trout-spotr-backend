@@ -150,7 +150,7 @@ namespace TroutDash.DatabaseImporter.Convention.DatabaseImporter
                     // HACK: trying to convert to something i like
                     var needsConversion =
                         shapefile.Name.IndexOf("STREETS_LOAD", StringComparison.OrdinalIgnoreCase) >= 0;
-                    if (needsConversion)
+                    if (false)
                     {
                         geometryImporter.ImportShape(shapefile, _connection, "26915");
                     }
